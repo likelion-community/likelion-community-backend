@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>메인 페이지</title>
+</head>
+<body>
+    <header>
+        <h1>환영합니다! Like a Lion 커뮤니티</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home:mainpage' %}">홈</a></li>
+                <li><a href="{% url 'signup:login' %}">로그인</a></li>
+                <li><a href="#">회원가입</a></li>
+                <li><a href="#">커뮤니티</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <h2>커뮤니티에 오신 것을 환영합니다</h2>
+        <p>이곳은 Like a Lion 커뮤니티 홈페이지입니다.</p>
+        <p>로그인하여 다양한 정보를 얻고 커뮤니티에 참여해보세요!</p>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 Like a Lion Community</p>
+    </footer>
+</body>
+</html>
