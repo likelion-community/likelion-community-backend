@@ -17,6 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 AUTH_USER_MODEL = 'signup.CustomUser'
 
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -152,8 +153,6 @@ SOCIAL_AUTH_KAKAO_SECRET = os.getenv('SOCIAL_AUTH_KAKAO_SECRET')
 SOCIAL_AUTH_KAKAO_REDIRECT_URI = os.getenv('SOCIAL_AUTH_KAKAO_REDIRECT_URI')
 
 
-
-
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 LOGIN_REDIRECT_URL = '/home/' 
 LOGOUT_REDIRECT_URL = '/'
@@ -186,5 +185,3 @@ SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/signup/complete_profile/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-
-

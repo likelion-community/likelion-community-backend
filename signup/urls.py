@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 from social_django import views as social_views 
 
+
 app_name = 'signup'
 
 urlpatterns = [
