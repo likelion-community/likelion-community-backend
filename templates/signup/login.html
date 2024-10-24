@@ -1,1 +1,81 @@
-<a href="{% url 'social:begin' 'kakao' %}">카카오로 로그인</a>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+            width: 300px;
+        }
+        .icon-card {
+            width: 100%;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #000;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+        .kakao-btn, .login-btn {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            border: none;
+        }
+        .kakao-btn {
+            background-color: #F7E600;
+            color: #000;
+        }
+        .login-btn {
+            background-color: #FF7F00;
+            color: #fff;
+        }
+        .register-link {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #999;
+        }
+        .register-link a {
+            color: #FF7F00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="kakao-btn" onclick="window.location.href='{% url 'signup:begin' %}'">
+            카카오 로그인
+        </button>
+        
+        <button class="login-btn" onclick="window.location.href='{% url 'signup:login' %}'">
+            로그인
+        </button>
+        
+        <div class="register-link">
+            아직 회원이 아니신가요? <a href="{% url 'signup:signup' %}">회원가입</a>
+        </div>
+    </div>
+</body>
+</html>

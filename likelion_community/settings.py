@@ -14,6 +14,8 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+AUTH_USER_MODEL = 'signup.CustomUser'
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -37,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'likelion_community',
     'attendance',
     'home',
     'mypage',
@@ -150,7 +153,35 @@ SOCIAL_AUTH_KAKAO_SECRET = os.getenv('SOCIAL_AUTH_KAKAO_SECRET')
 SOCIAL_AUTH_KAKAO_REDIRECT_URI = os.getenv('SOCIAL_AUTH_KAKAO_REDIRECT_URI')
 
 
-
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/home/' 
 LOGOUT_REDIRECT_URL = '/'
+
+
+SOCIAL_AUTH_PIPELINE = (
+    'signup.pipeline.add_kakao_uid',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'signup.pipeline.save_user_details', 
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'signup.pipeline.require_additional_info',
+    'social_core.pipeline.user.user_details',
+)
+
+
+
+
+
+SOCIAL_AUTH_KAKAO_SCOPE = ['account_email']
+SOCIAL_AUTH_KAKAO_PROFILE_EXTRA_PARAMS = {'property_keys': ['kakao_account.email']}
+
+
+LOGIN_URL = '/signup/login/'
+# 추가 정보가 필요한 경우 리다이렉트할 URL 설정
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/signup/complete_profile/'
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
