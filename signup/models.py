@@ -33,6 +33,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     verification_photo = models.ImageField(upload_to='verification_photos/', blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_profile_complete = models.BooleanField(default=False)  # 프로필 완성 여부
+
 
     objects = CustomUserManager()
 

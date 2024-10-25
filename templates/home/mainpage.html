@@ -6,9 +6,9 @@
 </head>
 <body>
     {% if request.user.is_authenticated %}
-        <h1>환영합니다, {{ user.name }}님!</h1>
-        <p>닉네임: {{ user.nickname }}</p>
-        <p>이메일: {{ user.email }}</p>
+        <h1>환영합니다, {{ request.user.name }}님!</h1>
+        <p>닉네임: {{ request.user.nickname }}</p>
+        <p>이메일: {{ request.user.email }}</p>
         
         
         <a href="{% url 'signup:logout' %}">로그아웃</a>
@@ -18,7 +18,7 @@
         </form>
     {% else %}
         <p>로그인하지 않으셨습니다.</p>
-        <a href="{% url 'signup:login' %}">로그인</a>
+        <a href="{% url 'signup:login_home' %}">로그인</a>
     {% endif %}
 </body>
 </html>

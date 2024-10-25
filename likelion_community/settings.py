@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -162,6 +162,7 @@ SOCIAL_AUTH_PIPELINE = (
     'signup.pipeline.add_kakao_uid',
     'social_core.pipeline.social_auth.social_user',
     'social_core.pipeline.user.get_username',
+    'social_core.pipeline.social_auth.associate_by_email',
     'signup.pipeline.save_user_details', 
     'social_core.pipeline.user.create_user',
     'social_core.pipeline.social_auth.associate_user',
@@ -174,13 +175,16 @@ SOCIAL_AUTH_PIPELINE = (
 
 
 
-SOCIAL_AUTH_KAKAO_SCOPE = ['account_email']
-SOCIAL_AUTH_KAKAO_PROFILE_EXTRA_PARAMS = {'property_keys': ['kakao_account.email']}
+SOCIAL_AUTH_KAKAO_SCOPE = ['account_email', 'profile_nickname']
+SOCIAL_AUTH_KAKAO_PROFILE_EXTRA_PARAMS = {
+    'property_keys': ['kakao_account.email', 'kakao_account.profile.nickname']
+}
+
 
 
 LOGIN_URL = '/signup/login/'
 # 추가 정보가 필요한 경우 리다이렉트할 URL 설정
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/signup/complete_profile/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/signup/complete_profile/'  # 프로필 완료 페이지로 설정
 
 
 MEDIA_URL = '/media/'

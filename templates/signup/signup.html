@@ -3,13 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <title>회원가입</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="password"],
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button:disabled {
+            background-color: #ccc;
+        }
+        .message {
+            font-size: 14px;
+            margin-top: 10px;
+            color: red;
+            text-align: left;
+        }
+        .message.valid {
+            color: green;
+        }
+    </style>
 </head>
 <body>
     <h1>회원가입</h1>
-    <form method="post" enctype="multipart/form-data">
+    <form id="signup-form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">가입하기</button>
+        {{ form.as_p }}  <!-- Django의 기본 폼을 그대로 사용 -->
+
+        <!-- 비밀번호 유효성 검사 및 확인 -->
+        <div class="form-group">
+            <button type="button" onclick="checkPasswordValidity()">비밀번호 유효성 검사</button>
+            <span id="password-validity-message" class="message"></span>
+        </div>
+
+        <div class="form-group">
+            <button type="button" onclick="checkPasswordMatch()">비밀번호 확인</button>
+            <span id="password-match-message" class="message"></span>
+        </div>
+
+        <!-- 인증 사진 유효성 검사 -->
+        <div class="form-group">
+            <button type="button" onclick="checkVerificationPhoto()">사진 유효성 검사</button>
+            <span id="photo-validation-result" class="message"></span>
+        </div>
+
+        <!-- 가입하기 버튼 (초기에는 비활성화) -->
+        <button type="submit" id="signup-button" disabled>가입하기</button>
     </form>
+
+    <script>
+        const csrfToken = "{{ csrf_token }}"; 
+        const checkPasswordURL = "{% url 'signup:check_password' %}";
+        const signupURL = "{% url 'signup:signup' %}";
+
+        let isPasswordValid = false;
+        let isPasswordMatched = false;
+        let isPhotoValid = false;
+
+        function checkPasswordValidity() {
+            const password = document.querySelector('input[name="password1"]').value;
+            const validityMessage = document.getElementById('password-validity-message');
+    
+            const formData = new FormData();
+            formData.append('password', password);
+    
+            fetch(checkPasswordURL, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-CSRFToken": csrfToken,
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.is_valid) {
+                    validityMessage.textContent = data.message;
+                    validityMessage.classList.add('valid');
+                    isPasswordValid = true;
+                } else {
+                    validityMessage.textContent = data.message;
+                    validityMessage.classList.remove('valid');
+                    isPasswordValid = false;
+                }
+                checkFormValidity();
+            })
+            .catch(error => {
+                console.error("Error during password validation:", error);
+                validityMessage.textContent = "비밀번호 유효성 검사 중 오류가 발생했습니다.";
+                validityMessage.classList.remove('valid');
+                isPasswordValid = false;
+                checkFormValidity();
+            });
+        }
+
+        function checkPasswordMatch() {
+            const password = document.querySelector('input[name="password1"]').value;
+            const passwordConfirm = document.querySelector('input[name="password2"]').value;
+            const matchMessage = document.getElementById('password-match-message');
+
+            if (password === passwordConfirm) {
+                matchMessage.textContent = "비밀번호가 일치합니다.";
+                matchMessage.classList.add('valid');
+                isPasswordMatched = true;
+            } else {
+                matchMessage.textContent = "비밀번호가 일치하지 않습니다.";
+                matchMessage.classList.remove('valid');
+                isPasswordMatched = false;
+            }
+            checkFormValidity();
+        }
+
+        function checkVerificationPhoto() {
+            const photoInput = document.querySelector('input[type="file"][name="verification_photo"]');
+            const resultElement = document.getElementById('photo-validation-result');
+            if (!photoInput.files.length) {
+                resultElement.textContent = "먼저 인증 사진을 업로드해 주세요.";
+                resultElement.classList.remove('valid');
+                isPhotoValid = false;
+                checkFormValidity();
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('verification_photo', photoInput.files[0]);
+            
+            fetch(signupURL, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-CSRFToken": csrfToken,
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Accept": "application/json"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.is_valid) {
+                    resultElement.textContent = "유효한 회원 인증 사진입니다!";
+                    resultElement.classList.add('valid');
+                    isPhotoValid = true;
+                } else {
+                    resultElement.textContent = "유효하지 않은 사진입니다. 다시 시도해 주세요.";
+                    resultElement.classList.remove('valid');
+                    isPhotoValid = false;
+                }
+                checkFormValidity();
+            })
+            .catch(error => {
+                console.error("Error verifying photo:", error);
+                resultElement.textContent = "사진 유효성 검사에 실패했습니다.";
+                resultElement.classList.remove('valid');
+                isPhotoValid = false;
+                checkFormValidity();
+            });
+        }
+
+        function checkFormValidity() {
+            const signupButton = document.getElementById('signup-button');
+            if (isPasswordValid && isPasswordMatched && isPhotoValid) {
+                signupButton.disabled = false;
+            } else {
+                signupButton.disabled = true;
+            }
+        }
+    </script>
 </body>
 </html>

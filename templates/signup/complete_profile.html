@@ -3,6 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>추가 정보 입력</title>
+    <style>
+        #loading {
+            display: none; /* 기본적으로 숨김 */
+            position: fixed; /* 화면에 고정 */
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%); /* 중앙 정렬 */
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #ccc;
+            padding: 10px;
+            z-index: 1000; /* 다른 요소 위에 표시 */
+        }
+    </style>
 </head>
 <body>
     <h1>추가 정보를 입력해 주세요</h1>
@@ -18,10 +31,15 @@
         <button type="submit" id="save-button" disabled>저장하기</button>
     </form>
 
+    <!-- 로딩 바 -->
+    <div id="loading">로딩 중입니다...</div>
+
     <script>
         window.onload = function() {
+            // 초기화
             document.getElementById("photo-validation-result").textContent = "";
         }
+
         function getCookie(name) {
             let cookieValue = null;
             if (document.cookie && document.cookie !== '') {
@@ -43,7 +61,8 @@
             const photoInput = document.querySelector('input[type="file"][name="verification_photo"]');
             const resultElement = document.getElementById('photo-validation-result');
             const saveButton = document.getElementById('save-button');
-        
+            const loadingElement = document.getElementById('loading');
+
             if (!photoInput.files.length) {
                 resultElement.textContent = "먼저 인증 사진을 업로드해 주세요.";
                 saveButton.disabled = true;
@@ -52,7 +71,10 @@
         
             const formData = new FormData();
             formData.append('verification_photo', photoInput.files[0]);
-            
+
+            // 로딩 표시
+            loadingElement.style.display = 'block';
+
             fetch("{% url 'signup:complete_profile' %}", {
                 method: "POST",
                 body: formData,
@@ -64,6 +86,9 @@
             })
             .then(response => response.json())
             .then(data => {
+                // 로딩 숨김
+                loadingElement.style.display = 'none';
+
                 if (data.is_valid) {
                     resultElement.textContent = "유효한 회원 인증 사진입니다!";
                     resultElement.style.color = "green";
@@ -75,6 +100,8 @@
                 }
             })
             .catch(error => {
+                // 로딩 숨김
+                loadingElement.style.display = 'none';
                 console.error("Error verifying photo:", error);
                 resultElement.textContent = "사진 유효성 검사에 실패했습니다.";
                 resultElement.style.color = "red";
@@ -82,6 +109,11 @@
             });
         }
         
+        // 파일 선택 시 정보 초기화
+        document.getElementById('verification_photo').addEventListener('change', function() {
+            document.getElementById("current-photo").textContent = ""; // 파일 선택 시 현재 사진 정보 초기화
+        });
+
         // 최종 폼 제출 시에는 메시지를 초기화
         document.getElementById("profile-form").onsubmit = function() {
             document.getElementById("photo-validation-result").textContent = "";
