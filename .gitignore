@@ -221,6 +221,15 @@ $RECYCLE.BIN/
 like_a_lion_member_model.h5
 like_a_lion_member_model.keras
 
+# PEM 키 파일 
+likelion.pem
+
+# Django Migrations
+# `migrations` 폴더는 일반적으로 Git에 추가하지 않습니다.
+# 만약 초기 마이그레이션 파일은 필요하면 migrations 폴더 내 특정 파일만 Git에 추가할 수 있습니다.
+**/migrations/
+**/migrations/*.pyc
+!**/migrations/__init__.py
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,visualstudiocode,django
 
