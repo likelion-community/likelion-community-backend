@@ -231,5 +231,9 @@ likelion.pem
 **/migrations/*.pyc
 !**/migrations/__init__.py
 
+dataset/member/
+dataset/non_member/
+dataset/test/
+
 # End of https://www.toptal.com/developers/gitignore/api/windows,visualstudiocode,django
 
