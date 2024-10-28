@@ -16,11 +16,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('oauth/', include('social_django.urls', namespace='social')),
-    path('', include('home.urls')),  # 홈 화면 URL
-    path('signup/', include('signup.urls')),  # login 앱 URL 포함
+    path('', include('home.urls')),  
+    path('signup/', include('signup.urls')),  
+    
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

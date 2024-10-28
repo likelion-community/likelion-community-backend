@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>추가 정보 입력</title>
+    <style>
+        #loading {
+            display: none; /* 기본적으로 숨김 */
+            position: fixed; /* 화면에 고정 */
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%); /* 중앙 정렬 */
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #ccc;
+            padding: 10px;
+            z-index: 1000; /* 다른 요소 위에 표시 */
+        }
+    </style>
+</head>
+<body>
+    <h1>추가 정보를 입력해 주세요</h1>
+    <form id="profile-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- 이름 필드 -->
+        <label for="{{ form.name.id_for_label }}">Name:</label>
+        {{ form.name }}
+        {% if form.name.errors %}
+            <div class="error">{{ form.name.errors }}</div>
+        {% endif %}
+
+        <!-- 닉네임 필드 -->
+        <label for="{{ form.nickname.id_for_label }}">Nickname:</label>
+        {{ form.nickname }}
+        {% if form.nickname.errors %}
+            <div class="error">{{ form.nickname.errors }}</div>
+        {% endif %}
+
+        <!-- 기수 필드 -->
+        <label for="{{ form.membership_term.id_for_label }}">Term:</label>
+        {{ form.membership_term }}
+        {% if form.membership_term.errors %}
+            <div class="error">{{ form.membership_term.errors }}</div>
+        {% endif %}
+
+
+        <!-- 인증 사진 필드 -->
+        <label for="{{ form.verification_photo.id_for_label }}">Verification photo:</label>
+        {{ form.verification_photo }}
+        {% if form.verification_photo.errors %}
+            <div class="error">{{ form.verification_photo.errors }}</div>
+        {% endif %}
+
+        <!-- 유효성 검사 버튼 -->
+        <button type="button" onclick="checkVerificationPhoto()">사진 유효성 검사</button>
+        <span id="photo-validation-result"></span>
+
+        <!-- 저장하기 버튼 (초기에는 비활성화) -->
+        <button type="submit" id="save-button" disabled>저장하기</button>
+
+        <!-- 오류 메시지 표시 -->
+        {% if messages %}
+        <div class="error">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+    </form>
+
+    <!-- 로딩 바 -->
+    <div id="loading">로딩 중입니다...</div>
+
+    <script>
+        window.onload = function() {
+            // 초기화
+            document.getElementById("photo-validation-result").textContent = "";
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        const csrfToken = getCookie('csrftoken');
+
+        function checkVerificationPhoto() {
+            const photoInput = document.querySelector('input[type="file"][name="verification_photo"]');
+            const resultElement = document.getElementById('photo-validation-result');
+            const saveButton = document.getElementById('save-button');
+            const loadingElement = document.getElementById('loading');
+
+            if (!photoInput.files.length) {
+                resultElement.textContent = "먼저 인증 사진을 업로드해 주세요.";
+                saveButton.disabled = true;
+                return;
+            }
+        
+            const formData = new FormData();
+            formData.append('verification_photo', photoInput.files[0]);
+
+            // 로딩 표시
+            loadingElement.style.display = 'block';
+
+            fetch("{% url 'signup:complete_profile' %}", {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-CSRFToken": csrfToken,
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Accept": "application/json"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // 로딩 숨김
+                loadingElement.style.display = 'none';
+
+                if (data.is_valid) {
+                    resultElement.textContent = "유효한 회원 인증 사진입니다!";
+                    resultElement.style.color = "green";
+                    saveButton.disabled = false;  // 유효성 검사 통과 시 저장 버튼 활성화
+                } else {
+                    resultElement.textContent = "유효하지 않은 사진입니다. 다시 시도해 주세요.";
+                    resultElement.style.color = "red";
+                    saveButton.disabled = true;  // 유효성 검사 실패 시 저장 버튼 비활성화
+                }
+            })
+            .catch(error => {
+                // 로딩 숨김
+                loadingElement.style.display = 'none';
+                console.error("Error verifying photo:", error);
+                resultElement.textContent = "사진 유효성 검사에 실패했습니다.";
+                resultElement.style.color = "red";
+                saveButton.disabled = true;
+            });
+        }
+        
+        // 파일 선택 시 정보 초기화
+        document.getElementById('verification_photo').addEventListener('change', function() {
+            document.getElementById("current-photo").textContent = ""; // 파일 선택 시 현재 사진 정보 초기화
+        });
+
+        // 최종 폼 제출 시에는 메시지를 초기화
+        document.getElementById("profile-form").onsubmit = function() {
+            document.getElementById("photo-validation-result").textContent = "";
+        }
+        
+    </script>
+</body>
+</html>

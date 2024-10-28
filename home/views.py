@@ -1,4 +1,7 @@
 from django.shortcuts import render
 
+
 def home_view(request):
-    return render(request, 'home/mainpage.html')
+    user = request.user
+    return render(request, 'home/mainpage.html',{'user': user})
+

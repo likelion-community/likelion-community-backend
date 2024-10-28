@@ -216,4 +216,11 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+
+# 회원인증 모델
+like_a_lion_member_model.h5
+like_a_lion_member_model.keras
+
+
 # End of https://www.toptal.com/developers/gitignore/api/windows,visualstudiocode,django
+

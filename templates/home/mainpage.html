@@ -5,26 +5,20 @@
     <title>메인 페이지</title>
 </head>
 <body>
-    <header>
-        <h1>환영합니다! Like a Lion 커뮤니티</h1>
-        <nav>
-            <ul>
-                <li><a href="{% url 'home:mainpage' %}">홈</a></li>
-                <li><a href="{% url 'signup:login' %}">로그인</a></li>
-                <li><a href="#">회원가입</a></li>
-                <li><a href="#">커뮤니티</a></li>
-            </ul>
-        </nav>
-    </header>
-    
-    <main>
-        <h2>커뮤니티에 오신 것을 환영합니다</h2>
-        <p>이곳은 Like a Lion 커뮤니티 홈페이지입니다.</p>
-        <p>로그인하여 다양한 정보를 얻고 커뮤니티에 참여해보세요!</p>
-    </main>
-    
-    <footer>
-        <p>&copy; 2024 Like a Lion Community</p>
-    </footer>
+    {% if request.user.is_authenticated %}
+        <h1>환영합니다, {{ request.user.name }}님!</h1>
+        <p>닉네임: {{ request.user.nickname }}</p>
+        <p>이메일: {{ request.user.email }}</p>
+        
+        
+        <a href="{% url 'signup:logout' %}">로그아웃</a>
+        <form action="{% url 'signup:delete_user' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">회원 탈퇴</button>
+        </form>
+    {% else %}
+        <p>로그인하지 않으셨습니다.</p>
+        <a href="{% url 'signup:login_home' %}">로그인</a>
+    {% endif %}
 </body>
 </html>

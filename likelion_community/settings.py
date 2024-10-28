@@ -14,6 +14,8 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+AUTH_USER_MODEL = 'signup.CustomUser'
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,7 +27,7 @@ SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'likelion_community',
     'attendance',
     'home',
     'mypage',
@@ -52,11 +55,13 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'signup.middlewares.CompleteProfileRequiredMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
-
+    
 ]
+
 
 ROOT_URLCONF = 'likelion_community.urls'
 
@@ -150,7 +155,42 @@ SOCIAL_AUTH_KAKAO_SECRET = os.getenv('SOCIAL_AUTH_KAKAO_SECRET')
 SOCIAL_AUTH_KAKAO_REDIRECT_URI = os.getenv('SOCIAL_AUTH_KAKAO_REDIRECT_URI')
 
 
-
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/home/' 
 LOGOUT_REDIRECT_URL = '/'
+
+
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',      # 소셜 정보 가져오기
+    'social_core.pipeline.social_auth.social_uid',          # 소셜 UID 가져오기
+    'social_core.pipeline.social_auth.auth_allowed',        # 인증 허용 여부 확인
+    'social_core.pipeline.social_auth.social_user',         # 기존 사용자 확인
+    'signup.pipeline.add_kakao_uid',                        # 사용자 UID 추가
+    'social_core.pipeline.user.get_username',               # 사용자 이름 설정
+    'social_core.pipeline.user.create_user',                # 새로운 사용자 생성
+    'signup.pipeline.require_additional_info',              # 추가 정보 요청
+    'signup.pipeline.save_user_details',                    # 사용자 세부 정보 저장
+    'social_core.pipeline.social_auth.associate_user',      # 사용자 연동
+    'social_core.pipeline.social_auth.load_extra_data',     # 추가 데이터 로드
+    'social_core.pipeline.user.user_details',               # 사용자 정보 업데이트
+)
+
+
+
+
+
+SOCIAL_AUTH_KAKAO_SCOPE = ['account_email', 'profile_nickname']
+SOCIAL_AUTH_KAKAO_PROFILE_EXTRA_PARAMS = {
+    'property_keys': ['kakao_account.email', 'kakao_account.profile.nickname']
+}
+
+
+
+LOGIN_URL = '/signup/login/'
+# 추가 정보가 필요한 경우 리다이렉트할 URL 설정
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/signup/complete_profile/'  # 프로필 완료 페이지로 설정
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
