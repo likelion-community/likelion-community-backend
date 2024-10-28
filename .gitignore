@@ -235,5 +235,11 @@ dataset/member/
 dataset/non_member/
 dataset/test/
 
+
+# 테스트 파일 및 임시 파일
+test_model.py
+tmp.py
+train_model.py
+
 # End of https://www.toptal.com/developers/gitignore/api/windows,visualstudiocode,django
 
