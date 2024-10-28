@@ -120,7 +120,7 @@ ninja==1.11.1.1
 nltk==3.8.1
 notebook==7.2.2
 notebook_shim==0.2.4
-numpy==1.23.5
+numpy==1.23.0
 oauthlib==3.2.2
 opencv-python==4.10.0.84
 opencv-python-headless==4.10.0.84
@@ -128,7 +128,7 @@ opt_einsum==3.4.0
 optree==0.13.0
 overrides==7.7.0
 packaging==24.1
-pandas==2.2.2
+pandas==2.2.3
 pandocfilters==1.5.1
 parso==0.8.4
 pillow==10.4.0
@@ -170,7 +170,7 @@ rsa==4.9
 safetensors==0.4.4
 scikit-image==0.24.0
 scikit-learn==1.5.1
-scipy==1.12.0
+scipy==1.9.0
 Send2Trash==1.8.3
 sentence-transformers==3.0.1
 service-identity==24.1.0
@@ -184,13 +184,11 @@ sqlparse==0.5.0
 stack-data==0.6.3
 sympy==1.13.2
 tabulate==0.9.0
-tensorboard==2.10.1
+tensorboard==2.10.0
 tensorboard-data-server==0.6.1
 tensorboard-plugin-wit==1.8.1
-tensorflow==2.10.0
+tensorflow==2.10.1
 tensorflow-estimator==2.10.0
-tensorflow-gpu==2.10.1
-tensorflow-intel==2.12.0
 tensorflow-io-gcs-filesystem==0.31.0
 termcolor==2.5.0
 terminado==0.18.1
