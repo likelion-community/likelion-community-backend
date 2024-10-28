@@ -10,6 +10,7 @@ import logging
 from django.core.cache import cache
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+from django.contrib import messages 
 
 logger = logging.getLogger(__name__)
 
@@ -17,12 +18,24 @@ def login_home_view(request):
     return render(request, 'signup/login_home.html')
 
 def kakao_login_view(request):
+    print("kakao_login_view is called")  # 호출 여부 확인
+
     if request.user.is_authenticated:
+        print(f"Authenticated user: {request.user.username}, Profile Complete: {request.user.is_profile_complete}")
+        
         if not request.user.is_profile_complete:
-            return redirect('signup:complete_profile')  # 카카오 사용자는 추가 정보 입력 페이지로 이동
+            request.session['partial_pipeline_user'] = request.user.pk
+            print("Redirecting to complete_profile")
+            return redirect('signup:complete_profile')
         else:
+            login(request, request.user)  # 로그인 처리
+            print("Redirecting to mainpage with session data:", request.session.items())
             return redirect('home:mainpage')
+    
+    print("Redirecting to login_home (not authenticated)")
     return redirect('signup:login_home')
+
+
 
 def custom_login_view(request):
     if request.user.is_authenticated:
@@ -86,46 +99,55 @@ def signup_view(request):
 
 
 def complete_profile_view(request):
-
     User = get_user_model()
     user_id = request.session.get('partial_pipeline_user')
-
-    # 임시 계정이 없으면 로그인 페이지로 리디렉션
-    if not user_id:
-        return redirect('signup:login')
-
-    user = User.objects.get(pk=user_id)
-
-    # 프로필 정보가 이미 완성된 경우 메인 페이지로 리디렉션
-    if user.is_profile_complete:
-        logger.info(f"User: {request.user.username}, Profile Complete: {request.user.is_profile_complete}")
-        return redirect('home:mainpage') 
     
-    # AJAX 유효성 검사 요청 처리
-    if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        uploaded_image = request.FILES.get('verification_photo')
-        is_verified = verify_like_a_lion_member(uploaded_image)
-        logger.info(f"AJAX request for image verification, result: {is_verified}")
-        return JsonResponse({'is_valid': bool(is_verified)})
+    # user_id가 없는 경우, 로그인 페이지로 리디렉션
+    if not user_id:
+        return redirect('signup:login_home')
 
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        # 해당 user_id로 사용자가 없으면 로그인 페이지로 리디렉션
+        request.session.pop('partial_pipeline_user', None)
+        return redirect('signup:login_home')
 
+    if user.is_profile_complete:
+        # 프로필이 완성된 경우 메인 페이지로 리디렉션
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        return redirect('home:mainpage')
+    
     if request.method == 'POST':
-        form = AdditionalInfoForm(request.POST, request.FILES, instance=user)
-        if form.is_valid():
+        # AJAX 요청일 경우 유효성 검사를 처리하고 세션에 플래그 저장
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             uploaded_image = request.FILES.get('verification_photo')
             is_verified = verify_like_a_lion_member(uploaded_image)
+            if is_verified:
+                request.session['photo_verified'] = True  # 유효성 검사 통과 시 세션에 저장
+            return JsonResponse({'is_valid': bool(is_verified)}) 
 
-            if not is_verified:
-                form.add_error('verification_photo', '이미지 인증에 실패했습니다.')
-                return render(request, 'signup/complete_profile.html', {'form': form})
-
-            user.is_profile_complete = True  # 프로필 완료 상태로 설정
-            form.save()
-            login(request, user, backend='social_core.backends.kakao.KakaoOAuth2')
-            request.session.pop('partial_pipeline_user', None)
-            return redirect('home:mainpage')
+        # 일반 폼 제출 시 세션의 유효성 검사 결과를 확인
+        if request.session.get('photo_verified', False):
+            form = AdditionalInfoForm(request.POST, request.FILES, instance=user)
+            if form.is_valid():
+                user.is_profile_complete = True
+                form.save()
+                login(request, user, backend='social_core.backends.kakao.KakaoOAuth2')
+                request.session.pop('partial_pipeline_user', None)
+                request.session.pop('photo_verified', None)  # 검증 후 세션 값 삭제
+                return redirect('home:mainpage')
+        else:
+            messages.error(request, "사진 유효성 검사에 실패했습니다. 다시 시도해 주세요.")
+            return redirect('signup:complete_profile')
+    
     else:
-        form = AdditionalInfoForm(instance=user)
+        # GET 요청 시 폼 초기값 설정
+        nickname = request.session.get('nickname')
+        initial_data = {'nickname': nickname} if nickname else {}
+        form = AdditionalInfoForm(instance=user, initial=initial_data)
+        logger.info(f"complete_profile_view 초기값 설정: 초기 닉네임 값 - {nickname}")
+
 
     return render(request, 'signup/complete_profile.html', {'form': form})
 
@@ -140,7 +162,7 @@ def delete_incomplete_user(request):
             user.delete()
             logger.info(f"Deleted incomplete user: {user.username}")
         request.session.pop('partial_pipeline_user', None)
-    return redirect('signup:login')
+    return redirect('signup:begin')
 
 
         

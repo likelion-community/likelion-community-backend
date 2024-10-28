@@ -55,11 +55,13 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'signup.middlewares.CompleteProfileRequiredMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
-
+    
 ]
+
 
 ROOT_URLCONF = 'likelion_community.urls'
 
@@ -158,17 +160,20 @@ LOGIN_REDIRECT_URL = '/home/'
 LOGOUT_REDIRECT_URL = '/'
 
 
+
 SOCIAL_AUTH_PIPELINE = (
-    'signup.pipeline.add_kakao_uid',
-    'social_core.pipeline.social_auth.social_user',
-    'social_core.pipeline.user.get_username',
-    'social_core.pipeline.social_auth.associate_by_email',
-    'signup.pipeline.save_user_details', 
-    'social_core.pipeline.user.create_user',
-    'social_core.pipeline.social_auth.associate_user',
-    'social_core.pipeline.social_auth.load_extra_data',
-    'signup.pipeline.require_additional_info',
-    'social_core.pipeline.user.user_details',
+    'social_core.pipeline.social_auth.social_details',      # 소셜 정보 가져오기
+    'social_core.pipeline.social_auth.social_uid',          # 소셜 UID 가져오기
+    'social_core.pipeline.social_auth.auth_allowed',        # 인증 허용 여부 확인
+    'social_core.pipeline.social_auth.social_user',         # 기존 사용자 확인
+    'signup.pipeline.add_kakao_uid',                        # 사용자 UID 추가
+    'social_core.pipeline.user.get_username',               # 사용자 이름 설정
+    'social_core.pipeline.user.create_user',                # 새로운 사용자 생성
+    'signup.pipeline.require_additional_info',              # 추가 정보 요청
+    'signup.pipeline.save_user_details',                    # 사용자 세부 정보 저장
+    'social_core.pipeline.social_auth.associate_user',      # 사용자 연동
+    'social_core.pipeline.social_auth.load_extra_data',     # 추가 데이터 로드
+    'social_core.pipeline.user.user_details',               # 사용자 정보 업데이트
 )
 
 

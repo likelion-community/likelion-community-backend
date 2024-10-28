@@ -3,18 +3,22 @@ import numpy as np
 import pytesseract
 import easyocr
 import re
+import gc
 
-# Tesseract 경로 설정
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\tesseract.exe'
-
-# EasyOCR 초기화
+# Tesseract 및 EasyOCR 설정
+pytesseract.pytesseract.tesseract_cmd = r'C:\Users\sunca\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
 reader = easyocr.Reader(['ko', 'en'])
+
+def clear_memory():
+    """메모리 관리."""
+    gc.collect()
+
 
 def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처럼', threshold=0.35):
     detected = False
 
     # 이미지 자체 확대 (작은 로고 검출을 위해)
-    scales = [1.0, 1.5, 2.0]  # 원본 크기와 확대 크기
+    scales = [1.0, 2.0]  # 원본 크기와 확대 크기
     for scale in scales:
         resized_image = cv2.resize(image, (int(image.shape[1] * scale), int(image.shape[0] * scale)))
 
@@ -24,7 +28,7 @@ def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처�
             if logo_template is None:
                 continue
             # 템플릿 매칭을 위한 다양한 스케일 적용
-            for template_scale in np.linspace(0.2, 1.6, 15):  # 더 작은 크기에서 큰 크기까지 시도
+            for template_scale in np.linspace(0.2, 1.6, 10):  # 더 작은 크기에서 큰 크기까지 시도
                 resized_template = cv2.resize(logo_template, 
                                               (int(logo_template.shape[1] * template_scale), 
                                                int(logo_template.shape[0] * template_scale)))
@@ -58,6 +62,7 @@ def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처�
             break
 
     return detected
+
 
 
 def extract_text(image):
@@ -116,8 +121,6 @@ def extract_text(image):
     #     print(f"Tesseract 전체 텍스트 결과: {ocr_data['text']}")
     #     print(f"EasyOCR 전체 텍스트 결과: {easyocr_results}")
 
-
-
     return text_data
    
 
@@ -137,12 +140,19 @@ def extract_text_and_logo(image):
         cv2.imread(r'C:\Users\sunca\Desktop\likelion_community\dataset\lion_logo_template.png', 0),
         cv2.imread(r'C:\Users\sunca\Desktop\likelion_community\dataset\logo.jpg', 0)
     ]
+    print("로고 검출 검사 시작")
     logo_detected = detect_logo_with_text(img, logo_templates)
-    if not logo_detected:
-        print("로고 미검출로 인해 이후 단계 생략")
+    print("로고 검출 검사 완료")
+    if logo_detected:
+        print("텍스트 추출 시작") 
+        text_data = extract_text(img)
+        # 필드가 검출되지 않았는지 확인하는 조건 추가
+        if not any(text_data.values()):
+            print("로고는 검출되었지만 필수 필드 검출에 실패했습니다.")
+            return None, True  # 검출 실패로 처리
+        elif text_data:
+            print("모든 필수 필드와 로고가 성공적으로 검출되었습니다.")
+            return text_data, logo_detected
+    else:
+        print("로고 미검출로 인해 필드 검사를 수행하지 않았습니다.")
         return None, False
-
-    # 2단계: 텍스트 및 필드 검출
-    text_data = extract_text(img)
-
-    return text_data, logo_detected

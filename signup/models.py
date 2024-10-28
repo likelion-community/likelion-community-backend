@@ -31,6 +31,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=100, blank=True, null=True)
     nickname = models.CharField(max_length=50, blank=True, null=True) 
     verification_photo = models.ImageField(upload_to='verification_photos/', blank=True, null=True)
+    membership_term = models.PositiveSmallIntegerField(choices=[(i, f"{i}기") for i in range(1, 13)], blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_profile_complete = models.BooleanField(default=False)  # 프로필 완성 여부
@@ -43,9 +44,3 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     
     def __str__(self):
         return self.username
-
-# User 모델을 CustomUser로 직접 참조
-class AdditionalInfoForm(forms.ModelForm):
-    class Meta:
-        model = CustomUser  # get_user_model() 대신 CustomUser 직접 참조
-        fields = ['name', 'verification_photo']

@@ -21,7 +21,35 @@
     <h1>추가 정보를 입력해 주세요</h1>
     <form id="profile-form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+        
+        <!-- 이름 필드 -->
+        <label for="{{ form.name.id_for_label }}">Name:</label>
+        {{ form.name }}
+        {% if form.name.errors %}
+            <div class="error">{{ form.name.errors }}</div>
+        {% endif %}
+
+        <!-- 닉네임 필드 -->
+        <label for="{{ form.nickname.id_for_label }}">Nickname:</label>
+        {{ form.nickname }}
+        {% if form.nickname.errors %}
+            <div class="error">{{ form.nickname.errors }}</div>
+        {% endif %}
+
+        <!-- 기수 필드 -->
+        <label for="{{ form.membership_term.id_for_label }}">Term:</label>
+        {{ form.membership_term }}
+        {% if form.membership_term.errors %}
+            <div class="error">{{ form.membership_term.errors }}</div>
+        {% endif %}
+
+
+        <!-- 인증 사진 필드 -->
+        <label for="{{ form.verification_photo.id_for_label }}">Verification photo:</label>
+        {{ form.verification_photo }}
+        {% if form.verification_photo.errors %}
+            <div class="error">{{ form.verification_photo.errors }}</div>
+        {% endif %}
 
         <!-- 유효성 검사 버튼 -->
         <button type="button" onclick="checkVerificationPhoto()">사진 유효성 검사</button>
@@ -29,6 +57,16 @@
 
         <!-- 저장하기 버튼 (초기에는 비활성화) -->
         <button type="submit" id="save-button" disabled>저장하기</button>
+
+        <!-- 오류 메시지 표시 -->
+        {% if messages %}
+        <div class="error">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+        {% endif %}
+        
     </form>
 
     <!-- 로딩 바 -->
