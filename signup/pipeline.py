@@ -4,6 +4,7 @@ from social_core.pipeline.partial import partial
 import logging
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from django.contrib.auth import logout
 
 logger = logging.getLogger(__name__)
 
@@ -15,28 +16,33 @@ def add_kakao_uid(strategy, details, backend, response=None, user=None, *args, *
     User = get_user_model()
     existing_user = User.objects.filter(email=email).first()
 
+    # 기존 사용자이지만 추가 정보가 없는 경우
     if existing_user:
         if not existing_user.name or not existing_user.verification_photo:
             logger.info("기존 사용자이지만 추가 정보가 부족합니다. 프로필 완성 페이지로 이동합니다.")
             strategy.session_set('partial_pipeline_user', existing_user.pk)
-            strategy.session_set('partial_pipeline_uid', uid)
-            return redirect(reverse('signup:complete_profile'))
+            return {'user': existing_user, 'uid': uid}
         else:
             logger.info("기존 사용자입니다. 로그인 진행 중.")
             return {'user': existing_user, 'uid': uid}
 
+    # 새로운 사용자: 세션에 uid 저장
     strategy.session_set('partial_pipeline_uid', uid)
     return {'uid': uid, 'username': uid}
 
+
 @partial
-def require_additional_info(strategy, details, backend, response=None, user=None, is_new=False, *args, **kwargs):
-    if backend.name == 'kakao' and is_new:
-        nickname = response.get('properties', {}).get('nickname')
-        if nickname:
-            strategy.session_set('nickname', nickname)
-        logger.info("require_additional_info 호출: 새로운 Kakao 사용자입니다.")
-        return strategy.redirect(reverse('signup:complete_profile'))
-    return None
+def require_additional_info(strategy, details, backend, response=None, user=None, *args, **kwargs):
+    nickname = response.get('properties', {}).get('nickname')
+    if nickname:
+        strategy.session_set('nickname', nickname)
+        strategy.session_set('partial_pipeline_user', user.pk if user else None)
+        strategy.request.session.save()
+    if user:
+        strategy.session_set('partial_pipeline_user', user.pk)
+
+    return strategy.redirect(reverse('signup:complete_profile'))
+
 
 def save_user_details(strategy, details, response=None, user=None, is_new=False, *args, **kwargs):
     User = get_user_model()
