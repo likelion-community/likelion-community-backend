@@ -14,10 +14,15 @@ from .serializers import CustomUserCreationSerializer, AdditionalInfoSerializer,
 from .models import CustomUser
 from ai_verifier import verify_like_a_lion_member
 import logging
+from rest_framework.permissions import AllowAny
+
 
 logger = logging.getLogger(__name__)
 
+
 class LoginHomeAPIView(APIView):
+    permission_classes = [AllowAny]  # 누구나 접근 가능하게 설정
+
     def get(self, request):
         return Response({
             'message': '로그인 유형을 선택하세요.',
@@ -26,6 +31,7 @@ class LoginHomeAPIView(APIView):
         }, status=status.HTTP_200_OK)
 
 class KakaoLoginAPIView(APIView):
+    permission_classes = [AllowAny]
     def get(self, request):
         if request.user.is_authenticated:
             if not request.user.is_profile_complete:
@@ -36,6 +42,7 @@ class KakaoLoginAPIView(APIView):
         return redirect('signup:login_home')
 
 class CustomLoginAPIView(APIView):
+    permission_classes = [AllowAny]
     def post(self, request):
         if request.user.is_authenticated:
             return redirect('home:mainpage')
@@ -52,6 +59,7 @@ class CustomLoginAPIView(APIView):
     
 
 class CheckPasswordAPIView(APIView):
+    permission_classes = [AllowAny]
     def post(self, request):
         password = request.data.get('password')
         try:
@@ -68,6 +76,7 @@ class LogoutAPIView(APIView):
         return Response({'message': '로그아웃 성공'}, status=status.HTTP_200_OK)
 
 class SignupAPIView(APIView):
+    permission_classes = [AllowAny]
     def post(self, request):
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             uploaded_image = request.FILES.get('verification_photo')
