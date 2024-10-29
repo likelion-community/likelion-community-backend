@@ -26,8 +26,8 @@ class LoginHomeAPIView(APIView):
     def get(self, request):
         return Response({
             'message': '로그인 유형을 선택하세요.',
-            'kakao_login_url': '/login/kakao/',
-            'custom_login_url': '/login/custom/'
+            'kakao_login_url': '/signup/login/kakao/',
+            'custom_login_url': '/signup/login/custom/'
         }, status=status.HTTP_200_OK)
 
 class KakaoLoginAPIView(APIView):
