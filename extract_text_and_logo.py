@@ -21,48 +21,34 @@ def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처�
     scales = [1.0, 2.0]  # 원본 크기와 확대 크기
     for scale in scales:
         resized_image = cv2.resize(image, (int(image.shape[1] * scale), int(image.shape[0] * scale)))
-
         img_gray = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
         
         for logo_template in logo_templates:
             if logo_template is None:
                 continue
-            # 템플릿 매칭을 위한 다양한 스케일 적용
-            for template_scale in np.linspace(0.2, 1.6, 10):  # 더 작은 크기에서 큰 크기까지 시도
+            
+            for template_scale in np.linspace(0.6, 1.0, 5):  # 템플릿 크기 조정 감소
                 resized_template = cv2.resize(logo_template, 
                                               (int(logo_template.shape[1] * template_scale), 
                                                int(logo_template.shape[0] * template_scale)))
                 if resized_template.shape[0] > img_gray.shape[0] or resized_template.shape[1] > img_gray.shape[1]:
                     continue
                 
-                # 템플릿 매칭 수행
                 result = cv2.matchTemplate(img_gray, resized_template, cv2.TM_CCOEFF_NORMED)
                 loc = np.where(result >= threshold)
                 
-                # 매칭된 위치에서 로고 텍스트 검사
                 for pt in zip(*loc[::-1]):
-                    x, y = pt
-                    w, h = resized_template.shape[::-1]
-                    logo_roi = resized_image[y:y+h, x:x+w]
-                    
-                    # ROI 내 OCR 및 EasyOCR 수행
+                    logo_roi = resized_image[pt[1]:pt[1]+resized_template.shape[0], pt[0]:pt[0]+resized_template.shape[1]]
                     tess_text = pytesseract.image_to_string(logo_roi, config='--psm 6', lang='kor').strip()
                     easyocr_results = reader.readtext(logo_roi, detail=0)
-                    easyocr_text = ' '.join(easyocr_results)
-                    
+
+                    # easyocr_results 리스트를 문자열로 변환하여 로고 텍스트와 비교
+                    easyocr_text = ' '.join(easyocr_results)  # 리스트의 요소들을 하나의 문자열로 결합
+
                     # 두 OCR 결과에서 텍스트가 포함되어 있는지 확인
                     if logo_text in tess_text or logo_text in easyocr_text:
-                        detected = True
-                        break
-                if detected:
-                    break
-            if detected:
-                break
-        if detected:
-            break
-
-    return detected
-
+                        return True
+    return False
 
 
 def extract_text(image):

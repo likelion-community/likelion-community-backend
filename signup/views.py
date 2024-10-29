@@ -96,8 +96,8 @@ class SignupAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class CompleteProfileAPIView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
+    permission_classes = [AllowAny]
+    
     def get(self, request):
         nickname = request.session.get('nickname')
         initial_data = {'nickname': nickname} if nickname else {}
