@@ -6,7 +6,7 @@ import re
 import gc
 
 # Tesseract 및 EasyOCR 설정
-pytesseract.pytesseract.tesseract_cmd = r'C:\Users\sunca\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
+# 서버 환경에서는 경로 설정 없이 사용할 수 있음
 reader = easyocr.Reader(['ko', 'en'])
 
 def clear_memory():
