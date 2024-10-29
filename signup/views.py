@@ -26,8 +26,8 @@ class LoginHomeAPIView(APIView):
     def get(self, request):
         return Response({
             'message': '로그인 유형을 선택하세요.',
-            'kakao_login_url': '/login/kakao/',
-            'custom_login_url': '/login/custom/'
+            'kakao_login_url': '/signup/login/kakao/',
+            'custom_login_url': '/signup/login/custom/'
         }, status=status.HTTP_200_OK)
 
 class KakaoLoginAPIView(APIView):
@@ -96,8 +96,8 @@ class SignupAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class CompleteProfileAPIView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
+    permission_classes = [AllowAny]
+    
     def get(self, request):
         nickname = request.session.get('nickname')
         initial_data = {'nickname': nickname} if nickname else {}
