@@ -14,7 +14,7 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'), 
      # 카카오 소셜 로그인
     path('login/kakao/', social_views.auth, name='begin', kwargs={'backend': 'kakao'}),  
-    path('complete/kakao/', social_views.complete, name='complete'), 
+    path('complete/kakao/', social_views.complete, name='complete', kwargs={'backend': 'kakao'}),
     path('check-password/', views.check_password_view, name='check_password'),
     
 
