@@ -2,7 +2,7 @@
 from django.urls import path
 from .views import (
     LoginHomeAPIView, CustomLoginAPIView, SignupAPIView, CompleteProfileAPIView,
-    LogoutAPIView, check_password_view, DeleteUserAPIView
+    LogoutAPIView, CheckPasswordAPIView, DeleteUserAPIView
 )
 from social_django import views as social_views
 
@@ -21,7 +21,7 @@ urlpatterns = [
     path('complete_profile/', CompleteProfileAPIView.as_view(), name='complete_profile'),
 
     # 비밀번호 유효성 검사
-    path('check-password/', check_password_view, name='check_password'),
+    path('check-password/', CheckPasswordAPIView.as_view(), name='check_password'),  
 
     # 회원 탈퇴
     path('delete_user/', DeleteUserAPIView.as_view(), name='delete_user'),
