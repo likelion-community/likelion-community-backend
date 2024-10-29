@@ -139,6 +139,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+likelionCmnty.venv/
 
 # Spyder project settings
 .spyderproject

@@ -6,7 +6,7 @@ import re
 import gc
 
 # Tesseract 및 EasyOCR 설정
-pytesseract.pytesseract.tesseract_cmd = r'C:\Users\sunca\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
+# 서버 환경에서는 경로 설정 없이 사용할 수 있음
 reader = easyocr.Reader(['ko', 'en'])
 
 def clear_memory():
@@ -136,10 +136,13 @@ def extract_text_and_logo(image):
         return None, False
     
     # 1단계: 로고 검출
+    # 로고 템플릿 경로를 서버의 절대 경로로 변경
     logo_templates = [
-        cv2.imread(r'C:\Users\sunca\Desktop\likelion_community\dataset\lion_logo_template.png', 0),
-        cv2.imread(r'C:\Users\sunca\Desktop\likelion_community\dataset\logo.jpg', 0)
+        cv2.imread('/home/ubuntu/likelion-community-backend/dataset/lion_logo_template.png', 0),
+        cv2.imread('/home/ubuntu/likelion-community-backend/dataset/logo.jpg', 0)
     ]
+
+
     print("로고 검출 검사 시작")
     logo_detected = detect_logo_with_text(img, logo_templates)
     print("로고 검출 검사 완료")
