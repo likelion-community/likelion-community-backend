@@ -1,14 +1,14 @@
 import cv2
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras.models import load_model # type: ignore
 from extract_text_and_logo import extract_text_and_logo
 import time
 import os
 
+from tensorflow.keras.models import load_model
 
-# 트레인된 모델 로드
-model = load_model('like_a_lion_member_model.h5')
+model = load_model('/home/ubuntu/like_a_lion_member_model.h5')
+
 
 
 
