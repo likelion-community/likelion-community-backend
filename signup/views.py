@@ -44,7 +44,7 @@ class KakaoLoginAPIView(APIView):
 class CustomLoginAPIView(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
-        if request.user.is_authenticated:
+        if request.user.is_authenticated or request.user.is_superuser:
             return redirect('home:mainpage')
 
         serializer = CustomLoginSerializer(data=request.data)
@@ -54,8 +54,9 @@ class CustomLoginAPIView(APIView):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
-                return Response({'message': '로그인 성공'}, status=status.HTTP_200_OK)
-        return Response({'error': '아이디 또는 비밀번호가 잘못되었습니다.'}, status=status.HTTP_400_BAD_REQUEST)
+		if user.is_superuser or user.is_profile_complete:
+                    return Response({'message': '로그인 성공'}, status=status.HTTP_200_OK)
+         return Response({'error': '아이디 또는 비밀번호가 잘못되었습니다.'}, status=status.HTTP_400_BAD_REQUEST)
     
 
 class CheckPasswordAPIView(APIView):

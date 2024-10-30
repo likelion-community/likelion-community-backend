@@ -53,6 +53,7 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "http://3.39.168.41:8000",
 ]
 
 
