@@ -35,10 +35,13 @@ INSTALLED_APPS = [
     'social_django',
     'rest_framework',
     'channels',
+    'corsheaders',
+  
 ]
 
 # Middleware
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -49,6 +52,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://3.39.168.41:8000",
+]
+
 
 # URL Configuration
 ROOT_URLCONF = 'likelion_community.urls'
@@ -134,6 +144,7 @@ LOGOUT_REDIRECT_URL = '/'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/signup/complete_profile/'
 LOGIN_URL = '/signup/login/home/'
 
+
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',      # 소셜 정보 가져오기
     'social_core.pipeline.social_auth.social_uid',          # 소셜 UID 가져오기
@@ -171,3 +182,4 @@ CHANNEL_LAYERS = {
         },
     },
 }
+

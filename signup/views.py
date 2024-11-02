@@ -41,6 +41,8 @@ class KakaoLoginAPIView(APIView):
             return redirect('home:mainpage')
         return redirect('signup:login_home')
 
+
+
 class CustomLoginAPIView(APIView):
     permission_classes = [AllowAny]
 

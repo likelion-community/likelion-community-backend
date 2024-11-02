@@ -51,8 +51,6 @@ def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처�
     return False
 
 
-
-
 def extract_text(image):
     # Tesseract를 사용하여 전체 텍스트 추출
     img_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
