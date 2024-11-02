@@ -6,11 +6,10 @@ User = get_user_model()
 
 class MessageSerializer(serializers.ModelSerializer):
     sender = serializers.ReadOnlyField(source='sender.username')
-    receiver = serializers.ReadOnlyField(source='receiver.username')
 
     class Meta:
         model = Message
-        fields = ['id', 'chatroom', 'sender', 'receiver', 'content', 'image', 'timestamp']
+        fields = ['id', 'chatroom', 'sender', 'content', 'image', 'timestamp']
 
 class ChatRoomSerializer(serializers.ModelSerializer):
     participants = serializers.SlugRelatedField(slug_field='username', queryset=User.objects.all(), many=True)
