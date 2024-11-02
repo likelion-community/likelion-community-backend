@@ -5,11 +5,9 @@ from extract_text_and_logo import extract_text_and_logo
 import time
 import os
 
-from tensorflow.keras.models import load_model
+from tensorflow.keras.models import load_model # type: ignore
 
-model = load_model('/home/ubuntu/like_a_lion_member_model.h5')
-
-
+model = load_model('like_a_lion_member_model.h5')
 
 
 # 회원 검증 함수
@@ -102,4 +100,3 @@ def adjust_prediction_based_on_fields(prediction, field_status):
     else:
         adjusted_prediction = prediction * (0.8 ** missing_fields)
     return min(adjusted_prediction, 1.0)
-

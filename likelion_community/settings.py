@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', 'your-default-secret-key')
 
 # Debug settings
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['*']
 
 # Custom User Model
@@ -34,7 +34,9 @@ INSTALLED_APPS = [
     'signup',
     'social_django',
     'rest_framework',
+    'channels',
     'corsheaders',
+  
 ]
 
 # Middleware
@@ -50,6 +52,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
+
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
@@ -161,6 +164,22 @@ SOCIAL_AUTH_KAKAO_SCOPE = ['account_email', 'profile_nickname']
 SOCIAL_AUTH_KAKAO_PROFILE_EXTRA_PARAMS = {
     'property_keys': ['kakao_account.email', 'kakao_account.profile.nickname']
 }
+SOCIAL_AUTH_KAKAO_FORCE_STATE = False
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = False
 
 # Default Primary Key Field Type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ASGI Application
+ASGI_APPLICATION = 'likelion_community.asgi.application'
+
+# Channels Layer 설정 (Redis 사용)
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],  # 또는 Redis 서버의 실제 IP 주소
+        },
+    },
+}
+

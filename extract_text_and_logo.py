@@ -124,8 +124,8 @@ def extract_text_and_logo(image):
     # 1단계: 로고 검출
     # 로고 템플릿 경로를 서버의 절대 경로로 변경
     logo_templates = [
-        cv2.imread('/home/ubuntu/likelion-community-backend/dataset/lion_logo_template.png', 0),
-        cv2.imread('/home/ubuntu/likelion-community-backend/dataset/logo.jpg', 0)
+        cv2.imread(r'C:\Users\sunca\Desktop\likelion_community\dataset\lion_logo_template.png', 0),
+        cv2.imread(r'C:\Users\sunca\Desktop\likelion_community\dataset\logo.jpg', 0)
     ]
 
 
