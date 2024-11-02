@@ -139,7 +139,8 @@ SOCIAL_AUTH_URL_NAMESPACE = 'social'
 LOGIN_REDIRECT_URL = '/home/'
 LOGOUT_REDIRECT_URL = '/'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/signup/complete_profile/'
-LOGIN_URL = '/signup/login/'
+LOGIN_URL = '/signup/login/home/'
+
 
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',      # 소셜 정보 가져오기
