@@ -43,9 +43,15 @@ class KakaoLoginAPIView(APIView):
 
 class CustomLoginAPIView(APIView):
     permission_classes = [AllowAny]
+
     def post(self, request):
+        # 이미 인증된 사용자인 경우
         if request.user.is_authenticated:
-            return redirect('home:mainpage')
+            # 슈퍼유저 또는 프로필이 완성된 사용자만 메인 페이지로 리디렉트
+            if request.user.is_superuser or request.user.is_profile_complete:
+                return redirect('home:mainpage')
+            else:
+                return redirect('signup:complete_profile')
 
         serializer = CustomLoginSerializer(data=request.data)
         if serializer.is_valid():
@@ -54,9 +60,14 @@ class CustomLoginAPIView(APIView):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
-                return Response({'message': '로그인 성공'}, status=status.HTTP_200_OK)
+                # 로그인 후 슈퍼유저는 프로필 검사 없이 통과
+                if user.is_superuser or user.is_profile_complete:
+                    return Response({'message': '로그인 성공'}, status=status.HTTP_200_OK)
+                else:
+                    return redirect('signup:complete_profile')
         return Response({'error': '아이디 또는 비밀번호가 잘못되었습니다.'}, status=status.HTTP_400_BAD_REQUEST)
-    
+
+
 
 class CheckPasswordAPIView(APIView):
     permission_classes = [AllowAny]
@@ -77,23 +88,29 @@ class LogoutAPIView(APIView):
 
 class SignupAPIView(APIView):
     permission_classes = [AllowAny]
+    
     def post(self, request):
+        # AJAX 요청인 경우 사진 유효성 검사
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             uploaded_image = request.FILES.get('verification_photo')
             is_verified = verify_like_a_lion_member(uploaded_image)
             return JsonResponse({'is_valid': bool(is_verified)})
 
+        # 회원가입 시 모든 정보가 유효한지 확인
         serializer = CustomUserCreationSerializer(data=request.data)
         if serializer.is_valid():
             uploaded_image = request.FILES.get('verification_photo')
             is_verified = verify_like_a_lion_member(uploaded_image)
             if is_verified:
+                # 프로필이 완성된 상태로 설정
                 user = serializer.save(is_profile_complete=True)
                 user.verification_photo = uploaded_image
                 user.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response({'error': '이미지 인증 실패'}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class CompleteProfileAPIView(APIView):
     permission_classes = [AllowAny]
