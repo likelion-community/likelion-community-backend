@@ -1,12 +1,17 @@
 # home/views.py
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.shortcuts import redirect
 
-@method_decorator(login_required(login_url='/signup/login/home/'), name='dispatch')
+
 class HomeAPIView(APIView):
+    permission_classes = [AllowAny]  # 모든 사용자가 접근 가능하도록 설정
+
     def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect('/signup/login/home/')
+        
         user = request.user
         data = {
             'username': user.username,
