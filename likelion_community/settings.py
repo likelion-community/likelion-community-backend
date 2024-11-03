@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'post',
     'signup',
     'social_django',
-
+    'friend',
 ]
 
 MIDDLEWARE = [
