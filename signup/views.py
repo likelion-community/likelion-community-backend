@@ -1,175 +1,182 @@
-# views.py
-from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm, AdditionalInfoForm, CustomLoginForm
-from django.contrib.auth.decorators import login_required
-from ai_verifier import verify_like_a_lion_member
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth import get_user_model
+# signup/views.py
+from rest_framework import status, generics, permissions
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.decorators import api_view, permission_classes
+from django.contrib.auth import login, logout, authenticate
+from django.shortcuts import redirect
 from django.http import JsonResponse
-import logging
-from django.core.cache import cache
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-from django.contrib import messages 
+from django.core.cache import cache
+from django.contrib import messages
+from .serializers import CustomUserCreationSerializer, AdditionalInfoSerializer, CustomLoginSerializer
+from .models import CustomUser
+from ai_verifier import verify_like_a_lion_member
+import logging
+from rest_framework.permissions import AllowAny
+
 
 logger = logging.getLogger(__name__)
 
-def login_home_view(request):
-    return render(request, 'signup/login_home.html')
 
-def kakao_login_view(request):
-    print("kakao_login_view is called")  # 호출 여부 확인
+class LoginHomeAPIView(APIView):
+    permission_classes = [AllowAny]  # 누구나 접근 가능하게 설정
 
-    if request.user.is_authenticated:
-        print(f"Authenticated user: {request.user.username}, Profile Complete: {request.user.is_profile_complete}")
-        
-        if not request.user.is_profile_complete:
-            request.session['partial_pipeline_user'] = request.user.pk
-            print("Redirecting to complete_profile")
-            return redirect('signup:complete_profile')
-        else:
-            login(request, request.user)  # 로그인 처리
-            print("Redirecting to mainpage with session data:", request.session.items())
+    def get(self, request):
+        return Response({
+            'message': '로그인 유형을 선택하세요.',
+            'kakao_login_url': '/signup/login/kakao/',
+            'custom_login_url': '/signup/login/custom/'
+        }, status=status.HTTP_200_OK)
+
+class KakaoLoginAPIView(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        if request.user.is_authenticated:
+            if not request.user.is_profile_complete:
+                request.session['partial_pipeline_user'] = request.user.pk
+                return redirect('signup:complete_profile')
+            login(request, request.user)
             return redirect('home:mainpage')
-    
-    print("Redirecting to login_home (not authenticated)")
-    return redirect('signup:login_home')
+        return redirect('signup:login_home')
 
 
 
-def custom_login_view(request):
-    if request.user.is_authenticated:
-        return redirect('home:mainpage')
+class CustomLoginAPIView(APIView):
+    permission_classes = [AllowAny]
 
-    if request.method == 'POST':
-        form = CustomLoginForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
+    def post(self, request):
+        # 이미 인증된 사용자인 경우
+        if request.user.is_authenticated:
+            # 슈퍼유저 또는 프로필이 완성된 사용자만 메인 페이지로 리디렉트
+            if request.user.is_superuser or request.user.is_profile_complete:
                 return redirect('home:mainpage')
             else:
-                form.add_error(None, '아이디 또는 비밀번호가 잘못되었습니다.')
-    else:
-        form = CustomLoginForm()
+                return redirect('signup:complete_profile')
 
-    return render(request, 'signup/custom_login.html', {'form': form})
+        serializer = CustomLoginSerializer(data=request.data)
+        if serializer.is_valid():
+            username = serializer.validated_data.get('username')
+            password = serializer.validated_data.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user:
+                login(request, user)
+                # 로그인 후 슈퍼유저는 프로필 검사 없이 통과
+                if user.is_superuser or user.is_profile_complete:
+                    return Response({'message': '로그인 성공'}, status=status.HTTP_200_OK)
+                else:
+                    return redirect('signup:complete_profile')
+        return Response({'error': '아이디 또는 비밀번호가 잘못되었습니다.'}, status=status.HTTP_400_BAD_REQUEST)
 
-def check_password_view(request):
-    if request.method == 'POST':
-        password = request.POST.get('password')
+
+
+class CheckPasswordAPIView(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        password = request.data.get('password')
         try:
             validate_password(password)
-            return JsonResponse({'is_valid': True, 'message': '유효한 비밀번호입니다.'})
+            return Response({'is_valid': True, 'message': '유효한 비밀번호입니다.'}, status=status.HTTP_200_OK)
         except ValidationError as e:
-            return JsonResponse({'is_valid': False, 'message': e.messages[0]})
+            return Response({'is_valid': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-def logout_view(request):
-    logout(request)
-    request.session.flush()  
-    cache.clear() 
-    return redirect('signup:login_home')
+class LogoutAPIView(APIView):
+    def post(self, request):
+        logout(request)
+        request.session.flush()
+        cache.clear()
+        return Response({'message': '로그아웃 성공'}, status=status.HTTP_200_OK)
 
-def signup_view(request):
-    if request.method == 'POST':
+class SignupAPIView(APIView):
+    permission_classes = [AllowAny]
+    
+    def post(self, request):
+        # AJAX 요청인 경우 사진 유효성 검사
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             uploaded_image = request.FILES.get('verification_photo')
             is_verified = verify_like_a_lion_member(uploaded_image)
             return JsonResponse({'is_valid': bool(is_verified)})
 
-        form = CustomUserCreationForm(request.POST, request.FILES)
-        if form.is_valid():
+        # 회원가입 시 모든 정보가 유효한지 확인
+        serializer = CustomUserCreationSerializer(data=request.data)
+        if serializer.is_valid():
             uploaded_image = request.FILES.get('verification_photo')
             is_verified = verify_like_a_lion_member(uploaded_image)
-            if bool(is_verified):  
-                user = form.save(commit=False)
-                user.name = form.cleaned_data.get('name')
+            if is_verified:
+                # 프로필이 완성된 상태로 설정
+                user = serializer.save(is_profile_complete=True)
                 user.verification_photo = uploaded_image
-                user.is_profile_complete = True  # 프로필 완료 상태로 설정
                 user.save()
-                return redirect('signup:login')
-            else:
-                form.add_error('verification_photo', '이미지 인증에 실패했습니다. 올바른 멋쟁이사자처럼 회원 사진을 업로드해 주세요.')
-    else:
-        form = CustomUserCreationForm()
-
-    return render(request, 'signup/signup.html', {'form': form})
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response({'error': '이미지 인증 실패'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-def complete_profile_view(request):
-    User = get_user_model()
-    user_id = request.session.get('partial_pipeline_user')
+
+class CompleteProfileAPIView(APIView):
+    permission_classes = [AllowAny]
     
-    # user_id가 없는 경우, 로그인 페이지로 리디렉션
-    if not user_id:
-        return redirect('signup:login_home')
+    def get(self, request):
+        nickname = request.session.get('nickname')
+        initial_data = {'nickname': nickname} if nickname else {}
+        form_data = {'initial': initial_data}
+        return Response(form_data, status=status.HTTP_200_OK)
 
-    try:
-        user = User.objects.get(pk=user_id)
-    except User.DoesNotExist:
-        # 해당 user_id로 사용자가 없으면 로그인 페이지로 리디렉션
-        request.session.pop('partial_pipeline_user', None)
-        return redirect('signup:login_home')
+    def post(self, request):
+        user_id = request.session.get('partial_pipeline_user')
+        if not user_id:
+            return redirect('signup:login_home')
 
-    if user.is_profile_complete:
-        # 프로필이 완성된 경우 메인 페이지로 리디렉션
-        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-        return redirect('home:mainpage')
-    
-    if request.method == 'POST':
-        # AJAX 요청일 경우 유효성 검사를 처리하고 세션에 플래그 저장
+        try:
+            user = CustomUser.objects.get(pk=user_id)
+        except CustomUser.DoesNotExist:
+            request.session.pop('partial_pipeline_user', None)
+            return redirect('signup:login_home')
+
+        if user.is_profile_complete:
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            return redirect('home:mainpage')
+
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             uploaded_image = request.FILES.get('verification_photo')
             is_verified = verify_like_a_lion_member(uploaded_image)
             if is_verified:
-                request.session['photo_verified'] = True  # 유효성 검사 통과 시 세션에 저장
-            return JsonResponse({'is_valid': bool(is_verified)}) 
+                request.session['photo_verified'] = True
+            return JsonResponse({'is_valid': bool(is_verified)})
 
-        # 일반 폼 제출 시 세션의 유효성 검사 결과를 확인
         if request.session.get('photo_verified', False):
-            form = AdditionalInfoForm(request.POST, request.FILES, instance=user)
-            if form.is_valid():
+            serializer = AdditionalInfoSerializer(data=request.data, instance=user)
+            if serializer.is_valid():
                 user.is_profile_complete = True
-                form.save()
+                serializer.save()
                 login(request, user, backend='social_core.backends.kakao.KakaoOAuth2')
                 request.session.pop('partial_pipeline_user', None)
-                request.session.pop('photo_verified', None)  # 검증 후 세션 값 삭제
-                return redirect('home:mainpage')
-        else:
-            messages.error(request, "사진 유효성 검사에 실패했습니다. 다시 시도해 주세요.")
-            return redirect('signup:complete_profile')
-    
-    else:
-        # GET 요청 시 폼 초기값 설정
-        nickname = request.session.get('nickname')
-        initial_data = {'nickname': nickname} if nickname else {}
-        form = AdditionalInfoForm(instance=user, initial=initial_data)
-        logger.info(f"complete_profile_view 초기값 설정: 초기 닉네임 값 - {nickname}")
+                request.session.pop('photo_verified', None)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+        messages.error(request, "사진 유효성 검사에 실패했습니다. 다시 시도해 주세요.")
+        return Response({'error': "사진 유효성 검사에 실패했습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
-    return render(request, 'signup/complete_profile.html', {'form': form})
+class DeleteIncompleteUserAPIView(APIView):
+    def delete(self, request):
+        user_id = request.session.get('partial_pipeline_user')
+        if user_id:
+            user = CustomUser.objects.filter(pk=user_id, is_profile_complete=False).first()
+            if user:
+                user.delete()
+                request.session.pop('partial_pipeline_user', None)
+                logger.info(f"Deleted incomplete user: {user.username}")
+        return Response({'message': '미완성 계정이 삭제되었습니다.'}, status=status.HTTP_204_NO_CONTENT)
 
+class DeleteUserAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
 
-
-def delete_incomplete_user(request):
-    User = get_user_model()
-    user_id = request.session.get('partial_pipeline_user')
-    if user_id:
-        user = User.objects.get(pk=user_id)
-        if not user.is_profile_complete:
-            user.delete()
-            logger.info(f"Deleted incomplete user: {user.username}")
-        request.session.pop('partial_pipeline_user', None)
-    return redirect('signup:begin')
-
-
-        
-def delete_user(request):
-    user = request.user
-    user.delete()
-    logout(request)
-    request.session.flush()  
-    cache.clear() 
-    return redirect('signup:login_home')
+    def delete(self, request):
+        user = request.user
+        user.delete()
+        logout(request)
+        request.session.flush()
+        cache.clear()
+        return Response({'message': '계정이 삭제되었습니다.'}, status=status.HTTP_204_NO_CONTENT)

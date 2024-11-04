@@ -1,26 +1,13 @@
 import cv2
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras.models import load_model # type: ignore
 from extract_text_and_logo import extract_text_and_logo
 import time
 import os
-print("버전: ",tf.__version__) 
-# GPU 설정
-gpus = tf.config.list_physical_devices('GPU')
-if gpus:
-    try:
-        for gpu in gpus:
-            tf.config.experimental.set_memory_growth(gpu, True)
-        print(f"{len(gpus)}개의 GPU가 사용 가능합니다.")
-    except RuntimeError as e:
-        print(f"GPU 설정 중 오류 발생: {e}")
-else:
-    print("외장 GPU를 사용할 수 없습니다.")
 
-# 트레인된 모델 로드
+from tensorflow.keras.models import load_model # type: ignore
+
 model = load_model('like_a_lion_member_model.h5')
-
 
 
 # 회원 검증 함수
@@ -113,4 +100,3 @@ def adjust_prediction_based_on_fields(prediction, field_status):
     else:
         adjusted_prediction = prediction * (0.8 ** missing_fields)
     return min(adjusted_prediction, 1.0)
-
