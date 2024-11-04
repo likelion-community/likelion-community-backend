@@ -25,9 +25,8 @@ urlpatterns = [
     path('oauth/', include('social_django.urls', namespace='social')),
     path('', include('home.urls')),  
     path('signup/', include('signup.urls')),  
+    path('post/', include('post.urls')),
     path('friend/', include('friend.urls')),  
-    
-
 ]
 
 if settings.DEBUG:
