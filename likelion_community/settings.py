@@ -104,6 +104,7 @@ DATABASES = {
         'PASSWORD': os.environ.get('DB_PASSWORD'),    # MySQL 사용자 비밀번호
         'HOST': '3.39.168.41',                 # MySQL 서버의 퍼블릭 IP 주소
         'PORT': '3306',                        # MySQL 포트 (기본 포트)
+
     }
 }
 
@@ -208,7 +209,7 @@ CHANNEL_LAYERS = {
     },
 }
 
-
 CSRF_COOKIE_NAME = 'csrftoken'  # 쿠키에 저장될 CSRF 토큰의 이름 (기본값: 'csrftoken')
 CSRF_COOKIE_HTTPONLY = False    # JavaScript에서 CSRF 토큰에 접근할 수 있게 설정
 CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']  # CSRF를 허용할 프론트엔드 도메인 설정
+
