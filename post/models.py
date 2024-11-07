@@ -23,6 +23,9 @@ class MainBoard(models.Model):      # 전체 게시판 게시물
     like = models.IntegerField(blank=True, default=0)
     scrap = models.IntegerField(blank=True, default=0)
 
+    def comments_count(self):
+        return self.comments.count()
+
 class SchoolBoard(models.Model):      # 학교 게시판 게시물
     BOARD_CHOICES = [
         ('전체게시판', '전체게시판'),
@@ -41,7 +44,10 @@ class SchoolBoard(models.Model):      # 학교 게시판 게시물
     image = models.ImageField(upload_to='post/', blank=True, null=True)
     like = models.IntegerField(null=True, default=0)
     scrap = models.IntegerField(null=True, default=0)
-
+    
+    def comments_count(self):
+        return self.comments.count()
+    
 class QuestionBoard(models.Model):    # 질문 게시판 게시물
     BOARD_CHOICES = [
         ('기획/디자인', '기획/디자인'),
@@ -59,24 +65,28 @@ class QuestionBoard(models.Model):    # 질문 게시판 게시물
     like = models.IntegerField(null=True, default=0)
     scrap = models.IntegerField(null=True, default=0)
 
+    def comments_count(self):
+        return self.comments.count()
+
+
 class MainComment(models.Model):    # 전체 게시판 댓글
     content = models.TextField()
     writer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     # writer가 탈퇴했을 경우 예외처리 추가해야 함
     anonymous = models.BooleanField(null=True, default=True)
     time = models.DateTimeField(auto_now_add=True)
-    board = models.ForeignKey(MainBoard, null=False, blank=False, on_delete=models.CASCADE)
+    board = models.ForeignKey(MainBoard, related_name='comments', null=False, blank=False, on_delete=models.CASCADE)
 
 class SchoolComment(models.Model):    # 학교 게시판 댓글
     content = models.TextField()
     writer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     anonymous = models.BooleanField(null=True, default=True)
     time = models.DateTimeField(auto_now_add=True)
-    board = models.ForeignKey(SchoolBoard, null=False, blank=False, on_delete=models.CASCADE)
+    board = models.ForeignKey(SchoolBoard, related_name='comments', null=False, blank=False, on_delete=models.CASCADE)
 
 class QuestionComment(models.Model):    # 질문 게시판 댓글
     content = models.TextField()
     writer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     anonymous = models.BooleanField(null=True, default=True)
     time = models.DateTimeField(auto_now_add=True)
-    board = models.ForeignKey(QuestionBoard, null=False, blank=False, on_delete=models.CASCADE)
+    board = models.ForeignKey(QuestionBoard, related_name='comments', null=False, blank=False, on_delete=models.CASCADE)
