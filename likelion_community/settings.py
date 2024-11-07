@@ -102,8 +102,19 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',  # SQLite 데이터베이스 파일 경로
     }
 }
-
-
+'''
+# Database
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',  # MySQL 데이터베이스 엔진
+        'NAME': 'everion',                     # 데이터베이스 이름
+        'USER': 'root',                         # MySQL 사용자 이름
+        'PASSWORD': os.environ.get('DB_PASSWORD'),    # MySQL 사용자 비밀번호
+        'HOST': '3.39.168.41',                 # MySQL 서버의 퍼블릭 IP 주소
+        'PORT': '3306',                        # MySQL 포트 (기본 포트)
+    }
+}
+'''
 # Password Validation
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -122,7 +133,7 @@ TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
-USE_TZ = False
+USE_TZ = True
 
 # Static and Media Files
 STATIC_URL = 'static/'
