@@ -1,8 +1,6 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
-from django import forms
 
-# get_user_model() 사용을 제거하고, CustomUser 직접 참조
 class CustomUserManager(BaseUserManager):
     def create_user(self, username, email, name=None, password=None, **extra_fields):
         if not email:
@@ -29,8 +27,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=50, unique=True)
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=100, blank=True, null=True)
-    nickname = models.CharField(max_length=50, blank=True, null=True) 
+    nickname = models.CharField(max_length=50, blank=True, null=True)
+    school_name = models.CharField(max_length=100, blank=True, null=True)  
     verification_photo = models.ImageField(upload_to='verification_photos/', blank=True, null=True)
+    profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True) 
     membership_term = models.PositiveSmallIntegerField(choices=[(i, f"{i}기") for i in range(1, 13)], blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
