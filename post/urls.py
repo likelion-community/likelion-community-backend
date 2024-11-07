@@ -16,4 +16,5 @@ app_name = 'post'
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('popularposts/', PopularPostViewSet.as_view(), name='popularposts'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

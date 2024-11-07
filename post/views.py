@@ -1,5 +1,9 @@
 from django.shortcuts import render
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets, status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from datetime import timedelta
+from django.utils import timezone
 from .models import *
 from .serializers import *
 
@@ -27,3 +31,12 @@ class SchoolCommentViewSet(viewsets.ModelViewSet):
 class QuestionCommentViewSet(viewsets.ModelViewSet):
     queryset = QuestionComment.objects.all()
     serializer_class = QuestionCommentSerializer
+
+class PopularPostViewSet(APIView):
+    def get(self, request, *args, **kwargs):
+        now = timezone.now()
+        term = now - timedelta(days=1)
+
+        popular_posts = MainBoard.objects.filter(time__gte=term).order_by('-like')[:2]
+        serializer = MainBoardSerializer(popular_posts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
