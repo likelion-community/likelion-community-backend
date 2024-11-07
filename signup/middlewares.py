@@ -3,7 +3,6 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib.auth import logout
 
-print("Middleware file is loaded")
 
 class CompleteProfileRequiredMiddleware(MiddlewareMixin):
     def process_request(self, request):
