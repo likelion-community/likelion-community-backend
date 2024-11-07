@@ -26,11 +26,30 @@ class MainBoard(models.Model):      # 전체 게시판 게시물
 class SchoolBoard(models.Model):      # 학교 게시판 게시물
     BOARD_CHOICES = [
         ('전체게시판', '전체게시판'),
-        ('질문게시판', '질문게시판')
+        ('기획/디자인 게시판', '기획/디자인 게시판'),
+        ('프론트엔드 게시판', '프론트엔드 게시판'),
+        ('백엔드 게시판', '백엔드 게시판')
     ]
 
     id = models.AutoField(primary_key=True)
     board_title = models.CharField(max_length=15, choices=BOARD_CHOICES)
+    title = models.CharField(max_length=50)
+    writer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    anonymous = models.BooleanField(null=True, default=True)
+    body = models.TextField()
+    time = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(upload_to='post/', blank=True, null=True)
+    like = models.IntegerField(null=True, default=0)
+    scrap = models.IntegerField(null=True, default=0)
+
+class QuestionBoard(models.Model):    # 질문 게시판 게시물
+    BOARD_CHOICES = [
+        ('기획/디자인', '기획/디자인'),
+        ('프론트엔드', '프론트엔드'),
+        ('백엔드', '백엔드')
+    ]
+    id = models.AutoField(primary_key=True)
+    track = models.CharField(max_length=15, choices=BOARD_CHOICES)
     title = models.CharField(max_length=50)
     writer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     anonymous = models.BooleanField(null=True, default=True)
@@ -54,3 +73,10 @@ class SchoolComment(models.Model):    # 학교 게시판 댓글
     anonymous = models.BooleanField(null=True, default=True)
     time = models.DateTimeField(auto_now_add=True)
     board = models.ForeignKey(SchoolBoard, null=False, blank=False, on_delete=models.CASCADE)
+
+class QuestionComment(models.Model):    # 질문 게시판 댓글
+    content = models.TextField()
+    writer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    anonymous = models.BooleanField(null=True, default=True)
+    time = models.DateTimeField(auto_now_add=True)
+    board = models.ForeignKey(QuestionBoard, null=False, blank=False, on_delete=models.CASCADE)

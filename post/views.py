@@ -12,6 +12,10 @@ class SchoolBoardViewSet(viewsets.ModelViewSet):
     queryset = SchoolBoard.objects.all()
     serializer_class = SchoolBoardSerializer
 
+class QuestionBoardViewSet(viewsets.ModelViewSet):
+    queryset = QuestionBoard.objects.all()
+    serializer_class = QuestionBoardSerializer
+
 class MainCommentViewSet(viewsets.ModelViewSet):
     queryset = MainComment.objects.all()
     serializer_class = MainCommentSerializer
@@ -19,3 +23,7 @@ class MainCommentViewSet(viewsets.ModelViewSet):
 class SchoolCommentViewSet(viewsets.ModelViewSet):
     queryset = SchoolComment.objects.all()
     serializer_class = SchoolCommentSerializer
+
+class QuestionCommentViewSet(viewsets.ModelViewSet):
+    queryset = QuestionComment.objects.all()
+    serializer_class = QuestionCommentSerializer
