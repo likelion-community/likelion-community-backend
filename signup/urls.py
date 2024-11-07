@@ -2,7 +2,7 @@
 from django.urls import path
 from .views import (
     LoginHomeAPIView, CustomLoginAPIView, SignupAPIView, CompleteProfileAPIView,
-    LogoutAPIView, CheckPasswordAPIView, DeleteUserAPIView
+    LogoutAPIView, CheckPasswordAPIView, DeleteUserAPIView, TokenLoginAPIView
 )
 from social_django import views as social_views
 
@@ -15,6 +15,7 @@ urlpatterns = [
     # 일반 로그인 및 로그아웃
     path('login/custom/', CustomLoginAPIView.as_view(), name='custom_login'),
     path('logout/', LogoutAPIView.as_view(), name='logout'),
+    path('login/token/', TokenLoginAPIView.as_view(), name='token_login'),
 
     # 회원가입 및 프로필 완성
     path('signup/', SignupAPIView.as_view(), name='signup'),
