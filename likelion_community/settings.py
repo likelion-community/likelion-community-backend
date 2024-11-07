@@ -1,5 +1,6 @@
+# settings.py
 from pathlib import Path
-import os
+import os, environ
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -8,11 +9,20 @@ load_dotenv()
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env(DEBUG=(bool, False))
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+
+# SECURITY WARNING: keep the secret key used in production secret!
+
 # Secret Key
 SECRET_KEY = os.getenv('SECRET_KEY', 'your-default-secret-key')
 
-# Debug settings
-DEBUG = False
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
 ALLOWED_HOSTS = ['*']
 
 # Custom User Model
@@ -26,6 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'corsheaders',
     'likelion_community',
     'attendance',
     'home',
@@ -33,10 +45,8 @@ INSTALLED_APPS = [
     'post',
     'signup',
     'social_django',
-    'rest_framework',
+    'friend',
     'channels',
-    'corsheaders',
-  
 ]
 
 # Middleware
@@ -44,6 +54,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -67,7 +78,8 @@ ROOT_URLCONF = 'likelion_community.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        #'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS' : [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -86,14 +98,11 @@ WSGI_APPLICATION = 'likelion_community.wsgi.application'
 # Database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',  # MySQL 데이터베이스 엔진
-        'NAME': 'everion',                     # 데이터베이스 이름
-        'USER': 'root',                         # MySQL 사용자 이름
-        'PASSWORD': os.environ.get('DB_PASSWORD'),    # MySQL 사용자 비밀번호
-        'HOST': '3.39.168.41',                 # MySQL 서버의 퍼블릭 IP 주소
-        'PORT': '3306',                        # MySQL 포트 (기본 포트)
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',  # SQLite 데이터베이스 파일 경로
     }
 }
+
 
 # Password Validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -104,13 +113,21 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
+
+# https://docs.djangoproject.com/en/4.2/topics/i18n/
+
 LANGUAGE_CODE = 'ko-kr'
+
 TIME_ZONE = 'Asia/Seoul'
+
 USE_I18N = True
-USE_TZ = True
+
+USE_TZ = False
 
 # Static and Media Files
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
@@ -134,6 +151,11 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+from dotenv import load_dotenv
+
+load_dotenv()  # .env 파일 로드
+
+# 환경 변수 설정
 # Social Authentication and Kakao Settings
 SOCIAL_AUTH_KAKAO_KEY = os.getenv('SOCIAL_AUTH_KAKAO_KEY')
 SOCIAL_AUTH_KAKAO_SECRET = os.getenv('SOCIAL_AUTH_KAKAO_SECRET')
@@ -183,3 +205,7 @@ CHANNEL_LAYERS = {
     },
 }
 
+
+CSRF_COOKIE_NAME = 'csrftoken'  # 쿠키에 저장될 CSRF 토큰의 이름 (기본값: 'csrftoken')
+CSRF_COOKIE_HTTPONLY = False    # JavaScript에서 CSRF 토큰에 접근할 수 있게 설정
+CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']  # CSRF를 허용할 프론트엔드 도메인 설정
