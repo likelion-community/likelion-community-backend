@@ -124,7 +124,7 @@ TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
-USE_TZ = False
+USE_TZ = True
 
 # Static and Media Files
 STATIC_URL = 'static/'
