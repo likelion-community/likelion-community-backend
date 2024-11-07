@@ -1,5 +1,8 @@
+# signup/models.py
+import uuid
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
+from django.conf import settings
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, username, email, name=None, password=None, **extra_fields):
@@ -44,3 +47,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     
     def __str__(self):
         return self.username
+
+class CustomUserToken(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    token = models.UUIDField(default=uuid.uuid4, editable=False)
+
+    def __str__(self):
+        return f"Token for {self.user.username}"
+    
