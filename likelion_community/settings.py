@@ -1,3 +1,4 @@
+# settings.py
 from pathlib import Path
 import os, environ
 from dotenv import load_dotenv
@@ -97,14 +98,11 @@ WSGI_APPLICATION = 'likelion_community.wsgi.application'
 # Database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',  # MySQL 데이터베이스 엔진
-        'NAME': 'everion',                     # 데이터베이스 이름
-        'USER': 'root',                         # MySQL 사용자 이름
-        'PASSWORD': os.environ.get('DB_PASSWORD'),    # MySQL 사용자 비밀번호
-        'HOST': '3.39.168.41',                 # MySQL 서버의 퍼블릭 IP 주소
-        'PORT': '3306',                        # MySQL 포트 (기본 포트)
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',  # SQLite 데이터베이스 파일 경로
     }
 }
+
 
 # Password Validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -206,3 +204,8 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+
+CSRF_COOKIE_NAME = 'csrftoken'  # 쿠키에 저장될 CSRF 토큰의 이름 (기본값: 'csrftoken')
+CSRF_COOKIE_HTTPONLY = False    # JavaScript에서 CSRF 토큰에 접근할 수 있게 설정
+CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']  # CSRF를 허용할 프론트엔드 도메인 설정
