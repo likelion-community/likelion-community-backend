@@ -1,8 +1,8 @@
 # signup/views.py
-from rest_framework import status, generics, permissions
+from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view, permission_classes
+import uuid
 from django.contrib.auth import login, logout, authenticate
 from django.shortcuts import redirect
 from django.http import JsonResponse
@@ -11,7 +11,7 @@ from django.core.exceptions import ValidationError
 from django.core.cache import cache
 from django.contrib import messages
 from .serializers import CustomUserCreationSerializer, AdditionalInfoSerializer, CustomLoginSerializer
-from .models import CustomUser
+from .models import CustomUserToken, CustomUser
 from ai_verifier import verify_like_a_lion_member
 import logging
 from rest_framework.permissions import AllowAny
@@ -41,32 +41,37 @@ class KakaoLoginAPIView(APIView):
             return redirect('home:mainpage')
         return redirect('signup:login_home')
 
+class TokenLoginAPIView(APIView):
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        user = authenticate(request, username=username, password=password)
 
+        if user is not None:
+            # 기존 토큰이 있다면 반환, 없으면 생성
+            token, created = CustomUserToken.objects.get_or_create(user=user)
+            if not created:
+                # 기존 토큰이 있는 경우 새로운 UUID로 갱신
+                token.token = uuid.uuid4()
+                token.save()
+            return Response({'token': str(token.token), 'user_id': user.pk}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
+        
 
 class CustomLoginAPIView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        # 이미 인증된 사용자인 경우
-        if request.user.is_authenticated:
-            # 슈퍼유저 또는 프로필이 완성된 사용자만 메인 페이지로 리디렉트
-            if request.user.is_superuser or request.user.is_profile_complete:
-                return redirect('home:mainpage')
-            else:
-                return redirect('signup:complete_profile')
-
         serializer = CustomLoginSerializer(data=request.data)
         if serializer.is_valid():
             username = serializer.validated_data.get('username')
             password = serializer.validated_data.get('password')
             user = authenticate(request, username=username, password=password)
             if user:
+                # 로그인 후 바로 메인 페이지로 리디렉트
                 login(request, user)
-                # 로그인 후 슈퍼유저는 프로필 검사 없이 통과
-                if user.is_superuser or user.is_profile_complete:
-                    return Response({'message': '로그인 성공'}, status=status.HTTP_200_OK)
-                else:
-                    return redirect('signup:complete_profile')
+                return redirect('home:mainpage')
         return Response({'error': '아이디 또는 비밀번호가 잘못되었습니다.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -88,6 +93,7 @@ class LogoutAPIView(APIView):
         cache.clear()
         return Response({'message': '로그아웃 성공'}, status=status.HTTP_200_OK)
 
+
 class SignupAPIView(APIView):
     permission_classes = [AllowAny]
     
@@ -104,14 +110,13 @@ class SignupAPIView(APIView):
             uploaded_image = request.FILES.get('verification_photo')
             is_verified = verify_like_a_lion_member(uploaded_image)
             if is_verified:
-                # 프로필이 완성된 상태로 설정
-                user = serializer.save(is_profile_complete=True)
+                user = serializer.save()
+                user.is_profile_complete = True  
                 user.verification_photo = uploaded_image
                 user.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response({'error': '이미지 인증 실패'}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 class CompleteProfileAPIView(APIView):

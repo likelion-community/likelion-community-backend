@@ -27,6 +27,7 @@ urlpatterns = [
     path('signup/', include('signup.urls')),  
     path('post/', include('post.urls')),
     path('friend/', include('friend.urls')),  
+    path('attendance/', include('attendance.urls')),
 ]
 
 if settings.DEBUG:
