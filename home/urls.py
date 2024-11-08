@@ -1,6 +1,6 @@
 # home/urls.py
 from django.urls import path
-from .views import HomeAPIView, NotificationListView, MarkNotificationAsReadView, DeleteNotificationView
+from .views import HomeAPIView, NotificationListView, MarkNotificationAsReadView, DeleteNotificationView, health_check
 
 app_name = 'home'
 
