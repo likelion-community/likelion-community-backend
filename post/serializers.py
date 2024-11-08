@@ -3,6 +3,8 @@ from .models import *
 
 class MainBoardSerializer(serializers.ModelSerializer):
     comments_count = serializers.SerializerMethodField(read_only=True)
+    likes_count = serializers.IntegerField(read_only=True)
+    scraps_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = MainBoard
@@ -14,6 +16,8 @@ class MainBoardSerializer(serializers.ModelSerializer):
 
 class SchoolBoardSerializer(serializers.ModelSerializer):
     comments_count = serializers.SerializerMethodField(read_only=True)
+    likes_count = serializers.IntegerField(read_only=True)
+    scraps_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = SchoolBoard
@@ -24,6 +28,8 @@ class SchoolBoardSerializer(serializers.ModelSerializer):
 
 class QuestionBoardSerializer(serializers.ModelSerializer):
     comments_count = serializers.SerializerMethodField(read_only=True)
+    likes_count = serializers.IntegerField(read_only=True)
+    scraps_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = QuestionBoard
