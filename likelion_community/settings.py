@@ -3,27 +3,21 @@ from pathlib import Path
 import os, environ
 from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
-
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Initialize environ and load .env file
 env = environ.Env(DEBUG=(bool, False))
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-
 # Secret Key
-SECRET_KEY = os.getenv('SECRET_KEY', 'your-default-secret-key')
+SECRET_KEY = env('SECRET_KEY', default='your-default-secret-key')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Debug
+DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = ['*']
+# Allowed Hosts
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
 
 # Custom User Model
 AUTH_USER_MODEL = 'signup.CustomUser'
@@ -68,6 +62,8 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://3.39.168.41:8000",
+    "https://everion.store",  # HTTPS를 사용하는 도메인 추가
+    "http://everion.store"    # HTTP를 사용하는 도메인 추가 
 ]
 
 
@@ -117,15 +113,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
-
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
 LANGUAGE_CODE = 'ko-kr'
-
 TIME_ZONE = 'Asia/Seoul'
-
 USE_I18N = True
-
 USE_TZ = True
 
 # Static and Media Files
