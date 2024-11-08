@@ -7,11 +7,14 @@ from .views import *
 router = DefaultRouter()
 router.register(r'mainboard', MainBoardViewSet)
 router.register(r'schoolboard', SchoolBoardViewSet)
+router.register(r'questionboard', QuestionBoardViewSet)
 router.register(r'maincomment', MainCommentViewSet)
 router.register(r'schoolcomment', SchoolCommentViewSet)
+router.register(r'questioncomment', QuestionCommentViewSet)
 
 app_name = 'post'
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('popularposts/', PopularPostViewSet.as_view(), name='popularposts'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
