@@ -1,7 +1,8 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from .models import Attendance, AttendanceStatus
-from .serializers import AttendanceSerializer, AttendanceStatusSerializer
+from signup.models import CustomUser
+from .serializers import AttendanceSerializer, AttendanceStatusSerializer, CreatorProfileSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
 from .permissions import IsStaffOrReadOnly, IsSchoolVerifiedAndSameGroup
@@ -76,3 +77,16 @@ class AttendanceCheckView(APIView):
             
         except Attendance.DoesNotExist:
             return Response({'error': '해당 출석 정보가 존재하지 않습니다.'}, status=status.HTTP_404_NOT_FOUND)
+        
+class CreatorProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+        user_id = kwargs.get('user_id')
+
+        try:
+            user = CustomUser.objects.get(id=user_id)
+            serializer = CreatorProfileSerializer(user)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except CustomUser.DoesNotExist:
+            return Response({'message': '사용자를 찾을 수 없습니다.'}, status=status.HTTP_404_NOT_FOUND)
