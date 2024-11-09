@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Attendance, AttendanceStatus
+from signup.models import CustomUser
 
 class AttendanceSerializer(serializers.ModelSerializer):
     created_by = serializers.ReadOnlyField(source='created_by.username')
@@ -20,3 +21,8 @@ class AttendanceStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = AttendanceStatus
         fields = ['id', 'attendance', 'user', 'user_name', 'status', 'date']
+
+class CreatorProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'nickname', 'school_name', 'profile_image', 'membership_term']
