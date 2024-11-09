@@ -1,0 +1,620 @@
+[2024-11-08 12:09:06 +0000] [9869] [INFO] Starting gunicorn 23.0.0
+[2024-11-08 12:09:06 +0000] [9869] [INFO] Listening at: http://0.0.0.0:8000 (9869)
+[2024-11-08 12:09:06 +0000] [9869] [INFO] Using worker: sync
+[2024-11-08 12:09:06 +0000] [9870] [INFO] Booting worker with pid: 9870
+[2024-11-08 12:09:06 +0000] [9871] [INFO] Booting worker with pid: 9871
+[2024-11-08 12:09:06 +0000] [9872] [INFO] Booting worker with pid: 9872
+Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
+Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
+Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
+[2024-11-08 12:10:07 +0000] [9877] [INFO] Starting gunicorn 23.0.0
+[2024-11-08 12:10:07 +0000] [9877] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-08 12:10:07 +0000] [9877] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-08 12:10:08 +0000] [9877] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-08 12:10:08 +0000] [9877] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-08 12:10:09 +0000] [9877] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-08 12:10:09 +0000] [9877] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-08 12:10:10 +0000] [9877] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-08 12:10:10 +0000] [9877] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-08 12:10:11 +0000] [9877] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-08 12:10:11 +0000] [9877] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-08 12:10:12 +0000] [9877] [ERROR] Can't connect to ('0.0.0.0', 8000)
+[2024-11-08 12:11:55 +0000] [9889] [INFO] Starting gunicorn 23.0.0
+[2024-11-08 12:11:55 +0000] [9889] [INFO] Listening at: http://0.0.0.0:8000 (9889)
+[2024-11-08 12:11:55 +0000] [9889] [INFO] Using worker: sync
+[2024-11-08 12:11:55 +0000] [9890] [INFO] Booting worker with pid: 9890
+[2024-11-08 12:11:55 +0000] [9891] [INFO] Booting worker with pid: 9891
+[2024-11-08 12:11:55 +0000] [9892] [INFO] Booting worker with pid: 9892
+Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
+Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
+Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
+[2024-11-08 12:13:28 +0000] [9889] [INFO] Handling signal: term
+[2024-11-08 21:13:28 +0900] [9890] [INFO] Worker exiting (pid: 9890)
+[2024-11-08 21:13:28 +0900] [9891] [INFO] Worker exiting (pid: 9891)
+[2024-11-08 21:13:28 +0900] [9892] [INFO] Worker exiting (pid: 9892)
+[2024-11-08 12:13:28 +0000] [9889] [ERROR] Worker (pid:9891) was sent SIGTERM!
+[2024-11-08 12:13:29 +0000] [9889] [INFO] Shutting down: Master
+[2024-11-08 12:32:21 +0000] [10015] [INFO] Starting gunicorn 23.0.0
+[2024-11-08 12:32:21 +0000] [10015] [INFO] Listening at: http://0.0.0.0:8000 (10015)
+[2024-11-08 12:32:21 +0000] [10015] [INFO] Using worker: sync
+[2024-11-08 12:32:21 +0000] [10016] [INFO] Booting worker with pid: 10016
+[2024-11-08 12:32:21 +0000] [10017] [INFO] Booting worker with pid: 10017
+[2024-11-08 12:32:21 +0000] [10018] [INFO] Booting worker with pid: 10018
+Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
+Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
+Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
+[2024-11-08 12:34:44 +0000] [10020] [INFO] Starting gunicorn 23.0.0
+[2024-11-08 12:34:44 +0000] [10020] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-08 12:34:44 +0000] [10020] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-08 12:34:45 +0000] [10020] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-08 12:34:45 +0000] [10020] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-08 12:34:46 +0000] [10020] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-08 12:34:46 +0000] [10020] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-08 12:34:47 +0000] [10020] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-08 12:34:47 +0000] [10020] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-08 12:34:48 +0000] [10020] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-08 12:34:48 +0000] [10020] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-08 12:34:49 +0000] [10020] [ERROR] Can't connect to ('0.0.0.0', 8000)
+[2024-11-08 12:35:40 +0000] [10033] [INFO] Starting gunicorn 23.0.0
+[2024-11-08 12:35:40 +0000] [10033] [INFO] Listening at: http://0.0.0.0:8000 (10033)
+[2024-11-08 12:35:40 +0000] [10033] [INFO] Using worker: sync
+[2024-11-08 12:35:40 +0000] [10034] [INFO] Booting worker with pid: 10034
+[2024-11-08 12:35:40 +0000] [10035] [INFO] Booting worker with pid: 10035
+[2024-11-08 12:35:40 +0000] [10036] [INFO] Booting worker with pid: 10036
+Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
+Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
+Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
+[2024-11-08 12:39:37 +0000] [10039] [INFO] Starting gunicorn 23.0.0
+[2024-11-08 12:39:37 +0000] [10039] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-08 12:39:37 +0000] [10039] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-08 12:39:38 +0000] [10039] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-08 12:39:38 +0000] [10039] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-08 12:39:39 +0000] [10039] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-08 12:39:39 +0000] [10039] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-08 12:39:40 +0000] [10039] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-08 12:39:40 +0000] [10039] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-08 12:39:41 +0000] [10039] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-08 12:39:41 +0000] [10039] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-08 12:39:42 +0000] [10039] [ERROR] Can't connect to ('0.0.0.0', 8000)
+[2024-11-08 12:42:07 +0000] [10055] [INFO] Starting gunicorn 23.0.0
+[2024-11-08 12:42:07 +0000] [10055] [INFO] Listening at: http://0.0.0.0:8000 (10055)
+[2024-11-08 12:42:07 +0000] [10055] [INFO] Using worker: sync
+[2024-11-08 12:42:07 +0000] [10056] [INFO] Booting worker with pid: 10056
+[2024-11-08 12:42:07 +0000] [10057] [INFO] Booting worker with pid: 10057
+[2024-11-08 12:42:07 +0000] [10058] [INFO] Booting worker with pid: 10058
+Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
+Invalid line: ALLOWED_HOSTS = ['everion.store', 'localhost', '3.39.168.41']
+Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
+Invalid line: ALLOWED_HOSTS = ['everion.store', 'localhost', '3.39.168.41']
+Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
+Invalid line: ALLOWED_HOSTS = ['everion.store', 'localhost', '3.39.168.41']
+[2024-11-08 12:45:56 +0000] [10075] [INFO] Starting gunicorn 23.0.0
+[2024-11-08 12:45:56 +0000] [10075] [INFO] Listening at: http://0.0.0.0:8000 (10075)
+[2024-11-08 12:45:56 +0000] [10075] [INFO] Using worker: sync
+[2024-11-08 12:45:56 +0000] [10076] [INFO] Booting worker with pid: 10076
+[2024-11-08 12:45:56 +0000] [10077] [INFO] Booting worker with pid: 10077
+[2024-11-08 12:45:56 +0000] [10078] [INFO] Booting worker with pid: 10078
+Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
+Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
+Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
+[2024-11-08 12:46:57 +0000] [10075] [INFO] Handling signal: term
+[2024-11-08 21:46:57 +0900] [10077] [INFO] Worker exiting (pid: 10077)
+[2024-11-08 21:46:57 +0900] [10076] [INFO] Worker exiting (pid: 10076)
+[2024-11-08 21:46:57 +0900] [10078] [INFO] Worker exiting (pid: 10078)
+[2024-11-08 12:46:57 +0000] [10075] [INFO] Shutting down: Master
+[2024-11-08 12:47:18 +0000] [10087] [INFO] Starting gunicorn 23.0.0
+[2024-11-08 12:47:18 +0000] [10087] [INFO] Listening at: http://0.0.0.0:8000 (10087)
+[2024-11-08 12:47:18 +0000] [10087] [INFO] Using worker: sync
+[2024-11-08 12:47:18 +0000] [10088] [INFO] Booting worker with pid: 10088
+[2024-11-08 12:47:18 +0000] [10089] [INFO] Booting worker with pid: 10089
+[2024-11-08 12:47:18 +0000] [10090] [INFO] Booting worker with pid: 10090
+Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
+Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
+Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
+[2024-11-08 21:48:27 +0900] [10088] [INFO] Worker exiting (pid: 10088)
+[2024-11-08 21:48:27 +0900] [10090] [INFO] Worker exiting (pid: 10090)
+[2024-11-08 12:48:27 +0000] [10087] [INFO] Handling signal: term
+[2024-11-08 21:48:27 +0900] [10089] [INFO] Worker exiting (pid: 10089)
+[2024-11-08 12:48:27 +0000] [10087] [ERROR] Worker (pid:10088) was sent SIGTERM!
+[2024-11-08 12:48:27 +0000] [10087] [ERROR] Worker (pid:10090) was sent SIGTERM!
+[2024-11-08 12:48:28 +0000] [10087] [INFO] Shutting down: Master
+[2024-11-08 12:49:08 +0000] [10096] [INFO] Starting gunicorn 23.0.0
+[2024-11-08 12:49:08 +0000] [10096] [INFO] Listening at: http://0.0.0.0:8000 (10096)
+[2024-11-08 12:49:08 +0000] [10096] [INFO] Using worker: sync
+[2024-11-08 12:49:08 +0000] [10097] [INFO] Booting worker with pid: 10097
+[2024-11-08 12:49:08 +0000] [10098] [INFO] Booting worker with pid: 10098
+[2024-11-08 12:49:08 +0000] [10099] [INFO] Booting worker with pid: 10099
+[2024-11-08 13:08:31 +0000] [10096] [INFO] Handling signal: term
+[2024-11-08 22:08:31 +0900] [10097] [INFO] Worker exiting (pid: 10097)
+[2024-11-08 22:08:31 +0900] [10098] [INFO] Worker exiting (pid: 10098)
+[2024-11-08 22:08:31 +0900] [10099] [INFO] Worker exiting (pid: 10099)
+[2024-11-08 13:08:31 +0000] [10096] [ERROR] Worker (pid:10097) was sent SIGTERM!
+[2024-11-08 13:08:31 +0000] [10096] [INFO] Shutting down: Master
+[2024-11-08 13:14:40 +0000] [10185] [INFO] Starting gunicorn 23.0.0
+[2024-11-08 13:14:40 +0000] [10185] [INFO] Listening at: http://0.0.0.0:8000 (10185)
+[2024-11-08 13:14:40 +0000] [10185] [INFO] Using worker: sync
+[2024-11-08 13:14:40 +0000] [10186] [INFO] Booting worker with pid: 10186
+[2024-11-08 13:14:40 +0000] [10187] [INFO] Booting worker with pid: 10187
+[2024-11-08 13:14:40 +0000] [10188] [INFO] Booting worker with pid: 10188
+[2024-11-08 22:17:12 +0900] [10186] [INFO] Worker exiting (pid: 10186)
+[2024-11-08 13:17:12 +0000] [10185] [INFO] Handling signal: term
+[2024-11-08 22:17:12 +0900] [10187] [INFO] Worker exiting (pid: 10187)
+[2024-11-08 22:17:12 +0900] [10188] [INFO] Worker exiting (pid: 10188)
+[2024-11-08 13:17:12 +0000] [10185] [ERROR] Worker (pid:10186) was sent SIGTERM!
+[2024-11-08 13:17:12 +0000] [10185] [INFO] Shutting down: Master
+[2024-11-08 13:22:04 +0000] [10220] [INFO] Starting gunicorn 23.0.0
+[2024-11-08 13:22:04 +0000] [10220] [INFO] Listening at: http://0.0.0.0:443 (10220)
+[2024-11-08 13:22:04 +0000] [10220] [INFO] Using worker: sync
+[2024-11-08 13:22:04 +0000] [10223] [INFO] Booting worker with pid: 10223
+[2024-11-08 13:22:04 +0000] [10222] [INFO] Starting gunicorn 23.0.0
+[2024-11-08 13:22:04 +0000] [10222] [ERROR] Connection in use: ('0.0.0.0', 443)
+[2024-11-08 13:22:04 +0000] [10222] [ERROR] connection to ('0.0.0.0', 443) failed: [Errno 98] Address already in use
+[2024-11-08 13:22:04 +0000] [10224] [INFO] Booting worker with pid: 10224
+[2024-11-08 13:22:04 +0000] [10225] [INFO] Booting worker with pid: 10225
+[2024-11-08 13:22:05 +0000] [10222] [ERROR] Connection in use: ('0.0.0.0', 443)
+[2024-11-08 13:22:05 +0000] [10222] [ERROR] connection to ('0.0.0.0', 443) failed: [Errno 98] Address already in use
+[2024-11-08 13:22:06 +0000] [10222] [ERROR] Connection in use: ('0.0.0.0', 443)
+[2024-11-08 13:22:06 +0000] [10222] [ERROR] connection to ('0.0.0.0', 443) failed: [Errno 98] Address already in use
+[2024-11-08 13:22:07 +0000] [10222] [ERROR] Connection in use: ('0.0.0.0', 443)
+[2024-11-08 13:22:07 +0000] [10222] [ERROR] connection to ('0.0.0.0', 443) failed: [Errno 98] Address already in use
+[2024-11-08 13:22:08 +0000] [10222] [ERROR] Connection in use: ('0.0.0.0', 443)
+[2024-11-08 13:22:08 +0000] [10222] [ERROR] connection to ('0.0.0.0', 443) failed: [Errno 98] Address already in use
+[2024-11-08 13:22:09 +0000] [10222] [ERROR] Can't connect to ('0.0.0.0', 443)
+[2024-11-08 22:22:31 +0900] [10223] [INFO] Worker exiting (pid: 10223)
+[2024-11-08 22:22:31 +0900] [10224] [INFO] Worker exiting (pid: 10224)
+[2024-11-08 22:22:31 +0900] [10225] [INFO] Worker exiting (pid: 10225)
+[2024-11-08 13:22:31 +0000] [10220] [INFO] Handling signal: term
+[2024-11-08 13:22:31 +0000] [10220] [ERROR] Worker (pid:10223) was sent SIGTERM!
+[2024-11-08 13:22:31 +0000] [10220] [ERROR] Worker (pid:10224) was sent SIGTERM!
+[2024-11-08 13:22:31 +0000] [10220] [INFO] Shutting down: Master
+[2024-11-08 13:22:35 +0000] [10231] [INFO] Starting gunicorn 23.0.0
+[2024-11-08 13:22:35 +0000] [10231] [INFO] Listening at: http://0.0.0.0:443 (10231)
+[2024-11-08 13:22:35 +0000] [10231] [INFO] Using worker: sync
+[2024-11-08 13:22:35 +0000] [10232] [INFO] Booting worker with pid: 10232
+[2024-11-08 13:22:35 +0000] [10233] [INFO] Booting worker with pid: 10233
+[2024-11-08 13:22:35 +0000] [10234] [INFO] Booting worker with pid: 10234
+[2024-11-08 13:24:12 +0000] [10231] [INFO] Handling signal: term
+[2024-11-08 22:24:12 +0900] [10233] [INFO] Worker exiting (pid: 10233)
+[2024-11-08 22:24:12 +0900] [10234] [INFO] Worker exiting (pid: 10234)
+[2024-11-08 22:24:13 +0900] [10232] [INFO] Worker exiting (pid: 10232)
+[2024-11-08 13:24:13 +0000] [10231] [INFO] Shutting down: Master
+[2024-11-08 13:25:51 +0000] [10247] [INFO] Starting gunicorn 23.0.0
+[2024-11-08 13:25:51 +0000] [10247] [INFO] Listening at: http://0.0.0.0:443 (10247)
+[2024-11-08 13:25:51 +0000] [10247] [INFO] Using worker: sync
+[2024-11-08 13:25:51 +0000] [10248] [INFO] Booting worker with pid: 10248
+[2024-11-08 13:25:51 +0000] [10249] [INFO] Booting worker with pid: 10249
+[2024-11-08 13:25:51 +0000] [10250] [INFO] Booting worker with pid: 10250
+[2024-11-08 13:27:56 +0000] [10247] [CRITICAL] WORKER TIMEOUT (pid:10249)
+[2024-11-08 22:27:56 +0900] [10249] [ERROR] Error handling request (no URI read)
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/workers/sync.py", line 133, in handle
+    req = next(parser)
+          ^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/parser.py", line 41, in __next__
+    self.mesg = self.mesg_class(self.cfg, self.unreader, self.source_addr, self.req_count)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 259, in __init__
+    super().__init__(cfg, unreader, peer_addr)
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 60, in __init__
+    unused = self.parse(self.unreader)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 274, in parse
+    line, rbuf = self.read_line(unreader, buf, self.limit_request_line)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 326, in read_line
+    self.get_data(unreader, buf)
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 262, in get_data
+    data = unreader.read()
+           ^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 36, in read
+    d = self.chunk()
+        ^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 63, in chunk
+    return self.sock.recv(self.mxchunk)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/workers/base.py", line 204, in handle_abort
+    sys.exit(1)
+SystemExit: 1
+[2024-11-08 22:27:56 +0900] [10249] [INFO] Worker exiting (pid: 10249)
+[2024-11-08 13:27:56 +0000] [10254] [INFO] Booting worker with pid: 10254
+[2024-11-08 13:29:46 +0000] [10247] [INFO] Handling signal: term
+[2024-11-08 22:29:46 +0900] [10248] [INFO] Worker exiting (pid: 10248)
+[2024-11-08 22:29:46 +0900] [10250] [INFO] Worker exiting (pid: 10250)
+[2024-11-08 22:29:46 +0900] [10254] [INFO] Worker exiting (pid: 10254)
+[2024-11-08 13:29:46 +0000] [10247] [INFO] Shutting down: Master
+[2024-11-08 13:30:05 +0000] [10272] [INFO] Starting gunicorn 23.0.0
+[2024-11-08 13:30:05 +0000] [10272] [INFO] Listening at: http://0.0.0.0:443 (10272)
+[2024-11-08 13:30:05 +0000] [10272] [INFO] Using worker: sync
+[2024-11-08 13:30:05 +0000] [10273] [INFO] Booting worker with pid: 10273
+[2024-11-08 13:30:05 +0000] [10274] [INFO] Booting worker with pid: 10274
+[2024-11-08 13:30:05 +0000] [10275] [INFO] Booting worker with pid: 10275
+[2024-11-08 13:30:43 +0000] [10272] [CRITICAL] WORKER TIMEOUT (pid:10274)
+[2024-11-08 22:30:43 +0900] [10274] [ERROR] Error handling request (no URI read)
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/workers/sync.py", line 133, in handle
+    req = next(parser)
+          ^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/parser.py", line 41, in __next__
+    self.mesg = self.mesg_class(self.cfg, self.unreader, self.source_addr, self.req_count)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 259, in __init__
+    super().__init__(cfg, unreader, peer_addr)
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 60, in __init__
+    unused = self.parse(self.unreader)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 274, in parse
+    line, rbuf = self.read_line(unreader, buf, self.limit_request_line)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 326, in read_line
+    self.get_data(unreader, buf)
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 262, in get_data
+    data = unreader.read()
+           ^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 36, in read
+    d = self.chunk()
+        ^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 63, in chunk
+    return self.sock.recv(self.mxchunk)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/workers/base.py", line 204, in handle_abort
+    sys.exit(1)
+SystemExit: 1
+[2024-11-08 22:30:43 +0900] [10274] [INFO] Worker exiting (pid: 10274)
+[2024-11-08 13:30:43 +0000] [10277] [INFO] Booting worker with pid: 10277
+[2024-11-08 13:31:01 +0000] [10272] [CRITICAL] WORKER TIMEOUT (pid:10275)
+[2024-11-08 22:31:01 +0900] [10275] [ERROR] Error handling request (no URI read)
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/workers/sync.py", line 133, in handle
+    req = next(parser)
+          ^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/parser.py", line 41, in __next__
+    self.mesg = self.mesg_class(self.cfg, self.unreader, self.source_addr, self.req_count)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 259, in __init__
+    super().__init__(cfg, unreader, peer_addr)
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 60, in __init__
+    unused = self.parse(self.unreader)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 274, in parse
+    line, rbuf = self.read_line(unreader, buf, self.limit_request_line)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 326, in read_line
+    self.get_data(unreader, buf)
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 262, in get_data
+    data = unreader.read()
+           ^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 36, in read
+    d = self.chunk()
+        ^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 63, in chunk
+    return self.sock.recv(self.mxchunk)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/workers/base.py", line 204, in handle_abort
+    sys.exit(1)
+SystemExit: 1
+[2024-11-08 22:31:01 +0900] [10275] [INFO] Worker exiting (pid: 10275)
+[2024-11-08 13:31:01 +0000] [10278] [INFO] Booting worker with pid: 10278
+[2024-11-08 22:39:56 +0900] [10273] [INFO] Worker exiting (pid: 10273)
+[2024-11-08 13:39:56 +0000] [10272] [INFO] Handling signal: term
+[2024-11-08 22:39:56 +0900] [10277] [INFO] Worker exiting (pid: 10277)
+[2024-11-08 22:39:56 +0900] [10278] [INFO] Worker exiting (pid: 10278)
+[2024-11-08 13:39:56 +0000] [10272] [INFO] Shutting down: Master
+[2024-11-08 13:40:02 +0000] [10300] [INFO] Starting gunicorn 23.0.0
+[2024-11-08 13:40:02 +0000] [10300] [INFO] Listening at: http://0.0.0.0:8000 (10300)
+[2024-11-08 13:40:02 +0000] [10300] [INFO] Using worker: sync
+[2024-11-08 13:40:02 +0000] [10301] [INFO] Booting worker with pid: 10301
+[2024-11-08 13:40:02 +0000] [10302] [INFO] Booting worker with pid: 10302
+[2024-11-08 13:40:02 +0000] [10303] [INFO] Booting worker with pid: 10303
+[2024-11-08 14:08:39 +0000] [10348] [INFO] Starting gunicorn 23.0.0
+[2024-11-08 14:08:39 +0000] [10348] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-08 14:08:39 +0000] [10348] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-08 14:08:40 +0000] [10348] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-08 14:08:40 +0000] [10348] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-08 14:08:41 +0000] [10348] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-08 14:08:41 +0000] [10348] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-08 14:08:42 +0000] [10348] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-08 14:08:42 +0000] [10348] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-08 14:08:43 +0000] [10348] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-08 14:08:43 +0000] [10348] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-08 14:08:44 +0000] [10348] [ERROR] Can't connect to ('0.0.0.0', 8000)
+[2024-11-08 14:09:41 +0000] [10300] [INFO] Handling signal: term
+[2024-11-08 23:09:41 +0900] [10301] [INFO] Worker exiting (pid: 10301)
+[2024-11-08 23:09:41 +0900] [10303] [INFO] Worker exiting (pid: 10303)
+[2024-11-08 23:09:41 +0900] [10302] [INFO] Worker exiting (pid: 10302)
+[2024-11-08 14:09:42 +0000] [10300] [INFO] Shutting down: Master
+[2024-11-08 14:10:37 +0000] [10364] [INFO] Starting gunicorn 23.0.0
+[2024-11-08 14:10:37 +0000] [10364] [INFO] Listening at: http://0.0.0.0:8000 (10364)
+[2024-11-08 14:10:37 +0000] [10364] [INFO] Using worker: sync
+[2024-11-08 14:10:37 +0000] [10365] [INFO] Booting worker with pid: 10365
+[2024-11-08 14:10:37 +0000] [10366] [INFO] Booting worker with pid: 10366
+[2024-11-08 14:10:37 +0000] [10367] [INFO] Booting worker with pid: 10367
+2024-11-08 23:10:52.174436: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/layers/convolutional/base_conv.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+2024-11-08 23:11:12.681892: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-08 23:11:12.773316: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-08 23:11:12.801515: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-08 23:11:13.255559: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/optimizers/base_optimizer.py:86: UserWarning: Argument `decay` is no longer supported and will be ignored.
+  warnings.warn(
+WARNING:absl:Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+WARNING:absl:Error in loading the saved optimizer state. As a result, your model is starting with a freshly initialized optimizer.
+2024-11-08 23:42:07.991120: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+[2024-11-08 15:04:24 +0000] [10364] [ERROR] Worker (pid:10367) was sent SIGKILL! Perhaps out of memory?
+[2024-11-08 15:03:14 +0000] [10364] [CRITICAL] WORKER TIMEOUT (pid:10365)
+[2024-11-08 15:04:25 +0000] [10364] [ERROR] Worker (pid:10365) was sent SIGHUP!
+[2024-11-08 15:04:25 +0000] [10364] [ERROR] Worker (pid:10366) was sent SIGHUP!
+[2024-11-08 15:04:25 +0000] [10496] [INFO] Booting worker with pid: 10496
+[2024-11-08 15:04:25 +0000] [10498] [INFO] Booting worker with pid: 10498
+[2024-11-08 15:04:25 +0000] [10364] [INFO] Handling signal: hup
+[2024-11-08 15:04:25 +0000] [10364] [INFO] Hang up: Master
+[2024-11-08 15:04:25 +0000] [10502] [INFO] Booting worker with pid: 10502
+[2024-11-08 15:04:25 +0000] [10503] [INFO] Booting worker with pid: 10503
+[2024-11-08 15:04:25 +0000] [10504] [INFO] Booting worker with pid: 10504
+[2024-11-09 00:04:28 +0900] [10498] [INFO] Worker exiting (pid: 10498)
+[2024-11-09 00:04:28 +0900] [10496] [INFO] Worker exiting (pid: 10496)
+2024-11-09 06:46:29.067486: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/layers/convolutional/base_conv.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+2024-11-09 06:46:50.469355: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-09 06:46:50.561507: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-09 06:46:50.589332: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-09 06:46:51.069056: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/optimizers/base_optimizer.py:86: UserWarning: Argument `decay` is no longer supported and will be ignored.
+  warnings.warn(
+WARNING:absl:Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+WARNING:absl:Error in loading the saved optimizer state. As a result, your model is starting with a freshly initialized optimizer.
+2024-11-09 10:25:30.783269: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+[2024-11-09 01:27:53 +0000] [10364] [ERROR] Worker (pid:10502) was sent SIGKILL! Perhaps out of memory?
+[2024-11-09 01:27:25 +0000] [10364] [CRITICAL] WORKER TIMEOUT (pid:10502)
+[2024-11-09 01:27:53 +0000] [13001] [INFO] Booting worker with pid: 13001
+[2024-11-09 01:28:15 +0000] [13065] [INFO] Starting gunicorn 23.0.0
+[2024-11-09 01:28:15 +0000] [13065] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-09 01:28:15 +0000] [13065] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-09 01:28:16 +0000] [13065] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-09 01:28:16 +0000] [13065] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-09 01:28:17 +0000] [13065] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-09 01:28:17 +0000] [13065] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-09 01:28:18 +0000] [13065] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-09 01:28:18 +0000] [13065] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-09 01:28:19 +0000] [13065] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-09 01:28:19 +0000] [13065] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-09 01:28:20 +0000] [13065] [ERROR] Can't connect to ('0.0.0.0', 8000)
+2024-11-09 10:28:27.962902: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+[2024-11-09 01:47:21 +0000] [10364] [ERROR] Worker (pid:10503) was sent SIGKILL! Perhaps out of memory?
+[2024-11-09 01:37:03 +0000] [10364] [CRITICAL] WORKER TIMEOUT (pid:10503)
+[2024-11-09 01:47:21 +0000] [10364] [CRITICAL] WORKER TIMEOUT (pid:10504)
+[2024-11-09 01:47:21 +0000] [10364] [CRITICAL] WORKER TIMEOUT (pid:13001)
+[2024-11-09 01:47:21 +0000] [13089] [INFO] Booting worker with pid: 13089
+[2024-11-09 01:47:21 +0000] [10364] [ERROR] Worker (pid:13001) was sent SIGKILL! Perhaps out of memory?
+[2024-11-09 01:47:21 +0000] [13090] [INFO] Booting worker with pid: 13090
+[2024-11-09 01:47:21 +0000] [10364] [ERROR] Worker (pid:10504) was sent SIGKILL! Perhaps out of memory?
+[2024-11-09 01:47:21 +0000] [13092] [INFO] Booting worker with pid: 13092
+[2024-11-09 01:50:23 +0000] [10364] [INFO] Handling signal: term
+[2024-11-09 10:50:23 +0900] [13089] [INFO] Worker exiting (pid: 13089)
+[2024-11-09 10:50:23 +0900] [13090] [INFO] Worker exiting (pid: 13090)
+[2024-11-09 10:50:23 +0900] [13092] [INFO] Worker exiting (pid: 13092)
+[2024-11-09 01:50:24 +0000] [10364] [INFO] Shutting down: Master
+[2024-11-09 01:51:55 +0000] [13168] [INFO] Starting gunicorn 23.0.0
+[2024-11-09 01:51:55 +0000] [13168] [INFO] Listening at: http://0.0.0.0:8000 (13168)
+[2024-11-09 01:51:55 +0000] [13168] [INFO] Using worker: sync
+[2024-11-09 01:51:55 +0000] [13169] [INFO] Booting worker with pid: 13169
+[2024-11-09 01:51:55 +0000] [13170] [INFO] Booting worker with pid: 13170
+[2024-11-09 01:51:55 +0000] [13171] [INFO] Booting worker with pid: 13171
+2024-11-09 10:52:37.554743: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/layers/convolutional/base_conv.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+2024-11-09 10:52:59.645372: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-09 10:52:59.735887: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-09 10:52:59.763282: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-09 10:53:00.256086: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/optimizers/base_optimizer.py:86: UserWarning: Argument `decay` is no longer supported and will be ignored.
+  warnings.warn(
+WARNING:absl:Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+WARNING:absl:Error in loading the saved optimizer state. As a result, your model is starting with a freshly initialized optimizer.
+ERROR:django.security.DisallowedHost:Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/http/request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+WARNING:django.request:Bad Request: /health/
+[2024-11-09 10:57:20 +0900] [13171] [INFO] Worker exiting (pid: 13171)
+[2024-11-09 01:57:20 +0000] [13168] [INFO] Handling signal: term
+[2024-11-09 10:57:20 +0900] [13170] [INFO] Worker exiting (pid: 13170)
+[2024-11-09 10:57:20 +0900] [13169] [INFO] Worker exiting (pid: 13169)
+[2024-11-09 01:57:20 +0000] [13168] [ERROR] Worker (pid:13171) was sent SIGTERM!
+[2024-11-09 01:57:24 +0000] [13168] [INFO] Shutting down: Master
+[2024-11-09 01:57:30 +0000] [13210] [INFO] Starting gunicorn 23.0.0
+[2024-11-09 01:57:30 +0000] [13210] [INFO] Listening at: http://0.0.0.0:8000 (13210)
+[2024-11-09 01:57:30 +0000] [13210] [INFO] Using worker: sync
+[2024-11-09 01:57:30 +0000] [13211] [INFO] Booting worker with pid: 13211
+[2024-11-09 01:57:30 +0000] [13212] [INFO] Booting worker with pid: 13212
+[2024-11-09 01:57:30 +0000] [13213] [INFO] Booting worker with pid: 13213
+2024-11-09 10:57:53.134004: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/layers/convolutional/base_conv.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+2024-11-09 10:58:14.000803: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-09 10:58:14.093305: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-09 10:58:14.120582: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-09 10:58:14.551191: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/optimizers/base_optimizer.py:86: UserWarning: Argument `decay` is no longer supported and will be ignored.
+  warnings.warn(
+WARNING:absl:Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+WARNING:absl:Error in loading the saved optimizer state. As a result, your model is starting with a freshly initialized optimizer.
+[2024-11-09 04:09:43 +0000] [13210] [ERROR] Worker (pid:13212) was sent SIGHUP!
+[2024-11-09 04:09:43 +0000] [13210] [ERROR] Worker (pid:13213) was sent SIGHUP!
+[2024-11-09 04:09:43 +0000] [13210] [ERROR] Worker (pid:13211) was sent SIGHUP!
+[2024-11-09 04:09:43 +0000] [13498] [INFO] Booting worker with pid: 13498
+[2024-11-09 04:09:43 +0000] [13499] [INFO] Booting worker with pid: 13499
+[2024-11-09 04:09:43 +0000] [13497] [INFO] Booting worker with pid: 13497
+[2024-11-09 04:09:43 +0000] [13210] [INFO] Handling signal: hup
+[2024-11-09 04:09:43 +0000] [13210] [INFO] Hang up: Master
+[2024-11-09 04:09:43 +0000] [13500] [INFO] Booting worker with pid: 13500
+[2024-11-09 04:09:43 +0000] [13501] [INFO] Booting worker with pid: 13501
+[2024-11-09 04:09:43 +0000] [13502] [INFO] Booting worker with pid: 13502
+[2024-11-09 13:09:46 +0900] [13497] [INFO] Worker exiting (pid: 13497)
+[2024-11-09 13:09:46 +0900] [13498] [INFO] Worker exiting (pid: 13498)
+[2024-11-09 13:09:46 +0900] [13499] [INFO] Worker exiting (pid: 13499)
+[2024-11-09 05:15:43 +0000] [14331] [INFO] Starting gunicorn 23.0.0
+[2024-11-09 05:15:43 +0000] [14331] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-09 05:15:43 +0000] [14331] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-09 05:15:44 +0000] [14331] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-09 05:15:44 +0000] [14331] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-09 05:15:45 +0000] [14331] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-09 05:15:45 +0000] [14331] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-09 05:15:46 +0000] [14331] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-09 05:15:46 +0000] [14331] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-09 05:15:47 +0000] [14331] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-09 05:15:47 +0000] [14331] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-09 05:15:48 +0000] [14331] [ERROR] Can't connect to ('0.0.0.0', 8000)
+[2024-11-09 05:18:56 +0000] [13210] [INFO] Handling signal: term
+[2024-11-09 14:18:56 +0900] [13500] [INFO] Worker exiting (pid: 13500)
+[2024-11-09 14:18:56 +0900] [13502] [INFO] Worker exiting (pid: 13502)
+[2024-11-09 14:18:56 +0900] [13501] [INFO] Worker exiting (pid: 13501)
+[2024-11-09 05:18:56 +0000] [13210] [INFO] Shutting down: Master
+[2024-11-09 05:19:00 +0000] [14343] [INFO] Starting gunicorn 23.0.0
+[2024-11-09 05:19:00 +0000] [14343] [INFO] Listening at: http://0.0.0.0:8000 (14343)
+[2024-11-09 05:19:00 +0000] [14343] [INFO] Using worker: sync
+[2024-11-09 05:19:00 +0000] [14344] [INFO] Booting worker with pid: 14344
+[2024-11-09 05:19:00 +0000] [14345] [INFO] Booting worker with pid: 14345
+[2024-11-09 05:19:01 +0000] [14346] [INFO] Booting worker with pid: 14346
+2024-11-09 14:25:03.128950: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/layers/convolutional/base_conv.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+2024-11-09 14:25:23.214037: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-09 14:25:23.304136: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-09 14:25:23.330907: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-09 14:25:23.787316: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/optimizers/base_optimizer.py:86: UserWarning: Argument `decay` is no longer supported and will be ignored.
+  warnings.warn(
+WARNING:absl:Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+WARNING:absl:Error in loading the saved optimizer state. As a result, your model is starting with a freshly initialized optimizer.
+2024-11-09 14:25:25.298976: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+[2024-11-09 05:26:02 +0000] [14343] [ERROR] Worker (pid:14345) was sent SIGKILL! Perhaps out of memory?
+[2024-11-09 05:26:02 +0000] [14370] [INFO] Booting worker with pid: 14370
+[2024-11-09 05:35:41 +0000] [14406] [INFO] Starting gunicorn 23.0.0
+[2024-11-09 05:35:41 +0000] [14406] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-09 05:35:41 +0000] [14406] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-09 05:35:42 +0000] [14406] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-09 05:35:42 +0000] [14406] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-09 05:35:43 +0000] [14406] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-09 05:35:43 +0000] [14406] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-09 05:35:44 +0000] [14406] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-09 05:35:44 +0000] [14406] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-09 05:35:45 +0000] [14406] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-09 05:35:45 +0000] [14406] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-09 05:35:46 +0000] [14406] [ERROR] Can't connect to ('0.0.0.0', 8000)
+[2024-11-09 05:35:54 +0000] [14343] [INFO] Handling signal: term
+[2024-11-09 14:35:54 +0900] [14344] [INFO] Worker exiting (pid: 14344)
+[2024-11-09 14:35:56 +0900] [14370] [INFO] Worker exiting (pid: 14370)
+[2024-11-09 14:35:57 +0900] [14346] [INFO] Worker exiting (pid: 14346)
+[2024-11-09 05:35:57 +0000] [14410] [INFO] Starting gunicorn 23.0.0
+[2024-11-09 05:35:57 +0000] [14410] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-09 05:35:57 +0000] [14410] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-09 05:35:58 +0000] [14410] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-09 05:35:58 +0000] [14410] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-09 05:35:59 +0000] [14410] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-09 05:35:59 +0000] [14410] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-09 05:36:00 +0000] [14410] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-09 05:36:00 +0000] [14410] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-09 05:36:01 +0000] [14410] [ERROR] Connection in use: ('0.0.0.0', 8000)
+[2024-11-09 05:36:01 +0000] [14410] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
+[2024-11-09 05:36:02 +0000] [14410] [ERROR] Can't connect to ('0.0.0.0', 8000)
+[2024-11-09 05:36:22 +0000] [14343] [INFO] Shutting down: Master
+[2024-11-09 05:39:16 +0000] [14422] [INFO] Starting gunicorn 23.0.0
+[2024-11-09 05:39:16 +0000] [14422] [INFO] Listening at: http://0.0.0.0:8000 (14422)
+[2024-11-09 05:39:16 +0000] [14422] [INFO] Using worker: sync
+[2024-11-09 05:39:16 +0000] [14423] [INFO] Booting worker with pid: 14423
+[2024-11-09 05:39:16 +0000] [14424] [INFO] Booting worker with pid: 14424
+[2024-11-09 05:39:16 +0000] [14425] [INFO] Booting worker with pid: 14425
+2024-11-09 14:52:49.914156: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/layers/convolutional/base_conv.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+2024-11-09 14:53:10.053619: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-09 14:53:10.146423: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-09 14:53:10.175157: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-09 14:53:10.631505: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/optimizers/base_optimizer.py:86: UserWarning: Argument `decay` is no longer supported and will be ignored.
+  warnings.warn(
+WARNING:absl:Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+WARNING:absl:Error in loading the saved optimizer state. As a result, your model is starting with a freshly initialized optimizer.
+[2024-11-09 14:55:50 +0900] [14423] [INFO] Worker exiting (pid: 14423)
+[2024-11-09 05:55:50 +0000] [14422] [INFO] Handling signal: term
+[2024-11-09 14:55:50 +0900] [14424] [INFO] Worker exiting (pid: 14424)
+[2024-11-09 14:55:50 +0900] [14425] [INFO] Worker exiting (pid: 14425)
+[2024-11-09 05:56:06 +0000] [14422] [INFO] Shutting down: Master
+[2024-11-09 05:56:10 +0000] [14463] [INFO] Starting gunicorn 23.0.0
+[2024-11-09 05:56:10 +0000] [14463] [INFO] Listening at: http://0.0.0.0:8000 (14463)
+[2024-11-09 05:56:10 +0000] [14463] [INFO] Using worker: sync
+[2024-11-09 05:56:10 +0000] [14464] [INFO] Booting worker with pid: 14464
+[2024-11-09 05:56:10 +0000] [14465] [INFO] Booting worker with pid: 14465
+[2024-11-09 05:56:10 +0000] [14466] [INFO] Booting worker with pid: 14466
+2024-11-09 14:58:56.543914: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/layers/convolutional/base_conv.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+2024-11-09 14:59:17.211242: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-09 14:59:17.303186: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-09 14:59:17.330018: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-09 14:59:17.785971: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/optimizers/base_optimizer.py:86: UserWarning: Argument `decay` is no longer supported and will be ignored.
+  warnings.warn(
+WARNING:absl:Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+WARNING:absl:Error in loading the saved optimizer state. As a result, your model is starting with a freshly initialized optimizer.
+[2024-11-09 15:06:53 +0900] [14465] [WARNING] Invalid request from ip=172.31.19.145: Invalid HTTP request line: '\x16\x03\x01\x00ø\x01\x00\x00ô\x03\x03Î]\x1cðO©Ø\x97¸'
+[2024-11-09 15:22:24 +0900] [14465] [INFO] Worker exiting (pid: 14465)
+[2024-11-09 06:22:24 +0000] [14463] [INFO] Handling signal: term
+[2024-11-09 15:22:28 +0900] [14464] [INFO] Worker exiting (pid: 14464)
+[2024-11-09 15:22:28 +0900] [14466] [INFO] Worker exiting (pid: 14466)
+[2024-11-09 06:22:40 +0000] [14463] [INFO] Shutting down: Master
+[2024-11-09 10:03:25 +0000] [15962] [INFO] Starting gunicorn 23.0.0
+[2024-11-09 10:03:25 +0000] [15962] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
+[2024-11-09 10:03:26 +0000] [15962] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
+[2024-11-09 10:03:27 +0000] [15962] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
+[2024-11-09 10:03:28 +0000] [15962] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
+[2024-11-09 10:03:29 +0000] [15962] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
+[2024-11-09 10:03:30 +0000] [15962] [ERROR] Can't connect to ('0.0.0.0', 80)
+[2024-11-09 12:20:46 +0000] [16578] [INFO] Starting gunicorn 23.0.0
+[2024-11-09 12:20:46 +0000] [16578] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
+[2024-11-09 12:20:47 +0000] [16578] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
+[2024-11-09 12:20:48 +0000] [16578] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
+[2024-11-09 12:20:49 +0000] [16578] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
+[2024-11-09 12:20:50 +0000] [16578] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
+[2024-11-09 12:20:51 +0000] [16578] [ERROR] Can't connect to ('0.0.0.0', 80)
+[2024-11-09 12:43:27 +0000] [16704] [INFO] Starting gunicorn 23.0.0
+[2024-11-09 12:43:27 +0000] [16704] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
+[2024-11-09 12:43:28 +0000] [16704] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
+[2024-11-09 12:43:29 +0000] [16704] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
+[2024-11-09 12:43:30 +0000] [16704] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
+[2024-11-09 12:43:31 +0000] [16704] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
+[2024-11-09 12:43:32 +0000] [16704] [ERROR] Can't connect to ('0.0.0.0', 80)

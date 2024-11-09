@@ -3,27 +3,21 @@ from pathlib import Path
 import os, environ
 from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
-
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Initialize environ and load .env file
 env = environ.Env(DEBUG=(bool, False))
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-
 # Secret Key
-SECRET_KEY = os.getenv('SECRET_KEY', 'your-default-secret-key')
+SECRET_KEY = env('SECRET_KEY', default='your-default-secret-key')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Debug
+DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = ['*']
+# Allowed Hosts
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
 
 # Custom User Model
 AUTH_USER_MODEL = 'signup.CustomUser'
@@ -68,7 +62,8 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://3.39.168.41:80",
-    "https://everion.store",
+    "https://everion.store",  # HTTPS를 사용하는 도메인 추가
+    "http://everion.store"    # HTTP를 사용하는 도메인 추가 
 ]
 
 
@@ -100,8 +95,13 @@ WSGI_APPLICATION = 'likelion_community.wsgi.application'
 # Database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',  
+        'ENGINE': 'django.db.backends.mysql',  # MySQL 데이터베이스 엔진
+        'NAME': 'everion',                     # 데이터베이스 이름
+        'USER': 'root',                         # MySQL 사용자 이름
+        'PASSWORD': os.environ.get('DB_PASSWORD'),    # MySQL 사용자 비밀번호
+        'HOST': '3.39.168.41',                 # MySQL 서버의 퍼블릭 IP 주소
+        'PORT': '3306',                        # MySQL 포트 (기본 포트)
+
     }
 }
 
@@ -114,15 +114,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
-
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
 LANGUAGE_CODE = 'ko-kr'
-
 TIME_ZONE = 'Asia/Seoul'
-
 USE_I18N = True
-
 USE_TZ = True
 
 # Static and Media Files
