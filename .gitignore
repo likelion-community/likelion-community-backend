@@ -242,5 +242,8 @@ test_model.py
 tmp.py
 train_model.py
 
+#브랜치들끼리 settings.py 섞임 방지
+likelion_community/settings.py
+
 # End of https://www.toptal.com/developers/gitignore/api/windows,visualstudiocode,django
 
