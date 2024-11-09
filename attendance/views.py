@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.response import Response
 from .models import Attendance, AttendanceStatus
 from .serializers import AttendanceSerializer, AttendanceStatusSerializer
@@ -6,8 +6,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
 from .permissions import IsStaffOrReadOnly, IsSchoolVerifiedAndSameGroup
 from rest_framework.generics import RetrieveAPIView
+from rest_framework.views import APIView
+from django.utils import timezone
 import random
-
 
 class AttendanceMainView(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup]
@@ -51,3 +52,27 @@ class AttendanceDetailView(RetrieveAPIView):
         }
         return Response(attendance_data)
     
+class AttendanceCheckView(APIView):
+    permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup]
+
+    def post(self, request, *args, **kwargs):
+        attendance_id = kwargs.get('id')
+        input = request.data.get('auth_code')
+
+        try:
+            attendance = Attendance.objects.get(id = attendance_id)
+            date = timezone.now().date()
+
+            if attendance.auth_code == input:
+                AttendanceStatus.objects.create(
+                    attendance=attendance,
+                    user=request.user,
+                    status='present',
+                    date=date
+                )
+                return Response({'message': f"{date} 출석 완료"}, status=status.HTTP_200_OK)
+            else:
+                return Response({'error': '출석코드가 일치하지 않아요'}, status=status.HTTP_400_BAD_REQUEST)
+            
+        except Attendance.DoesNotExist:
+            return Response({'error': '해당 출석 정보가 존재하지 않습니다.'}, status=status.HTTP_404_NOT_FOUND)
