@@ -8,6 +8,13 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .models import Notification
 from .serializers import NotificationSerializer
+from django.http import JsonResponse
+
+class HealthCheckAPIView(APIView):
+    permission_classes = [AllowAny]  # 모든 사용자 접근 가능
+
+    def get(self, request):
+        return Response({"status": "healthy"}, status=status.HTTP_200_OK)
 
 
 class HomeAPIView(APIView):

@@ -2,12 +2,15 @@ from rest_framework import serializers
 from .models import Attendance, AttendanceStatus
 
 class AttendanceSerializer(serializers.ModelSerializer):
-    created_by = serializers.ReadOnlyField(source='created_by.username')  # 읽기 전용으로 설정
-    file = serializers.FileField(allow_null=True, required=False)  # 이미지 대신 파일 필드로 사용
+    created_by = serializers.ReadOnlyField(source='created_by.username')
+    file = serializers.FileField(allow_null=True, required=False)
+    track = serializers.ChoiceField(choices=[('backend', 'Backend'), ('frontend', 'Frontend'), ('design', 'Design')])
+    auth_code = serializers.CharField(write_only=True, required=True)  # 운영진이 출석 코드를 생성
 
     class Meta:
         model = Attendance
-        fields = ['id', 'date', 'title', 'auth_code', 'description', 'file', 'created_by']  # image -> file로 변경
+        fields = ['id', 'date', 'title', 'auth_code', 'description', 'file', 'track', 'created_by']
+        
 
 class AttendanceStatusSerializer(serializers.ModelSerializer):
     user_name = serializers.CharField(source='user.name', read_only=True)  # 사용자 이름을 추가로 보여주기
