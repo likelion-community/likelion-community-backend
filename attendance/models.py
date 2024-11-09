@@ -4,12 +4,19 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
 class Attendance(models.Model):
+    TRACK_CHOICES = [
+        ('backend', '백엔드'),
+        ('frontend', '프론트엔드'),
+        ('planning_design', '기획/디자인')
+    ]
     date = models.DateField()
+    time = models.TimeField()
     title = models.CharField(max_length=100)
     auth_code = models.CharField(max_length=20)
     description = models.TextField(blank=True, null=True)
     file = models.FileField(upload_to='attendance_files/', blank=True, null=True) 
     created_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='created_attendances')
+    track = models.CharField(max_length=20, choices=TRACK_CHOICES, default='backend')
 
     def __str__(self):
         return f"{self.title} - {self.date}"

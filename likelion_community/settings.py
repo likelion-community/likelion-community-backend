@@ -61,10 +61,11 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "http://3.39.168.41:8000",
+    "http://3.39.168.41:80",
     "https://everion.store",  # HTTPS를 사용하는 도메인 추가
     "http://everion.store"    # HTTP를 사용하는 도메인 추가 
 ]
+
 
 
 # URL Configuration
@@ -194,12 +195,19 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],  # 또는 Redis 서버의 실제 IP 주소
+            "hosts": [
+                ("127.0.0.1", 6379),  # 로컬 접근용
+                ("3.39.168.41", 6379),  # 외부 접근용
+                ("everion.store", 6379),
+            ],
         },
     },
 }
 
 CSRF_COOKIE_NAME = 'csrftoken'  # 쿠키에 저장될 CSRF 토큰의 이름 (기본값: 'csrftoken')
 CSRF_COOKIE_HTTPONLY = False    # JavaScript에서 CSRF 토큰에 접근할 수 있게 설정
-CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']  # CSRF를 허용할 프론트엔드 도메인 설정
-
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "http://3.39.168.41:8000",
+    "https://everion.store",
+]

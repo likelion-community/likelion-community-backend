@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
 from .permissions import IsStaffOrReadOnly, IsSchoolVerifiedAndSameGroup
 from rest_framework.generics import RetrieveAPIView
+import random
 
 
 class AttendanceMainView(viewsets.ReadOnlyModelViewSet):
@@ -24,7 +25,13 @@ class AttendanceSetView(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         if not self.request.user.is_staff:
             raise PermissionDenied("출석 등록은 staff만 할 수 있습니다.")
-        serializer.save(created_by=self.request.user)
+        
+        # 4자리 출석 코드 자동 생성
+        auth_code = ''.join(random.choices('0123456789', k=4))
+        
+        # 출석 코드는 운영진(작성자)이 생성하도록 자동으로 할당
+        serializer.save(created_by=self.request.user, auth_code=auth_code)
+
     def perform_update(self, serializer):
         # 수정 시에도 created_by가 현재 사용자로 설정되도록 설정
         serializer.save(created_by=self.request.user)
@@ -43,3 +50,4 @@ class AttendanceDetailView(RetrieveAPIView):
             "attendance_statuses": AttendanceStatusSerializer(attendance_statuses, many=True).data
         }
         return Response(attendance_data)
+    
