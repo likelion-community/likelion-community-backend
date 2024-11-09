@@ -32,7 +32,6 @@ class BaseBoardViewSet(viewsets.ModelViewSet):
             post.like.add(user)
         else:
             post.like.remove(user)
-        post.save()
         return liked
 
     def handle_scrap(self, request, post):
@@ -43,7 +42,6 @@ class BaseBoardViewSet(viewsets.ModelViewSet):
             post.scrap.add(user)
         else:
             post.scrap.remove(user)
-        post.save()
         return scraped
 
     @action(detail=True, methods=['post'])

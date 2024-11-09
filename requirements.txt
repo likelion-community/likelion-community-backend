@@ -227,3 +227,4 @@ torchvision
 numpy
 opencv-python
 Pillow
+django-environ
