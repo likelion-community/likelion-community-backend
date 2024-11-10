@@ -4,11 +4,8 @@ import pytesseract
 import easyocr
 import re
 import gc
-import time  # time 모듈 임포트
+import time
 from extract_text_and_logo import extract_text_and_logo
-
-# Tesseract 및 EasyOCR 설정
-reader = easyocr.Reader(['ko', 'en'])
 
 # 메모리 해제 함수
 def clear_memory():
@@ -36,7 +33,11 @@ def verify_like_a_lion_member(uploaded_image):
 
     try:
         print("텍스트 및 로고 추출 시작")
-        text_data, logo_detected = extract_text_and_logo(img)
+
+        # EasyOCR 인스턴스를 함수 내에서 생성
+        reader = easyocr.Reader(['ko', 'en'])
+        text_data, logo_detected = extract_text_and_logo(img, reader)
+        del reader  # EasyOCR 인스턴스 메모리 해제
         print("extract_text_and_logo 호출 성공")
     except Exception as e:
         print(f"오류 발생: {str(e)}")
