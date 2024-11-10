@@ -21,23 +21,20 @@ def resize_image_for_ocr(img, max_dim=800):
     return img
 
 
-def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사자처럼', threshold=0.25):
+def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사자처럼', threshold=0.15):
     """로고와 텍스트 검출, 여러 해상도와 템플릿 크기에서 시도."""
-    scales = [0.5, 0.75, 1.0, 1.25]  # 다양한 크기로 이미지 스케일링
+    scales = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75]  # 다양한 크기로 이미지 스케일링
     h, w = image.shape[:2]
-    top_left_image = image[:h // 2, :w // 2]  # 상단 좌측 사분면 영역만 사용
+    top_half_image = image[:h // 2, :]  # 상단 전체 영역 사용
 
     for scale in scales:
-        resized_image = cv2.resize(top_left_image, (int(top_left_image.shape[1] * scale), int(top_left_image.shape[0] * scale)))
+        resized_image = cv2.resize(top_half_image, (int(top_half_image.shape[1] * scale), int(top_half_image.shape[0] * scale)))
         img_gray = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
         
         for logo_template in logo_templates:
             if logo_template is None:
                 continue
 
-            # 작은 로고 검출을 위한 로그와 템플릿 크기 조정
-            print(f"검출 시도: 현재 이미지 스케일 {scale}, 템플릿 크기 조정 시작")
-            
             for template_scale in np.linspace(0.4, 1.0, 7):  # 템플릿을 더 작은 크기로도 시도
                 resized_template = cv2.resize(logo_template, 
                                               (int(logo_template.shape[1] * template_scale), 
