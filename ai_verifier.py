@@ -1,14 +1,13 @@
 import cv2
 import numpy as np
-import tensorflow as tf
-from extract_text_and_logo import extract_text_and_logo
-import time
-import os
+import pytesseract
+import easyocr
+import re
 import gc
-from tensorflow.keras.models import load_model
+from extract_text_and_logo import extract_text_and_logo
 
-# 모델을 전역적으로 로드 (절대 경로 설정)
-model = load_model('/home/ubuntu/likelion-community-backend/like_a_lion_member_model.h5')
+# Tesseract 및 EasyOCR 설정
+reader = easyocr.Reader(['ko', 'en'])
 
 # 메모리 해제 함수
 def clear_memory():
@@ -31,21 +30,20 @@ def verify_like_a_lion_member(uploaded_image):
 
     print("이미지 디코딩 완료")
 
-    # 리사이즈 후 OCR 수행
+    # OCR에 필요한 이미지 크기 조정
     img = resize_image_for_ocr(img)
 
-    # 텍스트와 로고 추출 (추출 시간 측정)
     try:
         print("텍스트 및 로고 추출 시작")
-        text_data, logo_detected = extract_text_and_logo(img)  # 문제 발생 가능 지점
+        text_data, logo_detected = extract_text_and_logo(img)
         print("extract_text_and_logo 호출 성공")
     except Exception as e:
         print(f"오류 발생: {str(e)}")
         return False
 
-    # 로고가 감지되지 않았을 때 필드 검사를 생략하고 False 반환
+    # 로고가 감지되지 않았을 때 False 반환
     if not logo_detected:
-        print("로고를 감지할 수 없습니다. 필드 검사를 생략합니다.")
+        print("로고를 감지할 수 없습니다.")
         return False
     elif text_data is None:
         print("필수 필드(ID, 이름, 휴대폰)를 감지할 수 없습니다.")
@@ -53,37 +51,10 @@ def verify_like_a_lion_member(uploaded_image):
     else:
         print("유효한 회원입니다.")
 
-    # 필드 상태 확인
-    required_fields = ['아이디', '이름', '휴대폰']
-    field_status = {field: (text_data.get(field) is not None) for field in required_fields}
-    field_status['로고'] = logo_detected
-
-    # 이미지 예측
-    prediction = preprocess_and_predict_image(img)
-
-    # 필드 상태에 따라 확률 조정
-    adjusted_prediction = adjust_prediction_based_on_fields(prediction, field_status)
-
     # 최종 결과 판단 및 메모리 해제
     clear_memory()
     print(f"전체 처리 시간: {time.time() - start_time}초 소요")
-    return adjusted_prediction >= 0.5
-
-# 이미지 전처리 및 예측 수행 함수
-def preprocess_and_predict_image(img):
-    img_resized = cv2.resize(img, (128, 128)) / 255.0  # 이미지 크기 축소
-    img_resized = np.expand_dims(img_resized, axis=0)
-    prediction = model.predict(img_resized)[0][0]
-    return prediction
-
-# 필드 상태에 따라 확률을 조정하는 함수
-def adjust_prediction_based_on_fields(prediction, field_status):
-    missing_fields = sum([1 for field, detected in field_status.items() if field != '로고' and not detected])
-    if missing_fields == 0:
-        adjusted_prediction = prediction * 1.2
-    else:
-        adjusted_prediction = prediction * (0.8 ** missing_fields)
-    return min(adjusted_prediction, 1.0)
+    return True
 
 # OCR을 위한 이미지 리사이즈 함수
 def resize_image_for_ocr(img, max_dim=1000):
