@@ -11,19 +11,27 @@ def clear_memory():
     """메모리 관리."""
     gc.collect()
 
-def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처럼', threshold=0.35):
-    detected = False
 
-    # 이미지 자체 확대 (작은 로고 검출을 위해)
-    scales = [1.0, 2.0]  # 원본 크기와 확대 크기
-    for scale in scales:
-        resized_image = cv2.resize(image, (int(image.shape[1] * scale), int(image.shape[0] * scale)))
+def resize_image_for_ocr(img, max_dim=800):
+    """유동적인 리사이즈: 가장 긴 변을 기준으로 max_dim에 맞추어 원본 비율을 유지하여 리사이즈."""
+    h, w = img.shape[:2]
+    if max(h, w) > max_dim:
+        scale = max_dim / max(h, w)
+        img = cv2.resize(img, (int(w * scale), int(h * scale)))
+    return img
+
+def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사자처럼', threshold=0.35):
+    """로고와 텍스트 검출"""
+    # 이미지 스케일을 여러 단계로 조정하면서 검출 시도
+    for scale in [800, 1000]:  # 800에서 시도 후 실패 시 1000 해상도로 시도
+        resized_image = resize_image_for_ocr(image, max_dim=scale)
         img_gray = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
         
         for logo_template in logo_templates:
             if logo_template is None:
                 continue
             
+            # 템플릿 크기 조정 및 매칭
             for template_scale in np.linspace(0.6, 1.0, 5):
                 resized_template = cv2.resize(logo_template, 
                                               (int(logo_template.shape[1] * template_scale), 
@@ -34,13 +42,14 @@ def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처�
                 result = cv2.matchTemplate(img_gray, resized_template, cv2.TM_CCOEFF_NORMED)
                 loc = np.where(result >= threshold)
                 
+                # OCR 검출
                 for pt in zip(*loc[::-1]):
                     logo_roi = resized_image[pt[1]:pt[1]+resized_template.shape[0], pt[0]:pt[0]+resized_template.shape[1]]
-                    tess_text = pytesseract.image_to_string(logo_roi, config='--psm 6', lang='kor').strip()
                     easyocr_results = reader.readtext(logo_roi, detail=0)
-
                     easyocr_text = ' '.join(easyocr_results)
-                    if logo_text in tess_text or logo_text in easyocr_text:
+
+                    # 로고 텍스트와 일치 여부 확인
+                    if logo_text in easyocr_text:
                         return True
     return False
 
