@@ -60,7 +60,7 @@ def verify_like_a_lion_member(uploaded_image):
 
 
 # OCR을 위한 이미지 리사이즈 함수
-def resize_image_for_ocr(img, max_dim=1000, min_dim=300):
+def resize_image_for_ocr(img, max_dim=800, min_dim=300):
     h, w = img.shape[:2]
     if max(h, w) > max_dim:
         scale = max_dim / max(h, w)
