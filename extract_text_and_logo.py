@@ -21,7 +21,7 @@ def resize_image_for_ocr(img, max_dim=800):
     return img
 
 
-def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사자처럼', threshold=0.35):
+def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사자처럼', threshold=0.25):
     """로고와 텍스트 검출, 여러 해상도와 템플릿 크기에서 시도."""
     scales = [0.5, 0.75, 1.0, 1.25]  # 다양한 크기로 이미지 스케일링
     h, w = image.shape[:2]
@@ -34,8 +34,11 @@ def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사
         for logo_template in logo_templates:
             if logo_template is None:
                 continue
+
+            # 작은 로고 검출을 위한 로그와 템플릿 크기 조정
+            print(f"검출 시도: 현재 이미지 스케일 {scale}, 템플릿 크기 조정 시작")
             
-            for template_scale in np.linspace(0.5, 1.0, 5):  # 템플릿 크기를 더 작게도 조정
+            for template_scale in np.linspace(0.4, 1.0, 7):  # 템플릿을 더 작은 크기로도 시도
                 resized_template = cv2.resize(logo_template, 
                                               (int(logo_template.shape[1] * template_scale), 
                                                int(logo_template.shape[0] * template_scale)))
@@ -44,15 +47,21 @@ def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사
                 
                 result = cv2.matchTemplate(img_gray, resized_template, cv2.TM_CCOEFF_NORMED)
                 loc = np.where(result >= threshold)
-                
+
+                print(f"템플릿 크기 비율 {template_scale}로 매칭 시도 중, 매칭 결과 개수: {len(loc[0])}")
+
                 for pt in zip(*loc[::-1]):
                     logo_roi = resized_image[pt[1]:pt[1]+resized_template.shape[0], pt[0]:pt[0]+resized_template.shape[1]]
                     easyocr_results = reader.readtext(logo_roi, detail=0)
                     easyocr_text = ' '.join(easyocr_results)
 
                     if logo_text in easyocr_text:
+                        print("로고 텍스트 감지 성공")
                         return True
+
+    print("로고 텍스트 감지 실패")
     return False
+
 
 
 
