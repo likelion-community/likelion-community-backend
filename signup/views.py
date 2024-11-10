@@ -33,6 +33,7 @@ class LoginHomeAPIView(APIView):
 
 class KakaoLoginAPIView(APIView):
     permission_classes = [AllowAny]
+
     def get(self, request):
         if request.user.is_authenticated:
             if not request.user.is_profile_complete:
@@ -42,12 +43,19 @@ class KakaoLoginAPIView(APIView):
             return redirect('home:mainpage')
         
         # 카카오 백엔드 로드
-        strategy = load_strategy(request)
-        backend = load_backend(strategy, 'kakao', redirect_uri=settings.SOCIAL_AUTH_KAKAO_REDIRECT_URI)
+        try:
+            strategy = load_strategy(request)
+            backend = load_backend(strategy, 'kakao', redirect_uri=settings.SOCIAL_AUTH_KAKAO_REDIRECT_URI)
 
-        # 카카오 인증 URL로 리디렉션
-        auth_url = backend.auth_url()
-        return redirect(auth_url)
+            # 카카오 인증 URL 생성
+            auth_url = backend.auth_url()
+            logger.debug(f"Generated Kakao auth URL: {auth_url}")  # 생성된 인증 URL 확인
+            return redirect(auth_url)
+        except Exception as e:
+            # 발생한 오류를 로그에 기록
+            logger.error(f"Error in Kakao login process: {e}")
+            return JsonResponse({"error": "Failed to generate Kakao auth URL"}, status=500)
+
 
 class TokenLoginAPIView(APIView):
     def post(self, request):
