@@ -48,7 +48,6 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -66,7 +65,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://everion.store"    # HTTP를 사용하는 도메인 추가 
 ]
 
-
+CORS_ALLOW_CREDENTIALS = True
 
 # URL Configuration
 ROOT_URLCONF = 'likelion_community.urls'
@@ -148,9 +147,9 @@ load_dotenv()  # .env 파일 로드
 
 # 환경 변수 설정
 # Social Authentication and Kakao Settings
-SOCIAL_AUTH_KAKAO_KEY = os.getenv('SOCIAL_AUTH_KAKAO_KEY')
-SOCIAL_AUTH_KAKAO_SECRET = os.getenv('SOCIAL_AUTH_KAKAO_SECRET')
-SOCIAL_AUTH_KAKAO_REDIRECT_URI = os.getenv('SOCIAL_AUTH_KAKAO_REDIRECT_URI')
+SOCIAL_AUTH_KAKAO_KEY = env('SOCIAL_AUTH_KAKAO_KEY')
+SOCIAL_AUTH_KAKAO_SECRET = env('SOCIAL_AUTH_KAKAO_SECRET')
+SOCIAL_AUTH_KAKAO_REDIRECT_URI = env('SOCIAL_AUTH_KAKAO_REDIRECT_URI')
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 LOGIN_REDIRECT_URL = '/home/'
 LOGOUT_REDIRECT_URL = '/'
@@ -178,7 +177,11 @@ SOCIAL_AUTH_KAKAO_PROFILE_EXTRA_PARAMS = {
     'property_keys': ['kakao_account.email', 'kakao_account.profile.nickname']
 }
 SOCIAL_AUTH_KAKAO_FORCE_STATE = False
-SOCIAL_AUTH_REDIRECT_IS_HTTPS = False
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
 
 # Default Primary Key Field Type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
