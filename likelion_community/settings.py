@@ -221,17 +221,26 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'django_log.log'),  # 로그 파일 경로 설정
+            'filename': os.path.join(BASE_DIR, 'django_log.log'),
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['file'],
+            'handlers': ['console', 'file'],  # 콘솔과 파일에 모두 로그 출력
             'level': 'DEBUG',
             'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['console', 'file'],  # 요청 상태를 콘솔과 파일로 기록
+            'level': 'DEBUG',
+            'propagate': False,
         },
     },
 }
