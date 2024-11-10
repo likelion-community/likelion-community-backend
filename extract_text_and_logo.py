@@ -11,7 +11,6 @@ def clear_memory():
     """메모리 관리."""
     gc.collect()
 
-
 def resize_image_for_ocr(img, max_dim=800):
     """유동적인 리사이즈: 가장 긴 변을 기준으로 max_dim에 맞추어 원본 비율을 유지하여 리사이즈."""
     h, w = img.shape[:2]
@@ -22,7 +21,6 @@ def resize_image_for_ocr(img, max_dim=800):
 
 def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사자처럼', threshold=0.35):
     """로고와 텍스트 검출"""
-    # 이미지 스케일을 여러 단계로 조정하면서 검출 시도
     for scale in [800, 1000]:  # 800에서 시도 후 실패 시 1000 해상도로 시도
         resized_image = resize_image_for_ocr(image, max_dim=scale)
         img_gray = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
@@ -31,7 +29,6 @@ def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사
             if logo_template is None:
                 continue
             
-            # 템플릿 크기 조정 및 매칭
             for template_scale in np.linspace(0.6, 1.0, 5):
                 resized_template = cv2.resize(logo_template, 
                                               (int(logo_template.shape[1] * template_scale), 
@@ -42,16 +39,15 @@ def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사
                 result = cv2.matchTemplate(img_gray, resized_template, cv2.TM_CCOEFF_NORMED)
                 loc = np.where(result >= threshold)
                 
-                # OCR 검출
                 for pt in zip(*loc[::-1]):
                     logo_roi = resized_image[pt[1]:pt[1]+resized_template.shape[0], pt[0]:pt[0]+resized_template.shape[1]]
                     easyocr_results = reader.readtext(logo_roi, detail=0)
                     easyocr_text = ' '.join(easyocr_results)
 
-                    # 로고 텍스트와 일치 여부 확인
                     if logo_text in easyocr_text:
                         return True
     return False
+    
 
 def extract_text(image):
     img_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
