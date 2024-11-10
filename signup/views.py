@@ -77,11 +77,10 @@ class CustomLoginAPIView(APIView):
             password = serializer.validated_data.get('password')
             user = authenticate(request, username=username, password=password)
             if user:
-                # 로그인 후 바로 메인 페이지로 리디렉트
+                # 로그인 후 바로 프론트엔드 메인 페이지로 리디렉트
                 login(request, user)
-                return redirect('home:mainpage')
+                return redirect("https://localhost:5173/main")
         return Response({'error': '아이디 또는 비밀번호가 잘못되었습니다.'}, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 class CheckPasswordAPIView(APIView):
@@ -93,6 +92,7 @@ class CheckPasswordAPIView(APIView):
             return Response({'is_valid': True, 'message': '유효한 비밀번호입니다.'}, status=status.HTTP_200_OK)
         except ValidationError as e:
             return Response({'is_valid': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class LogoutAPIView(APIView):
     def post(self, request):
@@ -127,10 +127,32 @@ class SignupAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
 class CompleteProfileAPIView(APIView):
     permission_classes = [AllowAny]
-    
+
     def get(self, request):
+        user_id = request.session.get('partial_pipeline_user')
+        if not user_id:
+            # 기존: 단순히 Response로 닉네임 정보를 반환했음
+            # 수정: 프로필이 완성되지 않은 경우 프론트엔드의 카카오 가입 페이지로 리디렉션
+            return redirect("https://localhost:5173/kakaoSignup")
+
+        try:
+            user = CustomUser.objects.get(pk=user_id)
+        except CustomUser.DoesNotExist:
+            # 기존: 예외 처리 후 닉네임 정보만 반환했음
+            # 수정: 사용자가 존재하지 않는 경우에도 카카오 가입 페이지로 리디렉션
+            request.session.pop('partial_pipeline_user', None)
+            return redirect("https://localhost:5173/kakaoSignup")
+
+        if user.is_profile_complete:
+            # 기존: 프로필 완성 여부를 확인하지 않고 닉네임 정보만 반환
+            # 수정: 프로필이 완료된 경우 프론트엔드 메인 페이지로 리디렉션
+            return redirect("https://localhost:5173/main")
+
+        # 기존: 닉네임 정보만 반환
+        # 수정: 프로필이 완성되지 않은 경우에만 닉네임 정보 반환
         nickname = request.session.get('nickname')
         initial_data = {'nickname': nickname} if nickname else {}
         form_data = {'initial': initial_data}
@@ -139,17 +161,23 @@ class CompleteProfileAPIView(APIView):
     def post(self, request):
         user_id = request.session.get('partial_pipeline_user')
         if not user_id:
-            return redirect('signup:login_home')
+            # 기존: 단순히 닉네임 정보를 반환했음
+            # 수정: 프로필이 완성되지 않은 경우 카카오 가입 페이지로 리디렉션
+            return redirect("https://localhost:5173/kakaoSignup")
 
         try:
             user = CustomUser.objects.get(pk=user_id)
         except CustomUser.DoesNotExist:
+            # 기존: 예외 처리 후 닉네임 정보만 반환했음
+            # 수정: 사용자가 존재하지 않는 경우 카카오 가입 페이지로 리디렉션
             request.session.pop('partial_pipeline_user', None)
-            return redirect('signup:login_home')
+            return redirect("https://localhost:5173/kakaoSignup")
 
         if user.is_profile_complete:
+            # 기존: 단순히 프로필 상태를 반환했음
+            # 수정: 프로필이 완료된 경우 메인 페이지로 리디렉션
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return redirect('home:mainpage')
+            return redirect("https://localhost:5173/main")
 
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             uploaded_image = request.FILES.get('verification_photo')
@@ -166,12 +194,19 @@ class CompleteProfileAPIView(APIView):
                 login(request, user, backend='social_core.backends.kakao.KakaoOAuth2')
                 request.session.pop('partial_pipeline_user', None)
                 request.session.pop('photo_verified', None)
-                return Response(serializer.data, status=status.HTTP_200_OK)
+                # 기존: 성공적으로 저장한 후에도 단순히 Response로 데이터를 반환했음
+                # 수정: 성공적으로 프로필이 완성되었을 때 메인 페이지로 리디렉션
+                return redirect("https://localhost:5173/main")
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+        # 기존: 단순히 Response로 에러 메시지를 반환했음
+        # 수정: 메시지 처리 후에도 Response로 에러 메시지를 반환 (이 부분은 그대로 유지)
         messages.error(request, "사진 유효성 검사에 실패했습니다. 다시 시도해 주세요.")
         return Response({'error': "사진 유효성 검사에 실패했습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
+
+    
+    
 class DeleteIncompleteUserAPIView(APIView):
     def delete(self, request):
         user_id = request.session.get('partial_pipeline_user')
