@@ -5,6 +5,7 @@ import easyocr
 import re
 import gc
 import time  # time 모듈 임포트
+from extract_text_and_logo import extract_text_and_logo
 
 # Tesseract 및 EasyOCR 설정
 reader = easyocr.Reader(['ko', 'en'])
