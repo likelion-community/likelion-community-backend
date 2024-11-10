@@ -39,7 +39,15 @@ class KakaoLoginAPIView(APIView):
                 return redirect('signup:complete_profile')
             login(request, request.user)
             return redirect('home:mainpage')
-        return redirect('signup:login_home')
+        
+        # 카카오 백엔드 로드
+        strategy = load_strategy(request)
+        backend = load_backend(strategy, 'kakao', redirect_uri=settings.SOCIAL_AUTH_KAKAO_REDIRECT_URI)
+
+        # 카카오 인증 URL로 리디렉션
+        auth_url = backend.auth_url()
+        return redirect(auth_url)
+        
 
 class TokenLoginAPIView(APIView):
     def post(self, request):
