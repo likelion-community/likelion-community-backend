@@ -5,6 +5,8 @@ import easyocr
 import re
 import gc
 
+reader = easyocr.Reader(['ko', 'en'])
+
 def clear_memory():
     """메모리 관리."""
     gc.collect()
@@ -35,14 +37,9 @@ def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처�
                 for pt in zip(*loc[::-1]):
                     logo_roi = resized_image[pt[1]:pt[1]+resized_template.shape[0], pt[0]:pt[0]+resized_template.shape[1]]
                     tess_text = pytesseract.image_to_string(logo_roi, config='--psm 6', lang='kor').strip()
-
-                    # easyocr.Reader 인스턴스 생성 및 사용 후 삭제
-                    reader = easyocr.Reader(['ko', 'en'])
                     easyocr_results = reader.readtext(logo_roi, detail=0)
-                    del reader  # 메모리 해제
-                    
-                    easyocr_text = ' '.join(easyocr_results)
 
+                    easyocr_text = ' '.join(easyocr_results)
                     if logo_text in tess_text or logo_text in easyocr_text:
                         return True
     return False
