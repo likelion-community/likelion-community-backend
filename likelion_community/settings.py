@@ -66,7 +66,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://everion.store"    # HTTP를 사용하는 도메인 추가 
 ]
 
-
+CORS_ALLOW_CREDENTIALS = True
 
 # URL Configuration
 ROOT_URLCONF = 'likelion_community.urls'
@@ -181,7 +181,10 @@ SOCIAL_AUTH_KAKAO_PROFILE_EXTRA_PARAMS = {
     'property_keys': ['kakao_account.email', 'kakao_account.profile.nickname']
 }
 SOCIAL_AUTH_KAKAO_FORCE_STATE = False
-SOCIAL_AUTH_REDIRECT_IS_HTTPS = False
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 # Default Primary Key Field Type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
