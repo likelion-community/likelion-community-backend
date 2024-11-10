@@ -61,6 +61,7 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "https://localhost:5173",  # HTTPS 로컬 환경
     "http://3.39.168.41:80",
     "https://everion.store",  # HTTPS를 사용하는 도메인 추가
     "http://everion.store"    # HTTP를 사용하는 도메인 추가 
@@ -210,6 +211,7 @@ CSRF_COOKIE_NAME = 'csrftoken'  # 쿠키에 저장될 CSRF 토큰의 이름 (기
 CSRF_COOKIE_HTTPONLY = False    # JavaScript에서 CSRF 토큰에 접근할 수 있게 설정
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
+    "https://localhost:5173", 
     "http://3.39.168.41:8000",
     "https://everion.store",
     "http://everion.store",
