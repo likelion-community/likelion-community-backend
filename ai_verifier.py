@@ -57,10 +57,14 @@ def verify_like_a_lion_member(uploaded_image):
     print(f"전체 처리 시간: {time.time() - start_time}초 소요")
     return True
 
+
 # OCR을 위한 이미지 리사이즈 함수
-def resize_image_for_ocr(img, max_dim=500):
+def resize_image_for_ocr(img, max_dim=1000, min_dim=300):
     h, w = img.shape[:2]
     if max(h, w) > max_dim:
         scale = max_dim / max(h, w)
+        img = cv2.resize(img, (int(w * scale), int(h * scale)))
+    elif max(h, w) < min_dim:
+        scale = min_dim / max(h, w)
         img = cv2.resize(img, (int(w * scale), int(h * scale)))
     return img
