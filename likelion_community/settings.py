@@ -213,3 +213,24 @@ CSRF_TRUSTED_ORIGINS = [
     "http://3.39.168.41:8000",
     "https://everion.store",
 ]
+
+import os
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'django_log.log'),  # 로그 파일 경로 설정
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
