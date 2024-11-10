@@ -106,7 +106,7 @@ def extract_text_and_logo(image, reader):  # reader를 매개변수로 추가
     ]
 
     print("로고 검출 검사 시작")
-    logo_detected = detect_logo_with_text(img, logo_templates)
+    logo_detected = detect_logo_with_text(img, logo_templates, reader) 
     print("로고 검출 검사 완료")
     
     if logo_detected:
