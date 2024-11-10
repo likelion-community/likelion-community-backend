@@ -37,9 +37,9 @@ class KakaoLoginAPIView(APIView):
         if request.user.is_authenticated:
             if not request.user.is_profile_complete:
                 request.session['partial_pipeline_user'] = request.user.pk
-                return redirect("https://localhost:5173/kakaoSignup")
+                return redirect('signup:complete_profile')
             login(request, request.user)
-            return redirect("https://localhost:5173/main")
+            return redirect('home:mainpage')
         
         # 카카오 백엔드 로드
         strategy = load_strategy(request)
