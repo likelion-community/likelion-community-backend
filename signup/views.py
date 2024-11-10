@@ -15,7 +15,8 @@ from .models import CustomUserToken, CustomUser
 from ai_verifier import verify_like_a_lion_member
 import logging
 from rest_framework.permissions import AllowAny
-
+from social_django.utils import load_strategy, load_backend
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -36,9 +37,9 @@ class KakaoLoginAPIView(APIView):
         if request.user.is_authenticated:
             if not request.user.is_profile_complete:
                 request.session['partial_pipeline_user'] = request.user.pk
-                return redirect('signup:complete_profile')
+                return redirect("https://localhost:5173/kakaoSignup")
             login(request, request.user)
-            return redirect('home:mainpage')
+            return redirect("https://localhost:5173/main")
         
         # 카카오 백엔드 로드
         strategy = load_strategy(request)
@@ -47,7 +48,6 @@ class KakaoLoginAPIView(APIView):
         # 카카오 인증 URL로 리디렉션
         auth_url = backend.auth_url()
         return redirect(auth_url)
-        
 
 class TokenLoginAPIView(APIView):
     def post(self, request):
@@ -77,11 +77,10 @@ class CustomLoginAPIView(APIView):
             password = serializer.validated_data.get('password')
             user = authenticate(request, username=username, password=password)
             if user:
-                # 로그인 후 바로 메인 페이지로 리디렉트
+                # 로그인 후 바로 프론트엔드 메인 페이지로 리디렉트
                 login(request, user)
-                return redirect('home:mainpage')
+                return redirect("https://localhost:5173/main")
         return Response({'error': '아이디 또는 비밀번호가 잘못되었습니다.'}, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 class CheckPasswordAPIView(APIView):
@@ -93,6 +92,7 @@ class CheckPasswordAPIView(APIView):
             return Response({'is_valid': True, 'message': '유효한 비밀번호입니다.'}, status=status.HTTP_200_OK)
         except ValidationError as e:
             return Response({'is_valid': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class LogoutAPIView(APIView):
     def post(self, request):
@@ -139,17 +139,17 @@ class CompleteProfileAPIView(APIView):
     def post(self, request):
         user_id = request.session.get('partial_pipeline_user')
         if not user_id:
-            return redirect('signup:login_home')
+            return redirect("https://localhost:5173/kakaoSignup")
 
         try:
             user = CustomUser.objects.get(pk=user_id)
         except CustomUser.DoesNotExist:
             request.session.pop('partial_pipeline_user', None)
-            return redirect('signup:login_home')
+            return redirect("https://localhost:5173/kakaoSignup")
 
         if user.is_profile_complete:
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return redirect('home:mainpage')
+            return redirect("https://localhost:5173/main")
 
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             uploaded_image = request.FILES.get('verification_photo')
@@ -171,7 +171,8 @@ class CompleteProfileAPIView(APIView):
 
         messages.error(request, "사진 유효성 검사에 실패했습니다. 다시 시도해 주세요.")
         return Response({'error': "사진 유효성 검사에 실패했습니다."}, status=status.HTTP_400_BAD_REQUEST)
-
+    
+    
 class DeleteIncompleteUserAPIView(APIView):
     def delete(self, request):
         user_id = request.session.get('partial_pipeline_user')
