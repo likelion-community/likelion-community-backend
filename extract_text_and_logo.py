@@ -88,7 +88,7 @@ def extract_text(image):
 
     return text_data
 
-def extract_text_and_logo(image):
+def extract_text_and_logo(image, reader):  # reader를 매개변수로 추가
     if isinstance(image, str):
         img = cv2.imread(image)
     else:
