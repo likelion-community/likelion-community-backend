@@ -23,12 +23,14 @@ def resize_image_for_ocr(img, max_dim=800):
 
 def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사자처럼', threshold=0.15):
     """로고와 텍스트 검출, 여러 해상도와 템플릿 크기에서 시도."""
-    scales = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75]  # 다양한 크기로 이미지 스케일링
+    # 이미지 상단 절반만 리사이즈 후 사용
     h, w = image.shape[:2]
     top_half_image = image[:h // 2, :]  # 상단 전체 영역 사용
+    resized_top_half_image = resize_image_for_ocr(top_half_image)  # 리사이즈 적용
 
+    scales = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75]  # 다양한 크기로 이미지 스케일링
     for scale in scales:
-        resized_image = cv2.resize(top_half_image, (int(top_half_image.shape[1] * scale), int(top_half_image.shape[0] * scale)))
+        resized_image = cv2.resize(resized_top_half_image, (int(resized_top_half_image.shape[1] * scale), int(resized_top_half_image.shape[0] * scale)))
         img_gray = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
         
         for logo_template in logo_templates:
@@ -58,6 +60,7 @@ def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사
 
     print("로고 텍스트 감지 실패")
     return False
+
 
 
 
