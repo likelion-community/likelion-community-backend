@@ -5,6 +5,7 @@ import easyocr
 import re
 import gc
 
+# 글로벌 easyocr 인스턴스 생성
 reader = easyocr.Reader(['ko', 'en'])
 
 def clear_memory():
@@ -20,16 +21,17 @@ def resize_image_for_ocr(img, max_dim=800):
     return img
 
 def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사자처럼', threshold=0.35):
-    """로고와 텍스트 검출"""
-    for scale in [800, 1000]:  # 800에서 시도 후 실패 시 1000 해상도로 시도
-        resized_image = resize_image_for_ocr(image, max_dim=scale)
+    """로고와 텍스트 검출, 여러 해상도와 템플릿 크기에서 시도."""
+    scales = [0.5, 0.75, 1.0, 1.25]  # 50%, 75%, 100%, 125% 크기로 이미지 스케일링
+    for scale in scales:
+        resized_image = cv2.resize(image, (int(image.shape[1] * scale), int(image.shape[0] * scale)))
         img_gray = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
         
         for logo_template in logo_templates:
             if logo_template is None:
                 continue
             
-            for template_scale in np.linspace(0.6, 1.0, 5):
+            for template_scale in np.linspace(0.6, 1.0, 5):  # 템플릿 크기 조정
                 resized_template = cv2.resize(logo_template, 
                                               (int(logo_template.shape[1] * template_scale), 
                                                int(logo_template.shape[0] * template_scale)))
@@ -47,20 +49,15 @@ def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사
                     if logo_text in easyocr_text:
                         return True
     return False
-    
 
-def extract_text(image):
+def extract_text(image, reader):
     img_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     img_filtered = cv2.bilateralFilter(img_gray, 9, 75, 75)
     img_blurred = cv2.GaussianBlur(img_filtered, (5, 5), 0)
     img_resized = cv2.resize(img_blurred, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
 
     ocr_data = pytesseract.image_to_data(img_resized, output_type=pytesseract.Output.DICT, config='--psm 6 -l kor')
-
-    # easyocr.Reader 인스턴스 생성 및 사용 후 삭제
-    reader = easyocr.Reader(['ko', 'en'])
     easyocr_results = reader.readtext(image, detail=0)
-    del reader  # 메모리 해제
 
     tesseract_results = ocr_data['text'] if isinstance(ocr_data['text'], list) else [ocr_data['text']]
     combined_results = easyocr_results + tesseract_results
@@ -90,7 +87,7 @@ def extract_text(image):
 
     return text_data
 
-def extract_text_and_logo(image, reader):  # reader를 매개변수로 추가
+def extract_text_and_logo(image, reader):
     if isinstance(image, str):
         img = cv2.imread(image)
     else:
@@ -111,7 +108,7 @@ def extract_text_and_logo(image, reader):  # reader를 매개변수로 추가
     
     if logo_detected:
         print("텍스트 추출 시작") 
-        text_data = extract_text(img)
+        text_data = extract_text(img, reader)
         if not any(text_data.values()):
             print("로고는 검출되었지만 필수 필드 검출에 실패했습니다.")
             return None, True
