@@ -8,4 +8,5 @@ app_name = 'mypage'
 
 urlpatterns = [
     path('profileimage/', ProfileImageUpdateView.as_view(), name='profileimage'),
+    path('myscraps/', MyScrapView.as_view(), name='myscraps'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
