@@ -20,18 +20,22 @@ def resize_image_for_ocr(img, max_dim=800):
         img = cv2.resize(img, (int(w * scale), int(h * scale)))
     return img
 
+
 def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사자처럼', threshold=0.35):
     """로고와 텍스트 검출, 여러 해상도와 템플릿 크기에서 시도."""
-    scales = [0.5, 0.75, 1.0, 1.25]  # 50%, 75%, 100%, 125% 크기로 이미지 스케일링
+    scales = [0.5, 0.75, 1.0, 1.25]  # 다양한 크기로 이미지 스케일링
+    h, w = image.shape[:2]
+    top_left_image = image[:h // 2, :w // 2]  # 상단 좌측 사분면 영역만 사용
+
     for scale in scales:
-        resized_image = cv2.resize(image, (int(image.shape[1] * scale), int(image.shape[0] * scale)))
+        resized_image = cv2.resize(top_left_image, (int(top_left_image.shape[1] * scale), int(top_left_image.shape[0] * scale)))
         img_gray = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
         
         for logo_template in logo_templates:
             if logo_template is None:
                 continue
             
-            for template_scale in np.linspace(0.6, 1.0, 5):  # 템플릿 크기 조정
+            for template_scale in np.linspace(0.5, 1.0, 5):  # 템플릿 크기를 더 작게도 조정
                 resized_template = cv2.resize(logo_template, 
                                               (int(logo_template.shape[1] * template_scale), 
                                                int(logo_template.shape[0] * template_scale)))
@@ -49,6 +53,8 @@ def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사
                     if logo_text in easyocr_text:
                         return True
     return False
+
+
 
 def extract_text(image, reader):
     img_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
