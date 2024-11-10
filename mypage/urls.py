@@ -10,4 +10,5 @@ urlpatterns = [
     path('profileimage/', ProfileImageUpdateView.as_view(), name='profileimage'),
     path('myscraps/', MyScrapView.as_view(), name='myscraps'),
     path('schoolverification/', SchoolVerificationView.as_view(), name='schoolverification'),
+    path('executiveverification/', ExecutiveVerificationView.as_view(), name='executiveverification'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

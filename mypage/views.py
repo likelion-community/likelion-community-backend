@@ -43,7 +43,7 @@ class MyScrapView(APIView):
     
 class SchoolVerificationView(APIView):
     permission_classes = [IsAuthenticated]
-    
+
     def post(self, request, *args, **kwargs):
         user = request.user
         serializer = SchoolVerificationSerializer(data=request.data)
@@ -51,4 +51,16 @@ class SchoolVerificationView(APIView):
         if serializer.is_valid():
             serializer.save(user=user)
             return Response({"detail": "학교 인증 사진이 제출되었습니다."}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class ExecutiveVerificationView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        serializer = ExecutiveVerificationSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save(user=user)
+            return Response({"detail": "운영진 인증 사진이 제출되었습니다."}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

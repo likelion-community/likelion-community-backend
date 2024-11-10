@@ -14,3 +14,9 @@ class SchoolVerificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = SchoolVerification
         fields = ['verification_photo']
+
+class ExecutiveVerificationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ExecutiveVerification
+        fields = ['verification_photo']
