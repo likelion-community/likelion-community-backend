@@ -95,12 +95,12 @@ WSGI_APPLICATION = 'likelion_community.wsgi.application'
 # Database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',  # MySQL 데이터베이스 엔진
-        'NAME': 'everion',                     # 데이터베이스 이름
-        'USER': 'root',                         # MySQL 사용자 이름
-        'PASSWORD': os.environ.get('DB_PASSWORD'),    # MySQL 사용자 비밀번호
-        'HOST': '3.39.168.41',                 # MySQL 서버의 퍼블릭 IP 주소
-        'PORT': '3306',                        # MySQL 포트 (기본 포트)
+        'ENGINE': 'django.db.backends.mysql',     # MySQL 데이터베이스 엔진
+        'NAME': 'everion_db2',                    # 데이터베이스 이름
+        'USER': 'root',                           # MySQL 사용자 이름
+        'PASSWORD': os.environ.get('DB_PASSWORD'),# MySQL 사용자 비밀번호
+        'HOST': 'everion.store',                  # 도메인 이름으로 변경
+        'PORT': '3306',                           # MySQL 포트 (기본 포트)
     }
 }
 
