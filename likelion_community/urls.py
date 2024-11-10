@@ -28,6 +28,7 @@ urlpatterns = [
     path('post/', include('post.urls')),
     path('friend/', include('friend.urls')),  
     path('attendance/', include('attendance.urls')),
+    path('mypage/', include('mypage.urls')),
 ]
 
 if settings.DEBUG:
