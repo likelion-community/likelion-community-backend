@@ -1,430 +1,1202 @@
-[2024-11-08 12:09:06 +0000] [9869] [INFO] Starting gunicorn 23.0.0
-[2024-11-08 12:09:06 +0000] [9869] [INFO] Listening at: http://0.0.0.0:8000 (9869)
-[2024-11-08 12:09:06 +0000] [9869] [INFO] Using worker: sync
-[2024-11-08 12:09:06 +0000] [9870] [INFO] Booting worker with pid: 9870
-[2024-11-08 12:09:06 +0000] [9871] [INFO] Booting worker with pid: 9871
-[2024-11-08 12:09:06 +0000] [9872] [INFO] Booting worker with pid: 9872
-Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
-Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
-Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
-[2024-11-08 12:10:07 +0000] [9877] [INFO] Starting gunicorn 23.0.0
-[2024-11-08 12:10:07 +0000] [9877] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-08 12:10:07 +0000] [9877] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-08 12:10:08 +0000] [9877] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-08 12:10:08 +0000] [9877] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-08 12:10:09 +0000] [9877] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-08 12:10:09 +0000] [9877] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-08 12:10:10 +0000] [9877] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-08 12:10:10 +0000] [9877] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-08 12:10:11 +0000] [9877] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-08 12:10:11 +0000] [9877] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-08 12:10:12 +0000] [9877] [ERROR] Can't connect to ('0.0.0.0', 8000)
-[2024-11-08 12:11:55 +0000] [9889] [INFO] Starting gunicorn 23.0.0
-[2024-11-08 12:11:55 +0000] [9889] [INFO] Listening at: http://0.0.0.0:8000 (9889)
-[2024-11-08 12:11:55 +0000] [9889] [INFO] Using worker: sync
-[2024-11-08 12:11:55 +0000] [9890] [INFO] Booting worker with pid: 9890
-[2024-11-08 12:11:55 +0000] [9891] [INFO] Booting worker with pid: 9891
-[2024-11-08 12:11:55 +0000] [9892] [INFO] Booting worker with pid: 9892
-Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
-Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
-Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
-[2024-11-08 12:13:28 +0000] [9889] [INFO] Handling signal: term
-[2024-11-08 21:13:28 +0900] [9890] [INFO] Worker exiting (pid: 9890)
-[2024-11-08 21:13:28 +0900] [9891] [INFO] Worker exiting (pid: 9891)
-[2024-11-08 21:13:28 +0900] [9892] [INFO] Worker exiting (pid: 9892)
-[2024-11-08 12:13:28 +0000] [9889] [ERROR] Worker (pid:9891) was sent SIGTERM!
-[2024-11-08 12:13:29 +0000] [9889] [INFO] Shutting down: Master
-[2024-11-08 12:32:21 +0000] [10015] [INFO] Starting gunicorn 23.0.0
-[2024-11-08 12:32:21 +0000] [10015] [INFO] Listening at: http://0.0.0.0:8000 (10015)
-[2024-11-08 12:32:21 +0000] [10015] [INFO] Using worker: sync
-[2024-11-08 12:32:21 +0000] [10016] [INFO] Booting worker with pid: 10016
-[2024-11-08 12:32:21 +0000] [10017] [INFO] Booting worker with pid: 10017
-[2024-11-08 12:32:21 +0000] [10018] [INFO] Booting worker with pid: 10018
-Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
-Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
-Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
-[2024-11-08 12:34:44 +0000] [10020] [INFO] Starting gunicorn 23.0.0
-[2024-11-08 12:34:44 +0000] [10020] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-08 12:34:44 +0000] [10020] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-08 12:34:45 +0000] [10020] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-08 12:34:45 +0000] [10020] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-08 12:34:46 +0000] [10020] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-08 12:34:46 +0000] [10020] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-08 12:34:47 +0000] [10020] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-08 12:34:47 +0000] [10020] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-08 12:34:48 +0000] [10020] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-08 12:34:48 +0000] [10020] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-08 12:34:49 +0000] [10020] [ERROR] Can't connect to ('0.0.0.0', 8000)
-[2024-11-08 12:35:40 +0000] [10033] [INFO] Starting gunicorn 23.0.0
-[2024-11-08 12:35:40 +0000] [10033] [INFO] Listening at: http://0.0.0.0:8000 (10033)
-[2024-11-08 12:35:40 +0000] [10033] [INFO] Using worker: sync
-[2024-11-08 12:35:40 +0000] [10034] [INFO] Booting worker with pid: 10034
-[2024-11-08 12:35:40 +0000] [10035] [INFO] Booting worker with pid: 10035
-[2024-11-08 12:35:40 +0000] [10036] [INFO] Booting worker with pid: 10036
-Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
-Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
-Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
-[2024-11-08 12:39:37 +0000] [10039] [INFO] Starting gunicorn 23.0.0
-[2024-11-08 12:39:37 +0000] [10039] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-08 12:39:37 +0000] [10039] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-08 12:39:38 +0000] [10039] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-08 12:39:38 +0000] [10039] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-08 12:39:39 +0000] [10039] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-08 12:39:39 +0000] [10039] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-08 12:39:40 +0000] [10039] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-08 12:39:40 +0000] [10039] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-08 12:39:41 +0000] [10039] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-08 12:39:41 +0000] [10039] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-08 12:39:42 +0000] [10039] [ERROR] Can't connect to ('0.0.0.0', 8000)
-[2024-11-08 12:42:07 +0000] [10055] [INFO] Starting gunicorn 23.0.0
-[2024-11-08 12:42:07 +0000] [10055] [INFO] Listening at: http://0.0.0.0:8000 (10055)
-[2024-11-08 12:42:07 +0000] [10055] [INFO] Using worker: sync
-[2024-11-08 12:42:07 +0000] [10056] [INFO] Booting worker with pid: 10056
-[2024-11-08 12:42:07 +0000] [10057] [INFO] Booting worker with pid: 10057
-[2024-11-08 12:42:07 +0000] [10058] [INFO] Booting worker with pid: 10058
-Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
-Invalid line: ALLOWED_HOSTS = ['everion.store', 'localhost', '3.39.168.41']
-Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
-Invalid line: ALLOWED_HOSTS = ['everion.store', 'localhost', '3.39.168.41']
-Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
-Invalid line: ALLOWED_HOSTS = ['everion.store', 'localhost', '3.39.168.41']
-[2024-11-08 12:45:56 +0000] [10075] [INFO] Starting gunicorn 23.0.0
-[2024-11-08 12:45:56 +0000] [10075] [INFO] Listening at: http://0.0.0.0:8000 (10075)
-[2024-11-08 12:45:56 +0000] [10075] [INFO] Using worker: sync
-[2024-11-08 12:45:56 +0000] [10076] [INFO] Booting worker with pid: 10076
-[2024-11-08 12:45:56 +0000] [10077] [INFO] Booting worker with pid: 10077
-[2024-11-08 12:45:56 +0000] [10078] [INFO] Booting worker with pid: 10078
-Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
-Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
-Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
-[2024-11-08 12:46:57 +0000] [10075] [INFO] Handling signal: term
-[2024-11-08 21:46:57 +0900] [10077] [INFO] Worker exiting (pid: 10077)
-[2024-11-08 21:46:57 +0900] [10076] [INFO] Worker exiting (pid: 10076)
-[2024-11-08 21:46:57 +0900] [10078] [INFO] Worker exiting (pid: 10078)
-[2024-11-08 12:46:57 +0000] [10075] [INFO] Shutting down: Master
-[2024-11-08 12:47:18 +0000] [10087] [INFO] Starting gunicorn 23.0.0
-[2024-11-08 12:47:18 +0000] [10087] [INFO] Listening at: http://0.0.0.0:8000 (10087)
-[2024-11-08 12:47:18 +0000] [10087] [INFO] Using worker: sync
-[2024-11-08 12:47:18 +0000] [10088] [INFO] Booting worker with pid: 10088
-[2024-11-08 12:47:18 +0000] [10089] [INFO] Booting worker with pid: 10089
-[2024-11-08 12:47:18 +0000] [10090] [INFO] Booting worker with pid: 10090
-Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
-Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
-Invalid line: SECRET_KEY = 'django-insecure-8t1ymn8y*4ta%@txjou(#81hrm^q6du-8c43wd6ey)=ou#b2w8'
-[2024-11-08 21:48:27 +0900] [10088] [INFO] Worker exiting (pid: 10088)
-[2024-11-08 21:48:27 +0900] [10090] [INFO] Worker exiting (pid: 10090)
-[2024-11-08 12:48:27 +0000] [10087] [INFO] Handling signal: term
-[2024-11-08 21:48:27 +0900] [10089] [INFO] Worker exiting (pid: 10089)
-[2024-11-08 12:48:27 +0000] [10087] [ERROR] Worker (pid:10088) was sent SIGTERM!
-[2024-11-08 12:48:27 +0000] [10087] [ERROR] Worker (pid:10090) was sent SIGTERM!
-[2024-11-08 12:48:28 +0000] [10087] [INFO] Shutting down: Master
-[2024-11-08 12:49:08 +0000] [10096] [INFO] Starting gunicorn 23.0.0
-[2024-11-08 12:49:08 +0000] [10096] [INFO] Listening at: http://0.0.0.0:8000 (10096)
-[2024-11-08 12:49:08 +0000] [10096] [INFO] Using worker: sync
-[2024-11-08 12:49:08 +0000] [10097] [INFO] Booting worker with pid: 10097
-[2024-11-08 12:49:08 +0000] [10098] [INFO] Booting worker with pid: 10098
-[2024-11-08 12:49:08 +0000] [10099] [INFO] Booting worker with pid: 10099
-[2024-11-08 13:08:31 +0000] [10096] [INFO] Handling signal: term
-[2024-11-08 22:08:31 +0900] [10097] [INFO] Worker exiting (pid: 10097)
-[2024-11-08 22:08:31 +0900] [10098] [INFO] Worker exiting (pid: 10098)
-[2024-11-08 22:08:31 +0900] [10099] [INFO] Worker exiting (pid: 10099)
-[2024-11-08 13:08:31 +0000] [10096] [ERROR] Worker (pid:10097) was sent SIGTERM!
-[2024-11-08 13:08:31 +0000] [10096] [INFO] Shutting down: Master
-[2024-11-08 13:14:40 +0000] [10185] [INFO] Starting gunicorn 23.0.0
-[2024-11-08 13:14:40 +0000] [10185] [INFO] Listening at: http://0.0.0.0:8000 (10185)
-[2024-11-08 13:14:40 +0000] [10185] [INFO] Using worker: sync
-[2024-11-08 13:14:40 +0000] [10186] [INFO] Booting worker with pid: 10186
-[2024-11-08 13:14:40 +0000] [10187] [INFO] Booting worker with pid: 10187
-[2024-11-08 13:14:40 +0000] [10188] [INFO] Booting worker with pid: 10188
-[2024-11-08 22:17:12 +0900] [10186] [INFO] Worker exiting (pid: 10186)
-[2024-11-08 13:17:12 +0000] [10185] [INFO] Handling signal: term
-[2024-11-08 22:17:12 +0900] [10187] [INFO] Worker exiting (pid: 10187)
-[2024-11-08 22:17:12 +0900] [10188] [INFO] Worker exiting (pid: 10188)
-[2024-11-08 13:17:12 +0000] [10185] [ERROR] Worker (pid:10186) was sent SIGTERM!
-[2024-11-08 13:17:12 +0000] [10185] [INFO] Shutting down: Master
-[2024-11-08 13:22:04 +0000] [10220] [INFO] Starting gunicorn 23.0.0
-[2024-11-08 13:22:04 +0000] [10220] [INFO] Listening at: http://0.0.0.0:443 (10220)
-[2024-11-08 13:22:04 +0000] [10220] [INFO] Using worker: sync
-[2024-11-08 13:22:04 +0000] [10223] [INFO] Booting worker with pid: 10223
-[2024-11-08 13:22:04 +0000] [10222] [INFO] Starting gunicorn 23.0.0
-[2024-11-08 13:22:04 +0000] [10222] [ERROR] Connection in use: ('0.0.0.0', 443)
-[2024-11-08 13:22:04 +0000] [10222] [ERROR] connection to ('0.0.0.0', 443) failed: [Errno 98] Address already in use
-[2024-11-08 13:22:04 +0000] [10224] [INFO] Booting worker with pid: 10224
-[2024-11-08 13:22:04 +0000] [10225] [INFO] Booting worker with pid: 10225
-[2024-11-08 13:22:05 +0000] [10222] [ERROR] Connection in use: ('0.0.0.0', 443)
-[2024-11-08 13:22:05 +0000] [10222] [ERROR] connection to ('0.0.0.0', 443) failed: [Errno 98] Address already in use
-[2024-11-08 13:22:06 +0000] [10222] [ERROR] Connection in use: ('0.0.0.0', 443)
-[2024-11-08 13:22:06 +0000] [10222] [ERROR] connection to ('0.0.0.0', 443) failed: [Errno 98] Address already in use
-[2024-11-08 13:22:07 +0000] [10222] [ERROR] Connection in use: ('0.0.0.0', 443)
-[2024-11-08 13:22:07 +0000] [10222] [ERROR] connection to ('0.0.0.0', 443) failed: [Errno 98] Address already in use
-[2024-11-08 13:22:08 +0000] [10222] [ERROR] Connection in use: ('0.0.0.0', 443)
-[2024-11-08 13:22:08 +0000] [10222] [ERROR] connection to ('0.0.0.0', 443) failed: [Errno 98] Address already in use
-[2024-11-08 13:22:09 +0000] [10222] [ERROR] Can't connect to ('0.0.0.0', 443)
-[2024-11-08 22:22:31 +0900] [10223] [INFO] Worker exiting (pid: 10223)
-[2024-11-08 22:22:31 +0900] [10224] [INFO] Worker exiting (pid: 10224)
-[2024-11-08 22:22:31 +0900] [10225] [INFO] Worker exiting (pid: 10225)
-[2024-11-08 13:22:31 +0000] [10220] [INFO] Handling signal: term
-[2024-11-08 13:22:31 +0000] [10220] [ERROR] Worker (pid:10223) was sent SIGTERM!
-[2024-11-08 13:22:31 +0000] [10220] [ERROR] Worker (pid:10224) was sent SIGTERM!
-[2024-11-08 13:22:31 +0000] [10220] [INFO] Shutting down: Master
-[2024-11-08 13:22:35 +0000] [10231] [INFO] Starting gunicorn 23.0.0
-[2024-11-08 13:22:35 +0000] [10231] [INFO] Listening at: http://0.0.0.0:443 (10231)
-[2024-11-08 13:22:35 +0000] [10231] [INFO] Using worker: sync
-[2024-11-08 13:22:35 +0000] [10232] [INFO] Booting worker with pid: 10232
-[2024-11-08 13:22:35 +0000] [10233] [INFO] Booting worker with pid: 10233
-[2024-11-08 13:22:35 +0000] [10234] [INFO] Booting worker with pid: 10234
-[2024-11-08 13:24:12 +0000] [10231] [INFO] Handling signal: term
-[2024-11-08 22:24:12 +0900] [10233] [INFO] Worker exiting (pid: 10233)
-[2024-11-08 22:24:12 +0900] [10234] [INFO] Worker exiting (pid: 10234)
-[2024-11-08 22:24:13 +0900] [10232] [INFO] Worker exiting (pid: 10232)
-[2024-11-08 13:24:13 +0000] [10231] [INFO] Shutting down: Master
-[2024-11-08 13:25:51 +0000] [10247] [INFO] Starting gunicorn 23.0.0
-[2024-11-08 13:25:51 +0000] [10247] [INFO] Listening at: http://0.0.0.0:443 (10247)
-[2024-11-08 13:25:51 +0000] [10247] [INFO] Using worker: sync
-[2024-11-08 13:25:51 +0000] [10248] [INFO] Booting worker with pid: 10248
-[2024-11-08 13:25:51 +0000] [10249] [INFO] Booting worker with pid: 10249
-[2024-11-08 13:25:51 +0000] [10250] [INFO] Booting worker with pid: 10250
-[2024-11-08 13:27:56 +0000] [10247] [CRITICAL] WORKER TIMEOUT (pid:10249)
-[2024-11-08 22:27:56 +0900] [10249] [ERROR] Error handling request (no URI read)
+
+Error: No application module specified.
+[2024-11-10 07:35:51 +0000] [20581] [INFO] Starting gunicorn 23.0.0
+[2024-11-10 07:35:51 +0000] [20581] [INFO] Listening at: http://0.0.0.0:80 (20581)
+[2024-11-10 07:35:51 +0000] [20581] [INFO] Using worker: sync
+[2024-11-10 07:35:51 +0000] [20582] [INFO] Booting worker with pid: 20582
+[2024-11-10 07:35:51 +0000] [20583] [INFO] Booting worker with pid: 20583
+[2024-11-10 07:35:51 +0000] [20584] [INFO] Booting worker with pid: 20584
+2024-11-10 16:35:58.936099: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-11-10 16:35:58.996513: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-11-10 16:36:07.862125: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+[2024-11-10 07:36:26 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20582)
+[2024-11-10 07:36:27 +0000] [20581] [ERROR] Worker (pid:20582) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:36:27 +0000] [20593] [INFO] Booting worker with pid: 20593
+[2024-11-10 07:36:28 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20583)
+[2024-11-10 07:36:29 +0000] [20581] [ERROR] Worker (pid:20583) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:36:29 +0000] [20594] [INFO] Booting worker with pid: 20594
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+[2024-11-10 07:36:34 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20584)
+[2024-11-10 07:36:35 +0000] [20581] [ERROR] Worker (pid:20584) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:36:35 +0000] [20595] [INFO] Booting worker with pid: 20595
+2024-11-10 16:36:36.602643: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-11-10 16:36:36.617137: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-11-10 16:36:39.130023: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+[2024-11-10 07:37:00 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20593)
+[2024-11-10 07:37:01 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20594)
+[2024-11-10 07:37:02 +0000] [20581] [ERROR] Worker (pid:20593) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:37:02 +0000] [20581] [ERROR] Worker (pid:20594) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:37:02 +0000] [20605] [INFO] Booting worker with pid: 20605
+[2024-11-10 07:37:02 +0000] [20606] [INFO] Booting worker with pid: 20606
+[2024-11-10 07:37:08 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20595)
+[2024-11-10 16:37:08 +0900] [20595] [ERROR] Error handling request /health/
 Traceback (most recent call last):
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/workers/sync.py", line 133, in handle
-    req = next(parser)
-          ^^^^^^^^^^^^
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/parser.py", line 41, in __next__
-    self.mesg = self.mesg_class(self.cfg, self.unreader, self.source_addr, self.req_count)
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 259, in __init__
-    super().__init__(cfg, unreader, peer_addr)
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 60, in __init__
-    unused = self.parse(self.unreader)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 274, in parse
-    line, rbuf = self.read_line(unreader, buf, self.limit_request_line)
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 326, in read_line
-    self.get_data(unreader, buf)
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 262, in get_data
-    data = unreader.read()
-           ^^^^^^^^^^^^^^^
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 36, in read
-    d = self.chunk()
-        ^^^^^^^^^^^^
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 63, in chunk
-    return self.sock.recv(self.mxchunk)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/workers/sync.py", line 134, in handle
+    self.handle_request(listener, req, client, addr)
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/workers/sync.py", line 177, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/wsgi.py", line 124, in __call__
+    response = self.get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 140, in get_response
+    response = self._middleware_chain(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/corsheaders/middleware.py", line 56, in __call__
+    result = self.get_response(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/corsheaders/middleware.py", line 56, in __call__
+    result = self.get_response(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_django/middleware.py", line 28, in __call__
+    return self.get_response(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    callback, callback_args, callback_kwargs = self.resolve_request(request)
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 313, in resolve_request
+    resolver_match = resolver.resolve(request.path_info)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/urls/resolvers.py", line 663, in resolve
+    for pattern in self.url_patterns:
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/home/ubuntu/likelion-community-backend/likelion_community/urls.py", line 27, in <module>
+    path('signup/', include('signup.urls')),
+                  ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/home/ubuntu/likelion-community-backend/signup/urls.py", line 3, in <module>
+    from .views import (
+  File "/home/ubuntu/likelion-community-backend/signup/views.py", line 15, in <module>
+    from ai_verifier import verify_like_a_lion_member
+  File "/home/ubuntu/likelion-community-backend/ai_verifier.py", line 4, in <module>
+    from extract_text_and_logo import extract_text_and_logo
+  File "/home/ubuntu/likelion-community-backend/extract_text_and_logo.py", line 4, in <module>
+    import easyocr
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/easyocr/__init__.py", line 1, in <module>
+    from .easyocr import Reader
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/easyocr/easyocr.py", line 3, in <module>
+    from .recognition import get_recognizer, get_text
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/easyocr/recognition.py", line 2, in <module>
+    import torch
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/__init__.py", line 2486, in <module>
+    from torch import _meta_registrations
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_meta_registrations.py", line 10, in <module>
+    from torch._decomp import (
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_decomp/__init__.py", line 249, in <module>
+    import torch._decomp.decompositions
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_decomp/decompositions.py", line 15, in <module>
+    import torch._prims as prims
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_prims/__init__.py", line 2199, in <module>
+    maximum_value = _make_prim(
+                    ^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_prims/__init__.py", line 319, in _make_prim
+    prim_def = torch.library.custom_op(
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_library/custom_ops.py", line 157, in custom_op
+    return inner(fn)
+           ^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_library/custom_ops.py", line 138, in inner
+    result = CustomOpDef(namespace, opname, schema_str, fn)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_library/custom_ops.py", line 186, in __init__
+    self._register_to_dispatcher()
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_library/custom_ops.py", line 616, in _register_to_dispatcher
+    lib._register_fake(self._name, fake_impl, _stacklevel=4)
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/library.py", line 184, in _register_fake
+    handle = entry.fake_impl.register(func_to_register, source)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_library/fake_impl.py", line 31, in register
+    if torch._C._dispatch_has_kernel_for_dispatch_key(self.qualname, "Meta"):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/workers/base.py", line 204, in handle_abort
     sys.exit(1)
 SystemExit: 1
-[2024-11-08 22:27:56 +0900] [10249] [INFO] Worker exiting (pid: 10249)
-[2024-11-08 13:27:56 +0000] [10254] [INFO] Booting worker with pid: 10254
-[2024-11-08 13:29:46 +0000] [10247] [INFO] Handling signal: term
-[2024-11-08 22:29:46 +0900] [10248] [INFO] Worker exiting (pid: 10248)
-[2024-11-08 22:29:46 +0900] [10250] [INFO] Worker exiting (pid: 10250)
-[2024-11-08 22:29:46 +0900] [10254] [INFO] Worker exiting (pid: 10254)
-[2024-11-08 13:29:46 +0000] [10247] [INFO] Shutting down: Master
-[2024-11-08 13:30:05 +0000] [10272] [INFO] Starting gunicorn 23.0.0
-[2024-11-08 13:30:05 +0000] [10272] [INFO] Listening at: http://0.0.0.0:443 (10272)
-[2024-11-08 13:30:05 +0000] [10272] [INFO] Using worker: sync
-[2024-11-08 13:30:05 +0000] [10273] [INFO] Booting worker with pid: 10273
-[2024-11-08 13:30:05 +0000] [10274] [INFO] Booting worker with pid: 10274
-[2024-11-08 13:30:05 +0000] [10275] [INFO] Booting worker with pid: 10275
-[2024-11-08 13:30:43 +0000] [10272] [CRITICAL] WORKER TIMEOUT (pid:10274)
-[2024-11-08 22:30:43 +0900] [10274] [ERROR] Error handling request (no URI read)
+[2024-11-10 16:37:08 +0900] [20595] [INFO] Worker exiting (pid: 20595)
+2024-11-10 16:37:08.979083: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-11-10 16:37:08.979310: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+[2024-11-10 07:37:09 +0000] [20581] [ERROR] Worker (pid:20595) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:37:09 +0000] [20607] [INFO] Booting worker with pid: 20607
+2024-11-10 16:37:12.978414: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+[2024-11-10 07:37:35 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20605)
+[2024-11-10 07:37:36 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20606)
+[2024-11-10 07:37:37 +0000] [20581] [ERROR] Worker (pid:20605) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:37:37 +0000] [20581] [ERROR] Worker (pid:20606) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:37:37 +0000] [20615] [INFO] Booting worker with pid: 20615
+[2024-11-10 07:37:37 +0000] [20616] [INFO] Booting worker with pid: 20616
+/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/layers/convolutional/base_conv.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+[2024-11-10 07:37:41 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20607)
 Traceback (most recent call last):
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/workers/sync.py", line 133, in handle
-    req = next(parser)
-          ^^^^^^^^^^^^
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/parser.py", line 41, in __next__
-    self.mesg = self.mesg_class(self.cfg, self.unreader, self.source_addr, self.req_count)
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 259, in __init__
-    super().__init__(cfg, unreader, peer_addr)
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 60, in __init__
-    unused = self.parse(self.unreader)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 274, in parse
-    line, rbuf = self.read_line(unreader, buf, self.limit_request_line)
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 326, in read_line
-    self.get_data(unreader, buf)
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 262, in get_data
-    data = unreader.read()
-           ^^^^^^^^^^^^^^^
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 36, in read
-    d = self.chunk()
-        ^^^^^^^^^^^^
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 63, in chunk
-    return self.sock.recv(self.mxchunk)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/tensorflow/python/util/nest_util.py", line 726, in _tf_core_flatten
+    return _pywrap_utils.Flatten(structure, expand_composites)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SystemError: <built-in function __import__> returned a result with an exception set
+[2024-11-10 07:37:42 +0000] [20581] [ERROR] Worker (pid:20607) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:37:42 +0000] [20620] [INFO] Booting worker with pid: 20620
+2024-11-10 16:37:43.069228: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-11-10 16:37:43.070482: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+[2024-11-10 07:38:09 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20615)
+[2024-11-10 07:38:09 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20616)
+[2024-11-10 07:38:11 +0000] [20581] [ERROR] Worker (pid:20615) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:38:11 +0000] [20581] [ERROR] Worker (pid:20616) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:38:11 +0000] [20628] [INFO] Booting worker with pid: 20628
+[2024-11-10 07:38:11 +0000] [20629] [INFO] Booting worker with pid: 20629
+2024-11-10 16:38:11.722393: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-11-10 16:38:14.576280: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, 2024-11-10 16:38:14.576594: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+rebuild TensorFlow with the appropriate compiler flags.
+[2024-11-10 07:38:26 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20620)
+[2024-11-10 16:38:26 +0900] [20620] [ERROR] Error handling request /health/
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/workers/sync.py", line 134, in handle
+    self.handle_request(listener, req, client, addr)
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/workers/sync.py", line 177, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/wsgi.py", line 124, in __call__
+    response = self.get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 140, in get_response
+    response = self._middleware_chain(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/corsheaders/middleware.py", line 56, in __call__
+    result = self.get_response(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/corsheaders/middleware.py", line 56, in __call__
+    result = self.get_response(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_django/middleware.py", line 28, in __call__
+    return self.get_response(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    callback, callback_args, callback_kwargs = self.resolve_request(request)
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 313, in resolve_request
+    resolver_match = resolver.resolve(request.path_info)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/urls/resolvers.py", line 663, in resolve
+    for pattern in self.url_patterns:
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/home/ubuntu/likelion-community-backend/likelion_community/urls.py", line 27, in <module>
+    path('signup/', include('signup.urls')),
+                  ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/home/ubuntu/likelion-community-backend/signup/urls.py", line 3, in <module>
+    from .views import (
+  File "/home/ubuntu/likelion-community-backend/signup/views.py", line 15, in <module>
+    from ai_verifier import verify_like_a_lion_member
+  File "/home/ubuntu/likelion-community-backend/ai_verifier.py", line 4, in <module>
+    from extract_text_and_logo import extract_text_and_logo
+  File "/home/ubuntu/likelion-community-backend/extract_text_and_logo.py", line 4, in <module>
+    import easyocr
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/easyocr/__init__.py", line 1, in <module>
+    from .easyocr import Reader
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/easyocr/easyocr.py", line 3, in <module>
+    from .recognition import get_recognizer, get_text
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/easyocr/recognition.py", line 2, in <module>
+    import torch
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/__init__.py", line 2475, in <module>
+    from torch import (
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/export/__init__.py", line 28, in <module>
+    from torch.fx.passes.infra.pass_base import PassResult
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/fx/passes/__init__.py", line 1, in <module>
+    from . import graph_drawer
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/fx/passes/graph_drawer.py", line 13, in <module>
+    from torch.fx.passes.shape_prop import TensorMetadata
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/fx/passes/shape_prop.py", line 11, in <module>
+    from torch._guards import detect_fake_mode
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_guards.py", line 826, in <module>
+    @dataclasses.dataclass(frozen=True)
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/dataclasses.py", line 1258, in wrap
+    return _process_class(cls, init, repr, eq, order, unsafe_hash,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/dataclasses.py", line 1062, in _process_class
+    _set_new_attribute(cls, '__init__',
+  File "/usr/lib/python3.12/dataclasses.py", line 870, in _set_new_attribute
+    setattr(cls, name, value)
   File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/workers/base.py", line 204, in handle_abort
     sys.exit(1)
 SystemExit: 1
-[2024-11-08 22:30:43 +0900] [10274] [INFO] Worker exiting (pid: 10274)
-[2024-11-08 13:30:43 +0000] [10277] [INFO] Booting worker with pid: 10277
-[2024-11-08 13:31:01 +0000] [10272] [CRITICAL] WORKER TIMEOUT (pid:10275)
-[2024-11-08 22:31:01 +0900] [10275] [ERROR] Error handling request (no URI read)
+[2024-11-10 16:38:26 +0900] [20620] [INFO] Worker exiting (pid: 20620)
+[2024-11-10 07:38:27 +0000] [20581] [ERROR] Worker (pid:20620) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:38:27 +0000] [20639] [INFO] Booting worker with pid: 20639
+2024-11-10 16:38:35.012226: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+[2024-11-10 07:38:43 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20628)
+[2024-11-10 07:38:43 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20629)
+[2024-11-10 07:38:45 +0000] [20581] [ERROR] Worker (pid:20629) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:38:45 +0000] [20581] [ERROR] Worker (pid:20628) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:38:45 +0000] [20642] [INFO] Booting worker with pid: 20642
+[2024-11-10 07:38:45 +0000] [20641] [INFO] Booting worker with pid: 20641
+2024-11-10 16:38:51.075349: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-11-10 16:38:51.075813: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+[2024-11-10 07:39:01 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20639)
+[2024-11-10 16:39:01 +0900] [20639] [ERROR] Error handling request /health/
 Traceback (most recent call last):
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/workers/sync.py", line 133, in handle
-    req = next(parser)
-          ^^^^^^^^^^^^
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/parser.py", line 41, in __next__
-    self.mesg = self.mesg_class(self.cfg, self.unreader, self.source_addr, self.req_count)
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 259, in __init__
-    super().__init__(cfg, unreader, peer_addr)
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 60, in __init__
-    unused = self.parse(self.unreader)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 274, in parse
-    line, rbuf = self.read_line(unreader, buf, self.limit_request_line)
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 326, in read_line
-    self.get_data(unreader, buf)
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/message.py", line 262, in get_data
-    data = unreader.read()
-           ^^^^^^^^^^^^^^^
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 36, in read
-    d = self.chunk()
-        ^^^^^^^^^^^^
-  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/http/unreader.py", line 63, in chunk
-    return self.sock.recv(self.mxchunk)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/workers/sync.py", line 134, in handle
+    self.handle_request(listener, req, client, addr)
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/workers/sync.py", line 177, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/wsgi.py", line 124, in __call__
+    response = self.get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 140, in get_response
+    response = self._middleware_chain(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/corsheaders/middleware.py", line 56, in __call__
+    result = self.get_response(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/corsheaders/middleware.py", line 56, in __call__
+    result = self.get_response(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_django/middleware.py", line 28, in __call__
+    return self.get_response(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    callback, callback_args, callback_kwargs = self.resolve_request(request)
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 313, in resolve_request
+    resolver_match = resolver.resolve(request.path_info)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/urls/resolvers.py", line 663, in resolve
+    for pattern in self.url_patterns:
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/home/ubuntu/likelion-community-backend/likelion_community/urls.py", line 27, in <module>
+    path('signup/', include('signup.urls')),
+                  ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/home/ubuntu/likelion-community-backend/signup/urls.py", line 3, in <module>
+    from .views import (
+  File "/home/ubuntu/likelion-community-backend/signup/views.py", line 15, in <module>
+    from ai_verifier import verify_like_a_lion_member
+  File "/home/ubuntu/likelion-community-backend/ai_verifier.py", line 4, in <module>
+    from extract_text_and_logo import extract_text_and_logo
+  File "/home/ubuntu/likelion-community-backend/extract_text_and_logo.py", line 4, in <module>
+    import easyocr
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/easyocr/__init__.py", line 1, in <module>
+    from .easyocr import Reader
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/easyocr/easyocr.py", line 3, in <module>
+    from .recognition import get_recognizer, get_text
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/easyocr/recognition.py", line 2, in <module>
+    import torch
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/__init__.py", line 2486, in <module>
+    from torch import _meta_registrations
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_meta_registrations.py", line 10, in <module>
+    from torch._decomp import (
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_decomp/__init__.py", line 249, in <module>
+    import torch._decomp.decompositions
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_decomp/decompositions.py", line 15, in <module>
+    import torch._prims as prims
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_prims/__init__.py", line 523, in <module>
+    abs = _make_elementwise_unary_prim(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_prims/__init__.py", line 491, in _make_elementwise_unary_prim
+    return _make_prim(
+           ^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_prims/__init__.py", line 319, in _make_prim
+    prim_def = torch.library.custom_op(
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_library/custom_ops.py", line 157, in custom_op
+    return inner(fn)
+           ^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_library/custom_ops.py", line 138, in inner
+    result = CustomOpDef(namespace, opname, schema_str, fn)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_library/custom_ops.py", line 186, in __init__
+    self._register_to_dispatcher()
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_library/custom_ops.py", line 616, in _register_to_dispatcher
+    lib._register_fake(self._name, fake_impl, _stacklevel=4)
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/library.py", line 163, in _register_fake
+    source = torch._library.utils.get_source(_stacklevel + 1)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_library/utils.py", line 42, in get_source
+    frame = inspect.getframeinfo(sys._getframe(stacklevel))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/inspect.py", line 1707, in getframeinfo
+    lines, lnum = findsource(frame)
+                  ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/inspect.py", line 1083, in findsource
+    module = getmodule(object, file)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/inspect.py", line 999, in getmodule
+    for modname, module in sys.modules.copy().items():
+                           ^^^^^^^^^^^^^^^^^^
   File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/workers/base.py", line 204, in handle_abort
     sys.exit(1)
 SystemExit: 1
-[2024-11-08 22:31:01 +0900] [10275] [INFO] Worker exiting (pid: 10275)
-[2024-11-08 13:31:01 +0000] [10278] [INFO] Booting worker with pid: 10278
-[2024-11-08 22:39:56 +0900] [10273] [INFO] Worker exiting (pid: 10273)
-[2024-11-08 13:39:56 +0000] [10272] [INFO] Handling signal: term
-[2024-11-08 22:39:56 +0900] [10277] [INFO] Worker exiting (pid: 10277)
-[2024-11-08 22:39:56 +0900] [10278] [INFO] Worker exiting (pid: 10278)
-[2024-11-08 13:39:56 +0000] [10272] [INFO] Shutting down: Master
-[2024-11-08 13:40:02 +0000] [10300] [INFO] Starting gunicorn 23.0.0
-[2024-11-08 13:40:02 +0000] [10300] [INFO] Listening at: http://0.0.0.0:8000 (10300)
-[2024-11-08 13:40:02 +0000] [10300] [INFO] Using worker: sync
-[2024-11-08 13:40:02 +0000] [10301] [INFO] Booting worker with pid: 10301
-[2024-11-08 13:40:02 +0000] [10302] [INFO] Booting worker with pid: 10302
-[2024-11-08 13:40:02 +0000] [10303] [INFO] Booting worker with pid: 10303
-[2024-11-08 14:08:39 +0000] [10348] [INFO] Starting gunicorn 23.0.0
-[2024-11-08 14:08:39 +0000] [10348] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-08 14:08:39 +0000] [10348] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-08 14:08:40 +0000] [10348] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-08 14:08:40 +0000] [10348] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-08 14:08:41 +0000] [10348] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-08 14:08:41 +0000] [10348] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-08 14:08:42 +0000] [10348] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-08 14:08:42 +0000] [10348] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-08 14:08:43 +0000] [10348] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-08 14:08:43 +0000] [10348] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-08 14:08:44 +0000] [10348] [ERROR] Can't connect to ('0.0.0.0', 8000)
-[2024-11-08 14:09:41 +0000] [10300] [INFO] Handling signal: term
-[2024-11-08 23:09:41 +0900] [10301] [INFO] Worker exiting (pid: 10301)
-[2024-11-08 23:09:41 +0900] [10303] [INFO] Worker exiting (pid: 10303)
-[2024-11-08 23:09:41 +0900] [10302] [INFO] Worker exiting (pid: 10302)
-[2024-11-08 14:09:42 +0000] [10300] [INFO] Shutting down: Master
-[2024-11-08 14:10:37 +0000] [10364] [INFO] Starting gunicorn 23.0.0
-[2024-11-08 14:10:37 +0000] [10364] [INFO] Listening at: http://0.0.0.0:8000 (10364)
-[2024-11-08 14:10:37 +0000] [10364] [INFO] Using worker: sync
-[2024-11-08 14:10:37 +0000] [10365] [INFO] Booting worker with pid: 10365
-[2024-11-08 14:10:37 +0000] [10366] [INFO] Booting worker with pid: 10366
-[2024-11-08 14:10:37 +0000] [10367] [INFO] Booting worker with pid: 10367
-2024-11-08 23:10:52.174436: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+[2024-11-10 16:39:02 +0900] [20639] [INFO] Worker exiting (pid: 20639)
+[2024-11-10 07:39:02 +0000] [20581] [ERROR] Worker (pid:20639) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:39:02 +0000] [20649] [INFO] Booting worker with pid: 20649
+2024-11-10 16:39:10.536431: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+[2024-11-10 07:39:17 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20641)
+[2024-11-10 07:39:17 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20642)
+[2024-11-10 07:39:18 +0000] [20581] [ERROR] Worker (pid:20641) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:39:18 +0000] [20581] [ERROR] Worker (pid:20642) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:39:19 +0000] [20651] [INFO] Booting worker with pid: 20651
+[2024-11-10 07:39:19 +0000] [20650] [INFO] Booting worker with pid: 20650
+2024-11-10 16:39:23.398056: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-11-10 16:39:33.421653: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+[2024-11-10 07:39:36 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20649)
+[2024-11-10 07:39:37 +0000] [20581] [ERROR] Worker (pid:20649) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:39:37 +0000] [20658] [INFO] Booting worker with pid: 20658
+2024-11-10 16:39:42.847364: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+[2024-11-10 07:39:52 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20651)
+[2024-11-10 07:39:54 +0000] [20581] [ERROR] Worker (pid:20651) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:39:54 +0000] [20663] [INFO] Booting worker with pid: 20663
+[2024-11-10 07:39:56 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20650)
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+[2024-11-10 07:39:57 +0000] [20581] [ERROR] Worker (pid:20650) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:39:57 +0000] [20664] [INFO] Booting worker with pid: 20664
+2024-11-10 16:40:03.839053: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-11-10 16:40:05.070253: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/layers/convolutional/base_conv.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+[2024-11-10 07:40:12 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20658)
+[2024-11-10 07:40:13 +0000] [20581] [ERROR] Worker (pid:20658) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:40:13 +0000] [20674] [INFO] Booting worker with pid: 20674
+2024-11-10 16:40:21.043815: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+[2024-11-10 07:40:28 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20663)
+[2024-11-10 07:40:29 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20664)
+[2024-11-10 07:40:29 +0000] [20581] [ERROR] Worker (pid:20663) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:40:29 +0000] [20581] [ERROR] Worker (pid:20664) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:40:29 +0000] [20677] [INFO] Booting worker with pid: 20677
+[2024-11-10 07:40:29 +0000] [20676] [INFO] Booting worker with pid: 20676
+2024-11-10 16:40:33.275952: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-11-10 16:40:33.276209: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+[2024-11-10 07:40:46 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20674)
+[2024-11-10 07:40:48 +0000] [20581] [ERROR] Worker (pid:20674) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:40:48 +0000] [20684] [INFO] Booting worker with pid: 20684
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+[2024-11-10 07:41:02 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20676)
+[2024-11-10 07:41:02 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20677)
+[2024-11-10 07:41:03 +0000] [20581] [ERROR] Worker (pid:20677) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:41:03 +0000] [20581] [ERROR] Worker (pid:20676) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:41:04 +0000] [20687] [INFO] Booting worker with pid: 20687
+[2024-11-10 07:41:04 +0000] [20686] [INFO] Booting worker with pid: 20686
+2024-11-10 16:41:04.085576: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-11-10 16:41:08.049437: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-11-10 16:41:08.049895: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+[2024-11-10 07:41:22 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20684)
+[2024-11-10 16:41:22 +0900] [20684] [ERROR] Error handling request /health/
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/workers/sync.py", line 134, in handle
+    self.handle_request(listener, req, client, addr)
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/workers/sync.py", line 177, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/wsgi.py", line 124, in __call__
+    response = self.get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 140, in get_response
+    response = self._middleware_chain(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/corsheaders/middleware.py", line 56, in __call__
+    result = self.get_response(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/corsheaders/middleware.py", line 56, in __call__
+    result = self.get_response(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 134, in __call__
+    response = response or self.get_response(request)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_django/middleware.py", line 28, in __call__
+    return self.get_response(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    callback, callback_args, callback_kwargs = self.resolve_request(request)
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 313, in resolve_request
+    resolver_match = resolver.resolve(request.path_info)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/urls/resolvers.py", line 663, in resolve
+    for pattern in self.url_patterns:
+                   ^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/urls/resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/urls/resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/home/ubuntu/likelion-community-backend/likelion_community/urls.py", line 27, in <module>
+    path('signup/', include('signup.urls')),
+                  ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/urls/conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/home/ubuntu/likelion-community-backend/signup/urls.py", line 3, in <module>
+    from .views import (
+  File "/home/ubuntu/likelion-community-backend/signup/views.py", line 15, in <module>
+    from ai_verifier import verify_like_a_lion_member
+  File "/home/ubuntu/likelion-community-backend/ai_verifier.py", line 4, in <module>
+    from extract_text_and_logo import extract_text_and_logo
+  File "/home/ubuntu/likelion-community-backend/extract_text_and_logo.py", line 4, in <module>
+    import easyocr
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/easyocr/__init__.py", line 1, in <module>
+    from .easyocr import Reader
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/easyocr/easyocr.py", line 3, in <module>
+    from .recognition import get_recognizer, get_text
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/easyocr/recognition.py", line 2, in <module>
+    import torch
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/__init__.py", line 2486, in <module>
+    from torch import _meta_registrations
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_meta_registrations.py", line 10, in <module>
+    from torch._decomp import (
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_decomp/__init__.py", line 249, in <module>
+    import torch._decomp.decompositions
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_decomp/decompositions.py", line 15, in <module>
+    import torch._prims as prims
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_prims/__init__.py", line 523, in <module>
+    abs = _make_elementwise_unary_prim(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_prims/__init__.py", line 491, in _make_elementwise_unary_prim
+    return _make_prim(
+           ^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_prims/__init__.py", line 319, in _make_prim
+    prim_def = torch.library.custom_op(
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_library/custom_ops.py", line 157, in custom_op
+    return inner(fn)
+           ^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_library/custom_ops.py", line 138, in inner
+    result = CustomOpDef(namespace, opname, schema_str, fn)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_library/custom_ops.py", line 186, in __init__
+    self._register_to_dispatcher()
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_library/custom_ops.py", line 616, in _register_to_dispatcher
+    lib._register_fake(self._name, fake_impl, _stacklevel=4)
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/library.py", line 163, in _register_fake
+    source = torch._library.utils.get_source(_stacklevel + 1)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/torch/_library/utils.py", line 42, in get_source
+    frame = inspect.getframeinfo(sys._getframe(stacklevel))
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/inspect.py", line 1707, in getframeinfo
+    lines, lnum = findsource(frame)
+                  ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/inspect.py", line 1083, in findsource
+    module = getmodule(object, file)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/inspect.py", line 999, in getmodule
+    for modname, module in sys.modules.copy().items():
+                           ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/gunicorn/workers/base.py", line 204, in handle_abort
+    sys.exit(1)
+SystemExit: 1
+[2024-11-10 16:41:23 +0900] [20684] [INFO] Worker exiting (pid: 20684)
+[2024-11-10 07:41:23 +0000] [20581] [ERROR] Worker (pid:20684) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:41:23 +0000] [20694] [INFO] Booting worker with pid: 20694
+2024-11-10 16:41:34.297838: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+[2024-11-10 07:41:36 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20686)
+[2024-11-10 07:41:36 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20687)
+[2024-11-10 07:41:37 +0000] [20581] [ERROR] Worker (pid:20686) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:41:37 +0000] [20581] [ERROR] Worker (pid:20687) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:41:37 +0000] [20695] [INFO] Booting worker with pid: 20695
+[2024-11-10 07:41:37 +0000] [20696] [INFO] Booting worker with pid: 20696
+2024-11-10 16:41:41.814530: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-11-10 16:41:41.829859: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+[2024-11-10 07:41:57 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20694)
+[2024-11-10 07:41:59 +0000] [20581] [ERROR] Worker (pid:20694) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:41:59 +0000] [20703] [INFO] Booting worker with pid: 20703
+2024-11-10 16:42:08.152350: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+[2024-11-10 07:42:11 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20695)
+[2024-11-10 07:42:12 +0000] [20581] [CRITICAL] WORKER TIMEOUT (pid:20696)
+[2024-11-10 07:42:13 +0000] [20581] [ERROR] Worker (pid:20696) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:42:13 +0000] [20581] [ERROR] Worker (pid:20695) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:42:13 +0000] [20705] [INFO] Booting worker with pid: 20705
+[2024-11-10 07:42:13 +0000] [20704] [INFO] Booting worker with pid: 20704
+2024-11-10 16:42:19.965703: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-11-10 16:42:19.966080: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+[2024-11-10 07:42:29 +0000] [20581] [INFO] Handling signal: term
+
+Error: No application module specified.
+[2024-11-10 07:42:59 +0000] [20581] [ERROR] Worker (pid:20704) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:42:59 +0000] [20581] [ERROR] Worker (pid:20705) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:42:59 +0000] [20581] [ERROR] Worker (pid:20703) was sent SIGKILL! Perhaps out of memory?
+[2024-11-10 07:42:59 +0000] [20581] [INFO] Shutting down: Master
+
+Error: No application module specified.
+
+Error: No application module specified.
+[2024-11-10 07:54:46 +0000] [1055] [INFO] Starting gunicorn 23.0.0
+[2024-11-10 07:54:46 +0000] [1055] [INFO] Listening at: http://0.0.0.0:80 (1055)
+[2024-11-10 07:54:46 +0000] [1055] [INFO] Using worker: sync
+[2024-11-10 07:54:46 +0000] [1056] [INFO] Booting worker with pid: 1056
+2024-11-10 16:54:53.658104: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
 To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
 Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
 /home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/layers/convolutional/base_conv.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
   super().__init__(activity_regularizer=activity_regularizer, **kwargs)
-2024-11-08 23:11:12.681892: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-2024-11-08 23:11:12.773316: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-2024-11-08 23:11:12.801515: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-2024-11-08 23:11:13.255559: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-10 16:55:13.011754: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-10 16:55:13.102306: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-10 16:55:13.129910: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
+2024-11-10 16:55:13.559938: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
 /home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/optimizers/base_optimizer.py:86: UserWarning: Argument `decay` is no longer supported and will be ignored.
   warnings.warn(
 WARNING:absl:Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
 WARNING:absl:Error in loading the saved optimizer state. As a result, your model is starting with a freshly initialized optimizer.
-2024-11-08 23:42:07.991120: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
-To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
-Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
-[2024-11-08 15:04:24 +0000] [10364] [ERROR] Worker (pid:10367) was sent SIGKILL! Perhaps out of memory?
-[2024-11-08 15:03:14 +0000] [10364] [CRITICAL] WORKER TIMEOUT (pid:10365)
-[2024-11-08 15:04:25 +0000] [10364] [ERROR] Worker (pid:10365) was sent SIGHUP!
-[2024-11-08 15:04:25 +0000] [10364] [ERROR] Worker (pid:10366) was sent SIGHUP!
-[2024-11-08 15:04:25 +0000] [10496] [INFO] Booting worker with pid: 10496
-[2024-11-08 15:04:25 +0000] [10498] [INFO] Booting worker with pid: 10498
-[2024-11-08 15:04:25 +0000] [10364] [INFO] Handling signal: hup
-[2024-11-08 15:04:25 +0000] [10364] [INFO] Hang up: Master
-[2024-11-08 15:04:25 +0000] [10502] [INFO] Booting worker with pid: 10502
-[2024-11-08 15:04:25 +0000] [10503] [INFO] Booting worker with pid: 10503
-[2024-11-08 15:04:25 +0000] [10504] [INFO] Booting worker with pid: 10504
-[2024-11-09 00:04:28 +0900] [10498] [INFO] Worker exiting (pid: 10498)
-[2024-11-09 00:04:28 +0900] [10496] [INFO] Worker exiting (pid: 10496)
-2024-11-09 06:46:29.067486: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
-To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
-Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
-/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/layers/convolutional/base_conv.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
-  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
-2024-11-09 06:46:50.469355: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-2024-11-09 06:46:50.561507: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-2024-11-09 06:46:50.589332: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-2024-11-09 06:46:51.069056: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/optimizers/base_optimizer.py:86: UserWarning: Argument `decay` is no longer supported and will be ignored.
-  warnings.warn(
-WARNING:absl:Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
-WARNING:absl:Error in loading the saved optimizer state. As a result, your model is starting with a freshly initialized optimizer.
-2024-11-09 10:25:30.783269: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
-To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
-Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
-[2024-11-09 01:27:53 +0000] [10364] [ERROR] Worker (pid:10502) was sent SIGKILL! Perhaps out of memory?
-[2024-11-09 01:27:25 +0000] [10364] [CRITICAL] WORKER TIMEOUT (pid:10502)
-[2024-11-09 01:27:53 +0000] [13001] [INFO] Booting worker with pid: 13001
-[2024-11-09 01:28:15 +0000] [13065] [INFO] Starting gunicorn 23.0.0
-[2024-11-09 01:28:15 +0000] [13065] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-09 01:28:15 +0000] [13065] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-09 01:28:16 +0000] [13065] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-09 01:28:16 +0000] [13065] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-09 01:28:17 +0000] [13065] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-09 01:28:17 +0000] [13065] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-09 01:28:18 +0000] [13065] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-09 01:28:18 +0000] [13065] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-09 01:28:19 +0000] [13065] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-09 01:28:19 +0000] [13065] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-09 01:28:20 +0000] [13065] [ERROR] Can't connect to ('0.0.0.0', 8000)
-2024-11-09 10:28:27.962902: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
-To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
-Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
-[2024-11-09 01:47:21 +0000] [10364] [ERROR] Worker (pid:10503) was sent SIGKILL! Perhaps out of memory?
-[2024-11-09 01:37:03 +0000] [10364] [CRITICAL] WORKER TIMEOUT (pid:10503)
-[2024-11-09 01:47:21 +0000] [10364] [CRITICAL] WORKER TIMEOUT (pid:10504)
-[2024-11-09 01:47:21 +0000] [10364] [CRITICAL] WORKER TIMEOUT (pid:13001)
-[2024-11-09 01:47:21 +0000] [13089] [INFO] Booting worker with pid: 13089
-[2024-11-09 01:47:21 +0000] [10364] [ERROR] Worker (pid:13001) was sent SIGKILL! Perhaps out of memory?
-[2024-11-09 01:47:21 +0000] [13090] [INFO] Booting worker with pid: 13090
-[2024-11-09 01:47:21 +0000] [10364] [ERROR] Worker (pid:10504) was sent SIGKILL! Perhaps out of memory?
-[2024-11-09 01:47:21 +0000] [13092] [INFO] Booting worker with pid: 13092
-[2024-11-09 01:50:23 +0000] [10364] [INFO] Handling signal: term
-[2024-11-09 10:50:23 +0900] [13089] [INFO] Worker exiting (pid: 13089)
-[2024-11-09 10:50:23 +0900] [13090] [INFO] Worker exiting (pid: 13090)
-[2024-11-09 10:50:23 +0900] [13092] [INFO] Worker exiting (pid: 13092)
-[2024-11-09 01:50:24 +0000] [10364] [INFO] Shutting down: Master
-[2024-11-09 01:51:55 +0000] [13168] [INFO] Starting gunicorn 23.0.0
-[2024-11-09 01:51:55 +0000] [13168] [INFO] Listening at: http://0.0.0.0:8000 (13168)
-[2024-11-09 01:51:55 +0000] [13168] [INFO] Using worker: sync
-[2024-11-09 01:51:55 +0000] [13169] [INFO] Booting worker with pid: 13169
-[2024-11-09 01:51:55 +0000] [13170] [INFO] Booting worker with pid: 13170
-[2024-11-09 01:51:55 +0000] [13171] [INFO] Booting worker with pid: 13171
-2024-11-09 10:52:37.554743: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
-To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
-Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
-/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/layers/convolutional/base_conv.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
-  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
-2024-11-09 10:52:59.645372: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-2024-11-09 10:52:59.735887: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-2024-11-09 10:52:59.763282: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-2024-11-09 10:53:00.256086: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/optimizers/base_optimizer.py:86: UserWarning: Argument `decay` is no longer supported and will be ignored.
-  warnings.warn(
-WARNING:absl:Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
-WARNING:absl:Error in loading the saved optimizer state. As a result, your model is starting with a freshly initialized optimizer.
-ERROR:django.security.DisallowedHost:Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+ERROR:django.request:Internal Server Error: /oauth/complete/kakao/
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/backends/mysql/base.py", line 75, in execute
+    return self.cursor.execute(query, args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/MySQLdb/cursors.py", line 179, in execute
+    res = self._query(mogrified_query)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/MySQLdb/cursors.py", line 330, in _query
+    db.query(q)
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/MySQLdb/connections.py", line 261, in query
+    _mysql.connection.query(self, query)
+MySQLdb.OperationalError: (1054, "Unknown column 'signup_customuser.school_name' in 'field list'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/views/decorators/cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_django/utils.py", line 49, in wrapper
+    return func(request, backend, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_django/views.py", line 31, in complete
+    return do_complete(
+           ^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/actions.py", line 49, in do_complete
+    user = backend.complete(user=user, redirect_name=redirect_name, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/backends/base.py", line 39, in complete
+    return self.auth_complete(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/utils.py", line 253, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/backends/oauth.py", line 427, in auth_complete
+    return self.do_auth(
+           ^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/utils.py", line 253, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/backends/oauth.py", line 440, in do_auth
+    return self.strategy.authenticate(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_django/strategy.py", line 104, in authenticate
+    return authenticate(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/views/decorators/debug.py", line 42, in sensitive_variables_wrapper
+    return func(*func_args, **func_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/contrib/auth/__init__.py", line 77, in authenticate
+    user = backend.authenticate(request, **credentials)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/backends/base.py", line 83, in authenticate
+    return self.pipeline(pipeline, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/backends/base.py", line 86, in pipeline
+    out = self.run_pipeline(pipeline, pipeline_index, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/backends/base.py", line 118, in run_pipeline
+    result = func(*args, **out) or {}
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/pipeline/social_auth.py", line 19, in social_user
+    social = backend.strategy.storage.user.get_social_auth(provider, uid)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_django/models.py", line 62, in get_social_auth
+    for social in cls.objects.select_related("user").filter(
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/models/query.py", line 398, in __iter__
+    self._fetch_all()
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/models/query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/backends/mysql/base.py", line 75, in execute
+    return self.cursor.execute(query, args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/MySQLdb/cursors.py", line 179, in execute
+    res = self._query(mogrified_query)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/MySQLdb/cursors.py", line 330, in _query
+    db.query(q)
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/MySQLdb/connections.py", line 261, in query
+    _mysql.connection.query(self, query)
+django.db.utils.OperationalError: (1054, "Unknown column 'signup_customuser.school_name' in 'field list'")
+WARNING:django.request:Not Found: /favicon.ico
+ERROR:django.request:Internal Server Error: /oauth/complete/kakao/
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/backends/mysql/base.py", line 75, in execute
+    return self.cursor.execute(query, args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/MySQLdb/cursors.py", line 179, in execute
+    res = self._query(mogrified_query)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/MySQLdb/cursors.py", line 330, in _query
+    db.query(q)
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/MySQLdb/connections.py", line 261, in query
+    _mysql.connection.query(self, query)
+MySQLdb.OperationalError: (1054, "Unknown column 'signup_customuser.school_name' in 'field list'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/views/decorators/cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_django/utils.py", line 49, in wrapper
+    return func(request, backend, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_django/views.py", line 31, in complete
+    return do_complete(
+           ^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/actions.py", line 49, in do_complete
+    user = backend.complete(user=user, redirect_name=redirect_name, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/backends/base.py", line 39, in complete
+    return self.auth_complete(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/utils.py", line 253, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/backends/oauth.py", line 427, in auth_complete
+    return self.do_auth(
+           ^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/utils.py", line 253, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/backends/oauth.py", line 440, in do_auth
+    return self.strategy.authenticate(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_django/strategy.py", line 104, in authenticate
+    return authenticate(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/views/decorators/debug.py", line 42, in sensitive_variables_wrapper
+    return func(*func_args, **func_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/contrib/auth/__init__.py", line 77, in authenticate
+    user = backend.authenticate(request, **credentials)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/backends/base.py", line 83, in authenticate
+    return self.pipeline(pipeline, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/backends/base.py", line 86, in pipeline
+    out = self.run_pipeline(pipeline, pipeline_index, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/backends/base.py", line 118, in run_pipeline
+    result = func(*args, **out) or {}
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/pipeline/social_auth.py", line 19, in social_user
+    social = backend.strategy.storage.user.get_social_auth(provider, uid)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_django/models.py", line 62, in get_social_auth
+    for social in cls.objects.select_related("user").filter(
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/models/query.py", line 398, in __iter__
+    self._fetch_all()
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/models/query.py", line 1881, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 84, in _execute
+    with self.db.wrap_database_errors:
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/backends/utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/db/backends/mysql/base.py", line 75, in execute
+    return self.cursor.execute(query, args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/MySQLdb/cursors.py", line 179, in execute
+    res = self._query(mogrified_query)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/MySQLdb/cursors.py", line 330, in _query
+    db.query(q)
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/MySQLdb/connections.py", line 261, in query
+    _mysql.connection.query(self, query)
+django.db.utils.OperationalError: (1054, "Unknown column 'signup_customuser.school_name' in 'field list'")
+ERROR:django.request:Internal Server Error: /oauth/complete/kakao/
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/views/decorators/cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_django/utils.py", line 49, in wrapper
+    return func(request, backend, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_django/views.py", line 31, in complete
+    return do_complete(
+           ^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/actions.py", line 49, in do_complete
+    user = backend.complete(user=user, redirect_name=redirect_name, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/backends/base.py", line 39, in complete
+    return self.auth_complete(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/utils.py", line 253, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/backends/oauth.py", line 411, in auth_complete
+    state = self.validate_state()
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/backends/oauth.py", line 101, in validate_state
+    raise AuthStateMissing(self, "state")
+social_core.exceptions.AuthStateMissing: Session value state missing.
+ERROR:django.security.DisallowedHost:Invalid HTTP_HOST header: '15.164.5.189'. You may need to add '15.164.5.189' to ALLOWED_HOSTS.
 Traceback (most recent call last):
   File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
     response = get_response(request)
@@ -437,184 +1209,224 @@ Traceback (most recent call last):
            ^^^^^^^^^^^^^^^^^^
   File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/http/request.py", line 150, in get_host
     raise DisallowedHost(msg)
-django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '127.0.0.1:8000'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
-WARNING:django.request:Bad Request: /health/
-[2024-11-09 10:57:20 +0900] [13171] [INFO] Worker exiting (pid: 13171)
-[2024-11-09 01:57:20 +0000] [13168] [INFO] Handling signal: term
-[2024-11-09 10:57:20 +0900] [13170] [INFO] Worker exiting (pid: 13170)
-[2024-11-09 10:57:20 +0900] [13169] [INFO] Worker exiting (pid: 13169)
-[2024-11-09 01:57:20 +0000] [13168] [ERROR] Worker (pid:13171) was sent SIGTERM!
-[2024-11-09 01:57:24 +0000] [13168] [INFO] Shutting down: Master
-[2024-11-09 01:57:30 +0000] [13210] [INFO] Starting gunicorn 23.0.0
-[2024-11-09 01:57:30 +0000] [13210] [INFO] Listening at: http://0.0.0.0:8000 (13210)
-[2024-11-09 01:57:30 +0000] [13210] [INFO] Using worker: sync
-[2024-11-09 01:57:30 +0000] [13211] [INFO] Booting worker with pid: 13211
-[2024-11-09 01:57:30 +0000] [13212] [INFO] Booting worker with pid: 13212
-[2024-11-09 01:57:30 +0000] [13213] [INFO] Booting worker with pid: 13213
-2024-11-09 10:57:53.134004: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
-To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
-Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
-/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/layers/convolutional/base_conv.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
-  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
-2024-11-09 10:58:14.000803: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-2024-11-09 10:58:14.093305: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-2024-11-09 10:58:14.120582: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-2024-11-09 10:58:14.551191: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/optimizers/base_optimizer.py:86: UserWarning: Argument `decay` is no longer supported and will be ignored.
-  warnings.warn(
-WARNING:absl:Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
-WARNING:absl:Error in loading the saved optimizer state. As a result, your model is starting with a freshly initialized optimizer.
-[2024-11-09 04:09:43 +0000] [13210] [ERROR] Worker (pid:13212) was sent SIGHUP!
-[2024-11-09 04:09:43 +0000] [13210] [ERROR] Worker (pid:13213) was sent SIGHUP!
-[2024-11-09 04:09:43 +0000] [13210] [ERROR] Worker (pid:13211) was sent SIGHUP!
-[2024-11-09 04:09:43 +0000] [13498] [INFO] Booting worker with pid: 13498
-[2024-11-09 04:09:43 +0000] [13499] [INFO] Booting worker with pid: 13499
-[2024-11-09 04:09:43 +0000] [13497] [INFO] Booting worker with pid: 13497
-[2024-11-09 04:09:43 +0000] [13210] [INFO] Handling signal: hup
-[2024-11-09 04:09:43 +0000] [13210] [INFO] Hang up: Master
-[2024-11-09 04:09:43 +0000] [13500] [INFO] Booting worker with pid: 13500
-[2024-11-09 04:09:43 +0000] [13501] [INFO] Booting worker with pid: 13501
-[2024-11-09 04:09:43 +0000] [13502] [INFO] Booting worker with pid: 13502
-[2024-11-09 13:09:46 +0900] [13497] [INFO] Worker exiting (pid: 13497)
-[2024-11-09 13:09:46 +0900] [13498] [INFO] Worker exiting (pid: 13498)
-[2024-11-09 13:09:46 +0900] [13499] [INFO] Worker exiting (pid: 13499)
-[2024-11-09 05:15:43 +0000] [14331] [INFO] Starting gunicorn 23.0.0
-[2024-11-09 05:15:43 +0000] [14331] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-09 05:15:43 +0000] [14331] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-09 05:15:44 +0000] [14331] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-09 05:15:44 +0000] [14331] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-09 05:15:45 +0000] [14331] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-09 05:15:45 +0000] [14331] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-09 05:15:46 +0000] [14331] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-09 05:15:46 +0000] [14331] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-09 05:15:47 +0000] [14331] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-09 05:15:47 +0000] [14331] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-09 05:15:48 +0000] [14331] [ERROR] Can't connect to ('0.0.0.0', 8000)
-[2024-11-09 05:18:56 +0000] [13210] [INFO] Handling signal: term
-[2024-11-09 14:18:56 +0900] [13500] [INFO] Worker exiting (pid: 13500)
-[2024-11-09 14:18:56 +0900] [13502] [INFO] Worker exiting (pid: 13502)
-[2024-11-09 14:18:56 +0900] [13501] [INFO] Worker exiting (pid: 13501)
-[2024-11-09 05:18:56 +0000] [13210] [INFO] Shutting down: Master
-[2024-11-09 05:19:00 +0000] [14343] [INFO] Starting gunicorn 23.0.0
-[2024-11-09 05:19:00 +0000] [14343] [INFO] Listening at: http://0.0.0.0:8000 (14343)
-[2024-11-09 05:19:00 +0000] [14343] [INFO] Using worker: sync
-[2024-11-09 05:19:00 +0000] [14344] [INFO] Booting worker with pid: 14344
-[2024-11-09 05:19:00 +0000] [14345] [INFO] Booting worker with pid: 14345
-[2024-11-09 05:19:01 +0000] [14346] [INFO] Booting worker with pid: 14346
-2024-11-09 14:25:03.128950: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
-To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
-Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
-/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/layers/convolutional/base_conv.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
-  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
-2024-11-09 14:25:23.214037: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-2024-11-09 14:25:23.304136: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-2024-11-09 14:25:23.330907: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-2024-11-09 14:25:23.787316: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/optimizers/base_optimizer.py:86: UserWarning: Argument `decay` is no longer supported and will be ignored.
-  warnings.warn(
-WARNING:absl:Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
-WARNING:absl:Error in loading the saved optimizer state. As a result, your model is starting with a freshly initialized optimizer.
-2024-11-09 14:25:25.298976: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
-To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
-Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
-[2024-11-09 05:26:02 +0000] [14343] [ERROR] Worker (pid:14345) was sent SIGKILL! Perhaps out of memory?
-[2024-11-09 05:26:02 +0000] [14370] [INFO] Booting worker with pid: 14370
-[2024-11-09 05:35:41 +0000] [14406] [INFO] Starting gunicorn 23.0.0
-[2024-11-09 05:35:41 +0000] [14406] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-09 05:35:41 +0000] [14406] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-09 05:35:42 +0000] [14406] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-09 05:35:42 +0000] [14406] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-09 05:35:43 +0000] [14406] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-09 05:35:43 +0000] [14406] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-09 05:35:44 +0000] [14406] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-09 05:35:44 +0000] [14406] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-09 05:35:45 +0000] [14406] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-09 05:35:45 +0000] [14406] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-09 05:35:46 +0000] [14406] [ERROR] Can't connect to ('0.0.0.0', 8000)
-[2024-11-09 05:35:54 +0000] [14343] [INFO] Handling signal: term
-[2024-11-09 14:35:54 +0900] [14344] [INFO] Worker exiting (pid: 14344)
-[2024-11-09 14:35:56 +0900] [14370] [INFO] Worker exiting (pid: 14370)
-[2024-11-09 14:35:57 +0900] [14346] [INFO] Worker exiting (pid: 14346)
-[2024-11-09 05:35:57 +0000] [14410] [INFO] Starting gunicorn 23.0.0
-[2024-11-09 05:35:57 +0000] [14410] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-09 05:35:57 +0000] [14410] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-09 05:35:58 +0000] [14410] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-09 05:35:58 +0000] [14410] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-09 05:35:59 +0000] [14410] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-09 05:35:59 +0000] [14410] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-09 05:36:00 +0000] [14410] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-09 05:36:00 +0000] [14410] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-09 05:36:01 +0000] [14410] [ERROR] Connection in use: ('0.0.0.0', 8000)
-[2024-11-09 05:36:01 +0000] [14410] [ERROR] connection to ('0.0.0.0', 8000) failed: [Errno 98] Address already in use
-[2024-11-09 05:36:02 +0000] [14410] [ERROR] Can't connect to ('0.0.0.0', 8000)
-[2024-11-09 05:36:22 +0000] [14343] [INFO] Shutting down: Master
-[2024-11-09 05:39:16 +0000] [14422] [INFO] Starting gunicorn 23.0.0
-[2024-11-09 05:39:16 +0000] [14422] [INFO] Listening at: http://0.0.0.0:8000 (14422)
-[2024-11-09 05:39:16 +0000] [14422] [INFO] Using worker: sync
-[2024-11-09 05:39:16 +0000] [14423] [INFO] Booting worker with pid: 14423
-[2024-11-09 05:39:16 +0000] [14424] [INFO] Booting worker with pid: 14424
-[2024-11-09 05:39:16 +0000] [14425] [INFO] Booting worker with pid: 14425
-2024-11-09 14:52:49.914156: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
-To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
-Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
-/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/layers/convolutional/base_conv.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
-  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
-2024-11-09 14:53:10.053619: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-2024-11-09 14:53:10.146423: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-2024-11-09 14:53:10.175157: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-2024-11-09 14:53:10.631505: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/optimizers/base_optimizer.py:86: UserWarning: Argument `decay` is no longer supported and will be ignored.
-  warnings.warn(
-WARNING:absl:Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
-WARNING:absl:Error in loading the saved optimizer state. As a result, your model is starting with a freshly initialized optimizer.
-[2024-11-09 14:55:50 +0900] [14423] [INFO] Worker exiting (pid: 14423)
-[2024-11-09 05:55:50 +0000] [14422] [INFO] Handling signal: term
-[2024-11-09 14:55:50 +0900] [14424] [INFO] Worker exiting (pid: 14424)
-[2024-11-09 14:55:50 +0900] [14425] [INFO] Worker exiting (pid: 14425)
-[2024-11-09 05:56:06 +0000] [14422] [INFO] Shutting down: Master
-[2024-11-09 05:56:10 +0000] [14463] [INFO] Starting gunicorn 23.0.0
-[2024-11-09 05:56:10 +0000] [14463] [INFO] Listening at: http://0.0.0.0:8000 (14463)
-[2024-11-09 05:56:10 +0000] [14463] [INFO] Using worker: sync
-[2024-11-09 05:56:10 +0000] [14464] [INFO] Booting worker with pid: 14464
-[2024-11-09 05:56:10 +0000] [14465] [INFO] Booting worker with pid: 14465
-[2024-11-09 05:56:10 +0000] [14466] [INFO] Booting worker with pid: 14466
-2024-11-09 14:58:56.543914: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
-To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
-Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
-/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/layers/convolutional/base_conv.py:107: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
-  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
-2024-11-09 14:59:17.211242: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-2024-11-09 14:59:17.303186: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-2024-11-09 14:59:17.330018: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-2024-11-09 14:59:17.785971: W external/local_xla/xla/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 47775744 exceeds 10% of free system memory.
-/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/keras/src/optimizers/base_optimizer.py:86: UserWarning: Argument `decay` is no longer supported and will be ignored.
-  warnings.warn(
-WARNING:absl:Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
-WARNING:absl:Error in loading the saved optimizer state. As a result, your model is starting with a freshly initialized optimizer.
-[2024-11-09 15:06:53 +0900] [14465] [WARNING] Invalid request from ip=172.31.19.145: Invalid HTTP request line: '\x16\x03\x01\x00ø\x01\x00\x00ô\x03\x03Î]\x1cðO©Ø\x97¸'
-[2024-11-09 15:22:24 +0900] [14465] [INFO] Worker exiting (pid: 14465)
-[2024-11-09 06:22:24 +0000] [14463] [INFO] Handling signal: term
-[2024-11-09 15:22:28 +0900] [14464] [INFO] Worker exiting (pid: 14464)
-[2024-11-09 15:22:28 +0900] [14466] [INFO] Worker exiting (pid: 14466)
-[2024-11-09 06:22:40 +0000] [14463] [INFO] Shutting down: Master
-[2024-11-09 10:03:25 +0000] [15962] [INFO] Starting gunicorn 23.0.0
-[2024-11-09 10:03:25 +0000] [15962] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
-[2024-11-09 10:03:26 +0000] [15962] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
-[2024-11-09 10:03:27 +0000] [15962] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
-[2024-11-09 10:03:28 +0000] [15962] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
-[2024-11-09 10:03:29 +0000] [15962] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
-[2024-11-09 10:03:30 +0000] [15962] [ERROR] Can't connect to ('0.0.0.0', 80)
-[2024-11-09 12:20:46 +0000] [16578] [INFO] Starting gunicorn 23.0.0
-[2024-11-09 12:20:46 +0000] [16578] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
-[2024-11-09 12:20:47 +0000] [16578] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
-[2024-11-09 12:20:48 +0000] [16578] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
-[2024-11-09 12:20:49 +0000] [16578] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
-[2024-11-09 12:20:50 +0000] [16578] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
-[2024-11-09 12:20:51 +0000] [16578] [ERROR] Can't connect to ('0.0.0.0', 80)
-[2024-11-09 12:43:27 +0000] [16704] [INFO] Starting gunicorn 23.0.0
-[2024-11-09 12:43:27 +0000] [16704] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
-[2024-11-09 12:43:28 +0000] [16704] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
-[2024-11-09 12:43:29 +0000] [16704] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
-[2024-11-09 12:43:30 +0000] [16704] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
-[2024-11-09 12:43:31 +0000] [16704] [ERROR] connection to ('0.0.0.0', 80) failed: [Errno 13] Permission denied
-[2024-11-09 12:43:32 +0000] [16704] [ERROR] Can't connect to ('0.0.0.0', 80)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '15.164.5.189'. You may need to add '15.164.5.189' to ALLOWED_HOSTS.
+WARNING:django.request:Bad Request: /
+ERROR:django.security.DisallowedHost:Invalid HTTP_HOST header: '3.37.202.117'. You may need to add '3.37.202.117' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/http/request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '3.37.202.117'. You may need to add '3.37.202.117' to ALLOWED_HOSTS.
+WARNING:django.request:Bad Request: /.env
+ERROR:django.security.DisallowedHost:Invalid HTTP_HOST header: '3.37.202.117'. You may need to add '3.37.202.117' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/http/request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '3.37.202.117'. You may need to add '3.37.202.117' to ALLOWED_HOSTS.
+WARNING:django.request:Bad Request: /
+ERROR:django.request:Internal Server Error: /oauth/complete/kakao/
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/views/decorators/cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_django/utils.py", line 49, in wrapper
+    return func(request, backend, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_django/views.py", line 31, in complete
+    return do_complete(
+           ^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/actions.py", line 49, in do_complete
+    user = backend.complete(user=user, redirect_name=redirect_name, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/backends/base.py", line 39, in complete
+    return self.auth_complete(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/utils.py", line 253, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/backends/oauth.py", line 411, in auth_complete
+    state = self.validate_state()
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/social_core/backends/oauth.py", line 101, in validate_state
+    raise AuthStateMissing(self, "state")
+social_core.exceptions.AuthStateMissing: Session value state missing.
+ERROR:django.security.DisallowedHost:Invalid HTTP_HOST header: '15.164.5.189'. You may need to add '15.164.5.189' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/http/request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '15.164.5.189'. You may need to add '15.164.5.189' to ALLOWED_HOSTS.
+WARNING:django.request:Bad Request: /
+ERROR:django.security.DisallowedHost:Invalid HTTP_HOST header: '15.164.5.189'. You may need to add '15.164.5.189' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/http/request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '15.164.5.189'. You may need to add '15.164.5.189' to ALLOWED_HOSTS.
+WARNING:django.request:Bad Request: /favicon.ico
+WARNING:django.request:Not Found: /wordpress/wp-admin/setup-config.php
+WARNING:django.request:Not Found: /wp-admin/setup-config.php
+WARNING:django.request:Not Found: /wp-admin/setup-config.php
+ERROR:django.security.DisallowedHost:Invalid HTTP_HOST header: '15.164.5.189'. You may need to add '15.164.5.189' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/http/request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '15.164.5.189'. You may need to add '15.164.5.189' to ALLOWED_HOSTS.
+WARNING:django.request:Bad Request: /
+ERROR:django.security.DisallowedHost:Invalid HTTP_HOST header: '15.164.5.189'. You may need to add '15.164.5.189' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/http/request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '15.164.5.189'. You may need to add '15.164.5.189' to ALLOWED_HOSTS.
+WARNING:django.request:Bad Request: /
+WARNING:django.request:Not Found: /wordpress/wp-admin/setup-config.php
+ERROR:django.security.DisallowedHost:Invalid HTTP_HOST header: '15.164.5.189'. You may need to add '15.164.5.189' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/http/request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '15.164.5.189'. You may need to add '15.164.5.189' to ALLOWED_HOSTS.
+WARNING:django.request:Bad Request: /.env
+ERROR:django.security.DisallowedHost:Invalid HTTP_HOST header: '15.164.5.189'. You may need to add '15.164.5.189' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/http/request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '15.164.5.189'. You may need to add '15.164.5.189' to ALLOWED_HOSTS.
+WARNING:django.request:Bad Request: /
+ERROR:django.security.DisallowedHost:Invalid HTTP_HOST header: '15.164.5.189'. You may need to add '15.164.5.189' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/http/request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '15.164.5.189'. You may need to add '15.164.5.189' to ALLOWED_HOSTS.
+WARNING:django.request:Bad Request: /
+ERROR:django.security.DisallowedHost:Invalid HTTP_HOST header: '15.164.5.189'. You may need to add '15.164.5.189' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/http/request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '15.164.5.189'. You may need to add '15.164.5.189' to ALLOWED_HOSTS.
+WARNING:django.request:Bad Request: /portal/redlion
+ERROR:django.security.DisallowedHost:Invalid HTTP_HOST header: '15.164.5.189'. You may need to add '15.164.5.189' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/http/request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '15.164.5.189'. You may need to add '15.164.5.189' to ALLOWED_HOSTS.
+WARNING:django.request:Bad Request: /.env
+ERROR:django.security.DisallowedHost:Invalid HTTP_HOST header: '15.164.5.189'. You may need to add '15.164.5.189' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/likelionCmnty.venv/lib/python3.12/site-packages/django/http/request.py", line 150, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '15.164.5.189'. You may need to add '15.164.5.189' to ALLOWED_HOSTS.
+WARNING:django.request:Bad Request: /
