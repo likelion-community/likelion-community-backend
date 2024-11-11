@@ -67,15 +67,16 @@ def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처�
 def extract_text(image):
     text_data = {'아이디': None, '이름': None, '휴대폰': None}
 
-    # EasyOCR로 필드 탐지 시도 (더 다양한 스케일 적용)
-    easyocr_scales = [1.0, 2.0, 2.5]  # 작은 글자부터 큰 글자까지
+    # EasyOCR로 필드 탐지 시도 (필요한 최소한의 스케일 적용)
+    easyocr_scales = [1.0, 2.5]  # 최소와 최대 스케일을 설정
     for scale in easyocr_scales:
         resized_image = cv2.resize(image, (int(image.shape[1] * scale), int(image.shape[0] * scale)))
+        
+        # EasyOCR로 텍스트 추출
         easyocr_results = reader.readtext(resized_image, detail=0)
-
         print(f"[EasyOCR] 스케일 {scale}에서 검출된 텍스트: {easyocr_results}")
         
-        # EasyOCR 결과 필드 탐지
+        # 텍스트 결과에서 필드 검출
         for i, word in enumerate(easyocr_results):
             if re.search(r'아이\s*디|아이다|아이디', word):
                 text_data['아이디'] = easyocr_results[i + 1] if i + 1 < len(easyocr_results) else None
@@ -83,15 +84,19 @@ def extract_text(image):
                 text_data['이름'] = easyocr_results[i + 1] if i + 1 < len(easyocr_results) else None
             elif re.search(r'휴대폰|휴대포|휴대.*', word):
                 text_data['휴대폰'] = easyocr_results[i + 1] if i + 1 < len(easyocr_results) else None
-        
-        # 필드가 모두 검출되었으면 반복 중단
+
+        # 필드가 모두 검출되면 추가 스케일 반복 중단
         if any(text_data.values()):
             print("EasyOCR로 텍스트 필드 검출 성공")
             print(f"[EasyOCR] 검출된 필드 데이터: {text_data}")
+            clear_memory()  # 메모리 해제
             return text_data
 
+    # 최종 결과 출력 및 메모리 해제
     print("최종 텍스트 필드 검출 결과:", text_data)
+    clear_memory()
     return text_data
+
 
 
    
