@@ -98,7 +98,7 @@ def extract_text(image):
     central_region = image[int(height * 0.35):int(height * 0.65), int(width * 0.35):int(width * 0.65)]
 
     # 중앙 70% 영역에서 큰 스케일로 재시도
-    large_scale = 3.0
+    large_scale = 1.7
     resized_image = cv2.resize(central_region, (int(central_region.shape[1] * large_scale), int(central_region.shape[0] * large_scale)))
     easyocr_results = reader.readtext(resized_image, detail=0)
     print(f"[EasyOCR] 중앙 70% 스케일 {large_scale}에서 검출된 텍스트: {easyocr_results}")
