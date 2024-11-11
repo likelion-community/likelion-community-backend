@@ -34,7 +34,7 @@ def verify_like_a_lion_member(uploaded_image):
     print("이미지 디코딩 완료")
 
     # OCR에 필요한 이미지 크기 조정
-    img = resize_image_for_ocr(img, max_dim=500)  # 해상도를 더 낮춤
+    img = resize_image_for_ocr(img)  # 해상도를 더 낮춤
 
     # 로고 템플릿 로드
     logo_templates = [
@@ -67,7 +67,13 @@ def verify_like_a_lion_member(uploaded_image):
         print("필수 필드(ID, 이름, 휴대폰)를 감지할 수 없습니다.")
         return False
     else:
-        print("유효한 회원입니다. 필드 데이터:", text_data)
+        # 텍스트 데이터가 없을 경우 체크
+        if text_data is None:
+            print("필수 필드(ID, 이름, 휴대폰)를 감지할 수 없습니다.")
+            return False
+        
+        else:
+            print("유효한 회원입니다.")
 
     # 최종 결과 판단 및 메모리 해제
     clear_memory()
@@ -76,7 +82,7 @@ def verify_like_a_lion_member(uploaded_image):
 
 
 # OCR을 위한 이미지 리사이즈 함수
-def resize_image_for_ocr(img, max_dim=500, min_dim=200):
+def resize_image_for_ocr(img, max_dim=1000, min_dim=200):
     h, w = img.shape[:2]
     if max(h, w) > max_dim:
         scale = max_dim / max(h, w)
