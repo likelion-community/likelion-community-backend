@@ -179,8 +179,10 @@ class CompleteProfileAPIView(APIView):
         if request.session.get('photo_verified', False):
             serializer = AdditionalInfoSerializer(data=request.data, instance=user)
             if serializer.is_valid():
+                serializer.save()  # 추가 정보 저장
+                # 추가 정보 저장 후 is_profile_complete 설정
                 user.is_profile_complete = True
-                serializer.save()
+                user.save()  # 최종적으로 DB에 저장
                 login(request, user, backend='social_core.backends.kakao.KakaoOAuth2')
                 request.session.pop('partial_pipeline_user', None)
                 request.session.pop('photo_verified', None)
