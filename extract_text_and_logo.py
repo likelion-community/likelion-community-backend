@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 import pytesseract
 import easyocr
-import torch
 import re
 import gc
 
@@ -23,7 +22,7 @@ def resize_image_for_ocr(img, max_dim=500):
 
 def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처럼', threshold=0.35):
     h, w = image.shape[:2]
-    roi = image[:h // 4, :w]
+    roi = image[:h // 4, :w]  # 상단 1/4 영역만 사용
     scales = [1.0, 2.0]  # 원본 크기와 확대 크기
     for scale in scales:
         resized_image = cv2.resize(roi, (int(roi.shape[1] * scale), int(roi.shape[0] * scale)))
@@ -48,7 +47,6 @@ def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처�
                     tess_text = pytesseract.image_to_string(logo_roi, config='--psm 6', lang='kor').strip()
                     easyocr_results = reader.readtext(logo_roi, detail=0)
 
-                    # easyocr_results 리스트를 문자열로 변환하여 로고 텍스트와 비교
                     easyocr_text = ' '.join(easyocr_results)  # 리스트의 요소들을 하나의 문자열로 결합
 
                     if logo_text in tess_text or logo_text in easyocr_text:
@@ -104,7 +102,7 @@ def extract_text_and_logo(image):
     ]
 
     print("로고 검출 검사 시작")
-    logo_detected = detect_logo_with_text(img, logo_templates)  # reader 인수 제거됨
+    logo_detected = detect_logo_with_text(img, logo_templates)
     print("로고 검출 검사 완료")
     
     if logo_detected:
