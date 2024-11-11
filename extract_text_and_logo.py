@@ -68,7 +68,7 @@ def extract_text(image):
     text_data = {'아이디': None, '이름': None, '휴대폰': None}
 
     # EasyOCR로 필드 탐지 시도 (더 다양한 스케일 적용)
-    easyocr_scales = [1.0, 1.25, 1.5, 2.0]  # 작은 글자부터 큰 글자까지
+    easyocr_scales = [1.0, 2.0, 2.5]  # 작은 글자부터 큰 글자까지
     for scale in easyocr_scales:
         resized_image = cv2.resize(image, (int(image.shape[1] * scale), int(image.shape[0] * scale)))
         easyocr_results = reader.readtext(resized_image, detail=0)
