@@ -103,7 +103,7 @@ def extract_text(image, reader):
 
     return text_data
 
-def extract_text_and_logo(image, reader):
+def extract_text_and_logo(image):
     if isinstance(image, str):
         img = cv2.imread(image)
     else:
@@ -119,7 +119,7 @@ def extract_text_and_logo(image, reader):
     ]
 
     print("로고 검출 검사 시작")
-    logo_detected = detect_logo_with_text(img, logo_templates, reader) 
+    logo_detected = detect_logo_with_text(img, logo_templates)  # `reader` 인수 제거
     print("로고 검출 검사 완료")
     
     if logo_detected:
@@ -134,3 +134,4 @@ def extract_text_and_logo(image, reader):
     else:
         print("로고 미검출로 인해 필드 검사를 수행하지 않았습니다.")
         return None, False
+
