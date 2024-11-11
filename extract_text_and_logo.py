@@ -21,14 +21,12 @@ def resize_image_for_ocr(img, max_dim=500):
         img = cv2.resize(img, (int(w * scale), int(h * scale)))
     return img
 
-
 def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처럼', threshold=0.35):
     h, w = image.shape[:2]
     roi = image[:h // 4, :w]
-    # 이미지 자체 확대 (작은 로고 검출을 위해)
     scales = [1.0, 2.0]  # 원본 크기와 확대 크기
     for scale in scales:
-        resized_image = cv2.resize(roi, (int(image.shape[1] * scale), int(image.shape[0] * scale)))
+        resized_image = cv2.resize(roi, (int(roi.shape[1] * scale), int(roi.shape[0] * scale)))
         img_gray = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
         
         for logo_template in logo_templates:
@@ -53,7 +51,6 @@ def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처�
                     # easyocr_results 리스트를 문자열로 변환하여 로고 텍스트와 비교
                     easyocr_text = ' '.join(easyocr_results)  # 리스트의 요소들을 하나의 문자열로 결합
 
-                    # 두 OCR 결과에서 텍스트가 포함되어 있는지 확인
                     if logo_text in tess_text or logo_text in easyocr_text:
                         print("로고 텍스트 감지 성공")
                         clear_memory()
@@ -64,9 +61,7 @@ def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처�
     clear_memory()
     return False
 
-
-
-def extract_text(image, reader):
+def extract_text(image):
     img_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     img_filtered = cv2.bilateralFilter(img_gray, 9, 75, 75)
     img_blurred = cv2.GaussianBlur(img_filtered, (5, 5), 0)
@@ -91,16 +86,6 @@ def extract_text(image, reader):
             if i + 1 < len(easyocr_results):
                 text_data['휴대폰'] = easyocr_results[i + 1]
 
-    def find_field(field, text_result):
-        for text in text_result:
-            if field in text:
-                return text
-        return None
-    
-    text_data['이름'] = find_field('이름', ocr_data['text']) or find_field('이름', easyocr_results)
-    text_data['아이디'] = find_field('아이디', ocr_data['text']) or find_field('아이디', easyocr_results)
-    text_data['휴대폰'] = find_field('휴대폰', ocr_data['text']) or find_field('휴대폰', easyocr_results) or find_field('휴대', combined_results)
-
     return text_data
 
 def extract_text_and_logo(image):
@@ -114,17 +99,17 @@ def extract_text_and_logo(image):
         return None, False
     
     logo_templates = [
-        cv2.imread(r'/home/ubuntu/likelion-community-backend/dataset/lion_logo_template.png', 0),
-        cv2.imread(r'/home/ubuntu/likelion-community-backend/dataset/logo.jpg', 0)
+        cv2.imread('/home/ubuntu/likelion-community-backend/dataset/lion_logo_template.png', 0),
+        cv2.imread('/home/ubuntu/likelion-community-backend/dataset/logo.jpg', 0)
     ]
 
     print("로고 검출 검사 시작")
-    logo_detected = detect_logo_with_text(img, logo_templates)  # `reader` 인수 제거
+    logo_detected = detect_logo_with_text(img, logo_templates)  # reader 인수 제거됨
     print("로고 검출 검사 완료")
     
     if logo_detected:
         print("텍스트 추출 시작") 
-        text_data = extract_text(img, reader)
+        text_data = extract_text(img)
         if not any(text_data.values()):
             print("로고는 검출되었지만 필수 필드 검출에 실패했습니다.")
             return None, True
@@ -134,4 +119,3 @@ def extract_text_and_logo(image):
     else:
         print("로고 미검출로 인해 필드 검사를 수행하지 않았습니다.")
         return None, False
-
