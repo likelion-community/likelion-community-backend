@@ -93,12 +93,12 @@ def extract_text(image):
             return text_data
 
     # 첫 번째 스케일에서 필드를 찾지 못했을 경우에만 중앙 70% 영역으로 확대 검출
-    print("기본 스케일에서 필드 검출 실패, 중앙 70%에서 재시도")
+    print("기본 스케일에서 필드 검출 실패, 중앙에서 재시도")
     height, width = image.shape[:2]
-    central_region = image[int(height * 0.15):int(height * 0.85), int(width * 0.15):int(width * 0.85)]
+    central_region = image[int(height * 0.35):int(height * 0.65), int(width * 0.35):int(width * 0.65)]
 
     # 중앙 70% 영역에서 큰 스케일로 재시도
-    large_scale = 2.0
+    large_scale = 3.0
     resized_image = cv2.resize(central_region, (int(central_region.shape[1] * large_scale), int(central_region.shape[0] * large_scale)))
     easyocr_results = reader.readtext(resized_image, detail=0)
     print(f"[EasyOCR] 중앙 70% 스케일 {large_scale}에서 검출된 텍스트: {easyocr_results}")
