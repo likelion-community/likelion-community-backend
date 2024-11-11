@@ -75,14 +75,14 @@ def extract_text(image):
 
     for i, word in enumerate(combined_results):
         if re.search(r'아이\s*디|아이다|아이디', word):
-            if i + 1 < len(easyocr_results):
-                text_data['아이디'] = easyocr_results[i + 1]
+            if i + 1 < len(combined_results):
+                text_data['아이디'] = combined_results[i + 1]
         elif '이름' in word:
-            if i + 1 < len(easyocr_results):
-                text_data['이름'] = easyocr_results[i + 1]
+            if i + 1 < len(combined_results):
+                text_data['이름'] = combined_results[i + 1]
         elif re.search(r'휴대폰|휴대포|휴대.*', word):
-            if i + 1 < len(easyocr_results):
-                text_data['휴대폰'] = easyocr_results[i + 1]
+            if i + 1 < len(combined_results):
+                text_data['휴대폰'] = combined_results[i + 1]
 
     return text_data
 
