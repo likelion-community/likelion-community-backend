@@ -94,13 +94,13 @@ def extract_text(image):
     # 기본 스케일에서 필드를 찾지 못했을 경우에만 중앙 70% 영역에서 재시도
     print("기본 스케일에서 필드 검출 실패, 중앙에서 재시도")
     height, width = image.shape[:2]
-    central_region = image[int(height * 0.15):int(height * 0.85), int(width * 0.15):int(width * 0.85)]
+    central_region = image[int(height * 0.2):int(height * 0.8), int(width * 0.2):int(width * 0.8)]
 
     # 중앙 70% 영역에서 스케일을 1.5로 시도
-    central_scale = 1.5
+    central_scale = 1.25
     resized_image = cv2.resize(central_region, (int(central_region.shape[1] * central_scale), int(central_region.shape[0] * central_scale)))
     easyocr_results = reader.readtext(resized_image, detail=0)
-    print(f"[EasyOCR] 중앙 70% 스케일 {central_scale}에서 검출된 텍스트: {easyocr_results}")
+    print(f"[EasyOCR] 중앙 60% 스케일 {central_scale}에서 검출된 텍스트: {easyocr_results}")
 
     # 텍스트 결과에서 필드 검출
     for i, word in enumerate(easyocr_results):
