@@ -33,7 +33,7 @@ def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사
 
 
      # 다양한 스케일 설정: 큰 이미지의 작은 로고 검출을 위해 0.3 스케일까지 추가
-    scales = [0.35, 0.7, 1.0]
+    scales = [0.15, 0.35, 0.7, 1.0]
     max_attempts = 5  # 최대 시도 횟수 제한
     attempts = 0
     for scale in scales:
@@ -45,7 +45,7 @@ def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사
                 continue
 
             # 템플릿 크기를 조정하여 여러 크기에서 매칭 시도
-            for template_scale in np.linspace(0.6, 1.0, 3):
+            for template_scale in np.linspace(0.4, 1.0, 5):
                 if attempts >= max_attempts:
                     break
 
