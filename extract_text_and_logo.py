@@ -23,44 +23,37 @@ def resize_image_for_ocr(img, max_dim=500):
 
 
 def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사자처럼', threshold=0.2):
-    """로고와 텍스트 검출, 최적화된 해상도와 템플릿 크기에서 시도."""
-    # 상단 영역만 리사이즈 후 사용
+    """로고와 텍스트 검출 최적화."""
+    # 상단 1/4 영역만 사용하여 로고 감지
     h, w = image.shape[:2]
-    top_half_image = image[:h // 3, :]  # 상단 1/3 영역만 사용
-    resized_image = resize_image_for_ocr(top_half_image, max_dim=600)  # 빠른 처리 위해 축소
+    roi = image[:h // 4, :]
+    resized_image = resize_image_for_ocr(roi, max_dim=500)  # 빠른 처리 위해 축소
     img_gray = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
-    img_gray = cv2.GaussianBlur(img_gray, (3, 3), 0)  # 노이즈 제거용 블러
 
+    # 템플릿 스케일 설정: 작은 로고를 감지할 수 있는 적절한 크기 선택
+    scales = [0.6, 0.8, 1.0]  # 너무 많은 스케일 시도를 줄임
+    template_scales = [0.5, 0.75]  # 템플릿 크기를 줄여 작은 로고 감지 시도
 
-     # 다양한 스케일 설정: 큰 이미지의 작은 로고 검출을 위해 0.3 스케일까지 추가
-    scales = [0.15, 0.35, 0.7, 1.0]
-    max_attempts = 5  # 최대 시도 횟수 제한
-    attempts = 0
     for scale in scales:
-        if attempts >= max_attempts:
-            break
+        scaled_image = cv2.resize(img_gray, (int(img_gray.shape[1] * scale), int(img_gray.shape[0] * scale)))
 
         for logo_template in logo_templates:
             if logo_template is None:
                 continue
 
-            # 템플릿 크기를 조정하여 여러 크기에서 매칭 시도
-            for template_scale in np.linspace(0.4, 1.0, 5):
-                if attempts >= max_attempts:
-                    break
-
-                resized_template = cv2.resize(logo_template,
-                                              (int(logo_template.shape[1] * template_scale),
-                                               int(logo_template.shape[0] * template_scale)))
-                if resized_template.shape[0] > img_gray.shape[0] or resized_template.shape[1] > img_gray.shape[1]:
+            for t_scale in template_scales:
+                resized_template = cv2.resize(logo_template, 
+                                              (int(logo_template.shape[1] * t_scale), 
+                                               int(logo_template.shape[0] * t_scale)))
+                
+                if resized_template.shape[0] > scaled_image.shape[0] or resized_template.shape[1] > scaled_image.shape[1]:
                     continue
 
-                # 템플릿 매칭
-                result = cv2.matchTemplate(img_gray, resized_template, cv2.TM_CCOEFF_NORMED)
+                result = cv2.matchTemplate(scaled_image, resized_template, cv2.TM_CCOEFF_NORMED)
                 loc = np.where(result >= threshold)
 
                 for pt in zip(*loc[::-1]):
-                    logo_roi = resized_image[pt[1]:pt[1] + resized_template.shape[0], pt[0]:pt[0] + resized_template.shape[1]]
+                    logo_roi = scaled_image[pt[1]:pt[1] + resized_template.shape[0], pt[0]:pt[0] + resized_template.shape[1]]
                     easyocr_results = reader.readtext(logo_roi, detail=0)
                     easyocr_text = ' '.join(easyocr_results)
 
@@ -70,11 +63,11 @@ def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사
                         return True
 
                 clear_memory()
-                attempts += 1  # 시도 횟수 증가
 
     print("로고 텍스트 감지 실패")
     clear_memory()
     return False
+
     
 
 
