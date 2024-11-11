@@ -6,7 +6,8 @@ import torch
 import re
 import gc
 import time
-from extract_text_and_logo import extract_text_and_logo
+from extract_text_and_logo import extract_text_and_logo, detect_logo_with_text, extract_text 
+from concurrent.futures import ThreadPoolExecutor
 
 # 글로벌 EasyOCR 인스턴스 생성 (한 번만 생성하여 전체에서 재사용)
 reader = easyocr.Reader(['ko', 'en'])
@@ -37,8 +38,17 @@ def verify_like_a_lion_member(uploaded_image):
 
     try:
         print("텍스트 및 로고 추출 시작")
-        text_data, logo_detected = extract_text_and_logo(img, reader)
-        print("extract_text_and_logo 호출 성공")
+        
+        # 병렬 처리로 로고 검출과 텍스트 필드 추출
+        with ThreadPoolExecutor() as executor:
+            logo_future = executor.submit(detect_logo_with_text, img, logo_templates, reader)
+            text_future = executor.submit(extract_text, img, reader)
+        
+        # 결과 받기
+        logo_detected = logo_future.result()
+        text_data = text_future.result()
+
+        print("로고 및 텍스트 검출 완료")
     except Exception as e:
         print(f"오류 발생: {str(e)}")
         return False
@@ -47,11 +57,11 @@ def verify_like_a_lion_member(uploaded_image):
     if not logo_detected:
         print("로고를 감지할 수 없습니다.")
         return False
-    elif text_data is None:
+    elif text_data is None or not any(text_data.values()):
         print("필수 필드(ID, 이름, 휴대폰)를 감지할 수 없습니다.")
         return False
     else:
-        print("유효한 회원입니다.")
+        print("유효한 회원입니다. 필드 데이터:", text_data)
 
     # 최종 결과 판단 및 메모리 해제
     clear_memory()
