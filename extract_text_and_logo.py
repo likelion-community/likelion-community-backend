@@ -26,43 +26,51 @@ def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사
     """로고와 텍스트 검출, 최적화된 해상도와 템플릿 크기에서 시도."""
     # 상단 영역만 리사이즈 후 사용
     h, w = image.shape[:2]
-    top_half_image = image[:h // 2, :]  
-    resized_top_half_image = resize_image_for_ocr(top_half_image)
+    top_half_image = image[:h // 3, :]  # 상단 1/3 영역만 사용
+    resized_image = resize_image_for_ocr(top_half_image, max_dim=600)  # 빠른 처리 위해 축소
+    img_gray = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
+    img_gray = cv2.GaussianBlur(img_gray, (3, 3), 0)  # 노이즈 제거용 블러
+
 
      # 다양한 스케일 설정: 큰 이미지의 작은 로고 검출을 위해 0.3 스케일까지 추가
     scales = [0.35, 0.7, 1.0]
+    max_attempts = 5  # 최대 시도 횟수 제한
+    attempts = 0
     for scale in scales:
-        resized_image = cv2.resize(resized_top_half_image, (int(resized_top_half_image.shape[1] * scale), int(resized_top_half_image.shape[0] * scale)))
-        img_gray = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
-        
+        if attempts >= max_attempts:
+            break
+
         for logo_template in logo_templates:
             if logo_template is None:
                 continue
-            template_scales = [0.75, 1.0]
-            
-            for template_scale in template_scales:
-                resized_template = cv2.resize(logo_template, 
-                                              (int(logo_template.shape[1] * template_scale), 
+
+            # 템플릿 크기를 조정하여 여러 크기에서 매칭 시도
+            for template_scale in np.linspace(0.6, 1.0, 3):
+                if attempts >= max_attempts:
+                    break
+
+                resized_template = cv2.resize(logo_template,
+                                              (int(logo_template.shape[1] * template_scale),
                                                int(logo_template.shape[0] * template_scale)))
                 if resized_template.shape[0] > img_gray.shape[0] or resized_template.shape[1] > img_gray.shape[1]:
                     continue
-                
-                # torch.no_grad()를 사용하여 메모리 절약
-                with torch.no_grad():
-                    result = cv2.matchTemplate(img_gray, resized_template, cv2.TM_CCOEFF_NORMED)
-                    loc = np.where(result >= threshold)
 
-                    for pt in zip(*loc[::-1]):
-                        logo_roi = resized_image[pt[1]:pt[1]+resized_template.shape[0], pt[0]:pt[0]+resized_template.shape[1]]
-                        easyocr_results = reader.readtext(logo_roi, detail=0)
-                        easyocr_text = ' '.join(easyocr_results)
+                # 템플릿 매칭
+                result = cv2.matchTemplate(img_gray, resized_template, cv2.TM_CCOEFF_NORMED)
+                loc = np.where(result >= threshold)
 
-                        if logo_text in easyocr_text:
-                            print("로고 텍스트 감지 성공")
-                            clear_memory()
-                            return True
+                for pt in zip(*loc[::-1]):
+                    logo_roi = resized_image[pt[1]:pt[1] + resized_template.shape[0], pt[0]:pt[0] + resized_template.shape[1]]
+                    easyocr_results = reader.readtext(logo_roi, detail=0)
+                    easyocr_text = ' '.join(easyocr_results)
+
+                    if logo_text in easyocr_text:
+                        print("로고 텍스트 감지 성공")
+                        clear_memory()
+                        return True
 
                 clear_memory()
+                attempts += 1  # 시도 횟수 증가
 
     print("로고 텍스트 감지 실패")
     clear_memory()
