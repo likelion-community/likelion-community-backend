@@ -14,12 +14,12 @@ def clear_memory():
 
 
 
-def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처럼', threshold=0.15):
+def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처럼', threshold=0.3):
     detected = False
 
     # 예상 위치 (상단 왼쪽)에 대한 검출 영역 설정
     height, width = image.shape[:2]
-    roi = image[:height // 3, :width // 2]  # 이미지의 상단 왼쪽 1/4만 사용
+    roi = image[:height // 3, :width // 2] 
 
     # 여러 크기의 확대 이미지로 검출
     scales = [1.0, 1.5]  # 원본 크기와 약간 확대된 크기
@@ -32,7 +32,7 @@ def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처�
             if logo_template is None:
                 continue
             
-            for template_scale in np.linspace(0.3, 0.6, 5):  # 템플릿 크기 조정 감소
+            for template_scale in np.linspace(0.6, 1.0, 5):  # 템플릿 크기 조정 감소
                 resized_template = cv2.resize(logo_template, 
                                               (int(logo_template.shape[1] * template_scale), 
                                                int(logo_template.shape[0] * template_scale)))
