@@ -41,7 +41,7 @@ def require_additional_info(strategy, details, backend, response=None, user=None
     if user:
         strategy.session_set('partial_pipeline_user', user.pk)
 
-    return strategy.redirect(reverse('https://localhost:5173/kakaoSignup'))
+    return strategy.redirect(reverse('signup:complete_profile'))
 
 
 def save_user_details(strategy, details, response=None, user=None, is_new=False, *args, **kwargs):
