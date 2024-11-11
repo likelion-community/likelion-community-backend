@@ -36,25 +36,17 @@ def verify_like_a_lion_member(uploaded_image):
     # OCR에 필요한 이미지 크기 조정
     img = resize_image_for_ocr(img)  # 해상도를 더 낮춤
 
-    # 로고 템플릿 로드
-    logo_templates = [
-        cv2.imread('/home/ubuntu/likelion-community-backend/dataset/lion_logo_template.png', 0),
-        cv2.imread('/home/ubuntu/likelion-community-backend/dataset/logo.jpg', 0)
-    ]
+    # 텍스트와 로고 추출 (추출 시간 측정)
+    extraction_start = time.time()
 
+    # extract_text_and_logo 함수 호출 전후에 로그 추가
     try:
         print("텍스트 및 로고 추출 시작")
-        
-        # 병렬 처리로 로고 검출과 텍스트 필드 추출
-        with ThreadPoolExecutor() as executor:
-            logo_future = executor.submit(detect_logo_with_text, img, logo_templates)
-            text_future = executor.submit(extract_text, img)  # reader 인수 제거
-        
-        # 결과 받기
-        logo_detected = logo_future.result()
-        text_data = text_future.result()
-
-        print("로고 및 텍스트 검출 완료")
+        # extract_text_and_logo 함수 호출 전후에 디버깅 로그 추가
+        print("extract_text_and_logo 호출 시작")
+        text_data, logo_detected = extract_text_and_logo(img)  # 문제 발생 가능 지점
+        print("extract_text_and_logo 호출 성공")
+        print(f"텍스트 및 로고 추출 완료: {time.time() - extraction_start}초 소요")
     except Exception as e:
         print(f"오류 발생: {str(e)}")
         return False
