@@ -15,7 +15,7 @@ class CompleteProfileRequiredMiddleware(MiddlewareMixin):
                 return None  # 프로필이 완료된 경우 아무 작업 없이 통과
 
             # 프로필이 미완료된 경우 로그인 페이지로 리디렉션
-            if request.path != reverse('https://localhost:5173/kakaoSignup'):
+            if request.path != '/kakaoSignup':
                 print("User profile not complete, redirecting to login.")
                 logout(request)
                 return redirect('https://localhost:5173')
