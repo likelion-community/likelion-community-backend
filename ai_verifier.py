@@ -36,6 +36,12 @@ def verify_like_a_lion_member(uploaded_image):
     # OCR에 필요한 이미지 크기 조정
     img = resize_image_for_ocr(img, max_dim=500)  # 해상도를 더 낮춤
 
+    # 로고 템플릿 로드
+    logo_templates = [
+        cv2.imread('/home/ubuntu/likelion-community-backend/dataset/lion_logo_template.png', 0),
+        cv2.imread('/home/ubuntu/likelion-community-backend/dataset/logo.jpg', 0)
+    ]
+
     try:
         print("텍스트 및 로고 추출 시작")
         
