@@ -14,7 +14,7 @@ def clear_memory():
 
 
 
-def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처럼', threshold=0.35):
+def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처럼', threshold=0.15):
     detected = False
 
     # 예상 위치 (상단 왼쪽)에 대한 검출 영역 설정
