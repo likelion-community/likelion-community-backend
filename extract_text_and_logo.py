@@ -67,8 +67,8 @@ def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처�
 def extract_text(image):
     text_data = {'아이디': None, '이름': None, '휴대폰': None}
 
-    # EasyOCR로 필드 탐지 시도 (다양한 스케일 적용)
-    easyocr_scales = [1.0, 1.5]
+    # EasyOCR로 필드 탐지 시도 (더 다양한 스케일 적용)
+    easyocr_scales = [0.5, 1.0, 1.5, 2.0]  # 작은 글자부터 큰 글자까지
     for scale in easyocr_scales:
         resized_image = cv2.resize(image, (int(image.shape[1] * scale), int(image.shape[0] * scale)))
         easyocr_results = reader.readtext(resized_image, detail=0)
@@ -87,38 +87,12 @@ def extract_text(image):
         # 필드가 모두 검출되었으면 반복 중단
         if any(text_data.values()):
             print("EasyOCR로 텍스트 필드 검출 성공")
+            print(f"[EasyOCR] 검출된 필드 데이터: {text_data}")
             return text_data
 
-    # EasyOCR로 검출 실패 시 Tesseract로 재시도 (다양한 스케일 적용)
-    if not any(text_data.values()):
-        print("EasyOCR로 필드 검출 실패, Tesseract로 재시도")
-        tesseract_scales = [1.0, 1.5]
-        for scale in tesseract_scales:
-            resized_image = cv2.resize(image, (int(image.shape[1] * scale), int(image.shape[0] * scale)))
-            img_gray = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
-            img_filtered = cv2.bilateralFilter(img_gray, 9, 75, 75)
-            img_blurred = cv2.GaussianBlur(img_filtered, (5, 5), 0)
-            ocr_data = pytesseract.image_to_data(img_blurred, output_type=pytesseract.Output.DICT, config='--psm 6 -l kor')
-
-            # Tesseract로 검출된 텍스트 출력
-            print(f"[Tesseract] 스케일 {scale}에서 검출된 텍스트: {ocr_data['text']}")
-
-            
-            # Tesseract로 필드 검출
-            for i, word in enumerate(ocr_data['text']):
-                if re.search(r'아이\s*디|아이다|아이디', word):
-                    text_data['아이디'] = ocr_data['text'][i + 1] if i + 1 < len(ocr_data['text']) else None
-                elif '이름' in word:
-                    text_data['이름'] = ocr_data['text'][i + 1] if i + 1 < len(ocr_data['text']) else None
-                elif re.search(r'휴대폰|휴대포|휴대.*', word):
-                    text_data['휴대폰'] = ocr_data['text'][i + 1] if i + 1 < len(ocr_data['text']) else None
-            
-            # 필드가 모두 검출되었으면 반복 중단
-            if any(text_data.values()):
-                print("Tesseract로 텍스트 필드 검출 성공")
-                return text_data
     print("최종 텍스트 필드 검출 결과:", text_data)
     return text_data
+
 
    
 
