@@ -63,20 +63,26 @@ def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처�
     clear_memory()
     return False
 
-
+def preprocess_image(image):
+    """이미지 대비 강화 및 이진화 전처리"""
+    img_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    # 이진화
+    _, img_bin = cv2.threshold(img_gray, 150, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    # 선명화
+    img_sharp = cv2.GaussianBlur(img_bin, (3, 3), 0)
+    return img_sharp
+    
 def extract_text(image):
     text_data = {'아이디': None, '이름': None, '휴대폰': None}
+    image = preprocess_image(image)  # 전처리 적용
 
-    # EasyOCR로 필드 탐지 시도 (최소 스케일에서 시작)
-    easyocr_scales = [1.0]  # 기본 스케일만 우선 적용
+    # EasyOCR로 필드 탐지 시도
+    easyocr_scales = [1.0, 1.5, 2.0]  
     for scale in easyocr_scales:
         resized_image = cv2.resize(image, (int(image.shape[1] * scale), int(image.shape[0] * scale)))
-        
-        # EasyOCR로 텍스트 추출
         easyocr_results = reader.readtext(resized_image, detail=0)
         print(f"[EasyOCR] 스케일 {scale}에서 검출된 텍스트: {easyocr_results}")
         
-        # 텍스트 결과에서 필드 검출
         for i, word in enumerate(easyocr_results):
             if re.search(r'아이\s*디|아이다|아이디', word):
                 text_data['아이디'] = easyocr_results[i + 1] if i + 1 < len(easyocr_results) else None
@@ -85,36 +91,21 @@ def extract_text(image):
             elif re.search(r'휴대폰|휴대포|휴대.*', word):
                 text_data['휴대폰'] = easyocr_results[i + 1] if i + 1 < len(easyocr_results) else None
 
-        # 필드가 모두 검출되면 추가 스케일 반복 중단
         if any(text_data.values()):
-            print("EasyOCR로 텍스트 필드 검출 성공")
-            print(f"[EasyOCR] 검출된 필드 데이터: {text_data}")
-            clear_memory()  # 메모리 해제
+            print(f"EasyOCR로 텍스트 필드 검출 성공: {text_data}")
             return text_data
 
-    # 첫 번째 스케일에서 필드를 찾지 못했을 경우에만 중앙 70% 영역으로 확대 검출
-    print("기본 스케일에서 필드 검출 실패, 중앙에서 재시도")
-    height, width = image.shape[:2]
-    central_region = image[int(height * 0.35):int(height * 0.65), int(width * 0.35):int(width * 0.65)]
-
-    # 중앙 70% 영역에서 큰 스케일로 재시도
-    large_scale = 1.7
-    resized_image = cv2.resize(central_region, (int(central_region.shape[1] * large_scale), int(central_region.shape[0] * large_scale)))
-    easyocr_results = reader.readtext(resized_image, detail=0)
-    print(f"[EasyOCR] 중앙 70% 스케일 {large_scale}에서 검출된 텍스트: {easyocr_results}")
-
-    # 텍스트 결과에서 필드 검출
-    for i, word in enumerate(easyocr_results):
+    # Tesseract로 추가 검출 시도
+    tesseract_results = pytesseract.image_to_data(image, output_type=pytesseract.Output.DICT, config='--psm 6 -l kor')
+    for i, word in enumerate(tesseract_results['text']):
         if re.search(r'아이\s*디|아이다|아이디', word):
-            text_data['아이디'] = easyocr_results[i + 1] if i + 1 < len(easyocr_results) else None
+            text_data['아이디'] = tesseract_results['text'][i + 1] if i + 1 < len(tesseract_results['text']) else None
         elif '이름' in word:
-            text_data['이름'] = easyocr_results[i + 1] if i + 1 < len(easyocr_results) else None
+            text_data['이름'] = tesseract_results['text'][i + 1] if i + 1 < len(tesseract_results['text']) else None
         elif re.search(r'휴대폰|휴대포|휴대.*', word):
-            text_data['휴대폰'] = easyocr_results[i + 1] if i + 1 < len(easyocr_results) else None
+            text_data['휴대폰'] = tesseract_results['text'][i + 1] if i + 1 < len(tesseract_results['text']) else None
 
-    # 최종 결과 출력 및 메모리 해제
     print("최종 텍스트 필드 검출 결과:", text_data)
-    clear_memory()
     return text_data
 
 
