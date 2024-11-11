@@ -12,7 +12,7 @@ def clear_memory():
     """메모리 관리."""
     gc.collect()
 
-def resize_image_for_ocr(img, max_dim=600):
+def resize_image_for_ocr(img, max_dim=500):
     """유동적인 리사이즈: 가장 긴 변을 기준으로 max_dim에 맞추어 원본 비율을 유지하여 리사이즈."""
     h, w = img.shape[:2]
     if max(h, w) > max_dim:
@@ -26,10 +26,10 @@ def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사
     # 상단 영역만 리사이즈 후 사용
     h, w = image.shape[:2]
     top_half_image = image[:h // 2, :]  
-    resized_top_half_image = resize_image_for_ocr(top_half_image) 
+    resized_top_half_image = resize_image_for_ocr(top_half_image)
 
     # 검출을 위한 제한된 스케일 설정
-    scales = [0.75, 1.0, 1.25]  # 필요한 스케일만 남김
+    scales = [0.75, 1.0, 1.25]
     for scale in scales:
         resized_image = cv2.resize(resized_top_half_image, (int(resized_top_half_image.shape[1] * scale), int(resized_top_half_image.shape[0] * scale)))
         img_gray = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
@@ -38,33 +38,34 @@ def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사
             if logo_template is None:
                 continue
 
-            for template_scale in np.linspace(0.5, 0.8, 4):  # 템플릿 크기를 적절히 줄임
+            for template_scale in np.linspace(0.5, 0.8, 4):
                 resized_template = cv2.resize(logo_template, 
                                               (int(logo_template.shape[1] * template_scale), 
                                                int(logo_template.shape[0] * template_scale)))
                 if resized_template.shape[0] > img_gray.shape[0] or resized_template.shape[1] > img_gray.shape[1]:
                     continue
                 
-                result = cv2.matchTemplate(img_gray, resized_template, cv2.TM_CCOEFF_NORMED)
-                loc = np.where(result >= threshold)
+                # torch.no_grad()를 사용하여 메모리 절약
+                with torch.no_grad():
+                    result = cv2.matchTemplate(img_gray, resized_template, cv2.TM_CCOEFF_NORMED)
+                    loc = np.where(result >= threshold)
 
-                for pt in zip(*loc[::-1]):
-                    logo_roi = resized_image[pt[1]:pt[1]+resized_template.shape[0], pt[0]:pt[0]+resized_template.shape[1]]
-                    easyocr_results = reader.readtext(logo_roi, detail=0)
-                    easyocr_text = ' '.join(easyocr_results)
+                    for pt in zip(*loc[::-1]):
+                        logo_roi = resized_image[pt[1]:pt[1]+resized_template.shape[0], pt[0]:pt[0]+resized_template.shape[1]]
+                        easyocr_results = reader.readtext(logo_roi, detail=0)
+                        easyocr_text = ' '.join(easyocr_results)
 
-                    if logo_text in easyocr_text:
-                        print("로고 텍스트 감지 성공")
-                        clear_memory()
-                        return True
+                        if logo_text in easyocr_text:
+                            print("로고 텍스트 감지 성공")
+                            clear_memory()
+                            return True
 
-                # 메모리 해제
                 clear_memory()
 
     print("로고 텍스트 감지 실패")
     clear_memory()
     return False
-
+    
 
 
 def extract_text(image, reader):

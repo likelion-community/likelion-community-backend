@@ -7,6 +7,9 @@ import gc
 import time
 from extract_text_and_logo import extract_text_and_logo
 
+# 글로벌 EasyOCR 인스턴스 생성 (한 번만 생성하여 전체에서 재사용)
+reader = easyocr.Reader(['ko', 'en'])
+
 # 메모리 해제 함수
 def clear_memory():
     """메모리 관리."""
@@ -29,15 +32,11 @@ def verify_like_a_lion_member(uploaded_image):
     print("이미지 디코딩 완료")
 
     # OCR에 필요한 이미지 크기 조정
-    img = resize_image_for_ocr(img)
+    img = resize_image_for_ocr(img, max_dim=500)  # 해상도를 더 낮춤
 
     try:
         print("텍스트 및 로고 추출 시작")
-
-        # EasyOCR 인스턴스를 함수 내에서 생성
-        reader = easyocr.Reader(['ko', 'en'])
         text_data, logo_detected = extract_text_and_logo(img, reader)
-        del reader  # EasyOCR 인스턴스 메모리 해제
         print("extract_text_and_logo 호출 성공")
     except Exception as e:
         print(f"오류 발생: {str(e)}")
