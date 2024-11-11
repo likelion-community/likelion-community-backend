@@ -32,7 +32,7 @@ def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처�
             if logo_template is None:
                 continue
             
-            for template_scale in np.linspace(0.6, 1.0, 5):  # 템플릿 크기 조정 감소
+            for template_scale in np.linspace(0.2, 1.0, 5):  # 템플릿 크기 조정 감소
                 resized_template = cv2.resize(logo_template, 
                                               (int(logo_template.shape[1] * template_scale), 
                                                int(logo_template.shape[0] * template_scale)))
