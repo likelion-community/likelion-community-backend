@@ -73,6 +73,8 @@ def extract_text(image):
         resized_image = cv2.resize(image, (int(image.shape[1] * scale), int(image.shape[0] * scale)))
         easyocr_results = reader.readtext(resized_image, detail=0)
 
+        print(f"[EasyOCR] 스케일 {scale}에서 검출된 텍스트: {easyocr_results}")
+        
         # EasyOCR 결과 필드 탐지
         for i, word in enumerate(easyocr_results):
             if re.search(r'아이\s*디|아이다|아이디', word):
@@ -98,6 +100,10 @@ def extract_text(image):
             img_blurred = cv2.GaussianBlur(img_filtered, (5, 5), 0)
             ocr_data = pytesseract.image_to_data(img_blurred, output_type=pytesseract.Output.DICT, config='--psm 6 -l kor')
 
+            # Tesseract로 검출된 텍스트 출력
+            print(f"[Tesseract] 스케일 {scale}에서 검출된 텍스트: {ocr_data['text']}")
+
+            
             # Tesseract로 필드 검출
             for i, word in enumerate(ocr_data['text']):
                 if re.search(r'아이\s*디|아이다|아이디', word):
@@ -111,7 +117,7 @@ def extract_text(image):
             if any(text_data.values()):
                 print("Tesseract로 텍스트 필드 검출 성공")
                 return text_data
-
+    print("최종 텍스트 필드 검출 결과:", text_data)
     return text_data
 
    
