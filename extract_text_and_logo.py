@@ -13,6 +13,7 @@ def clear_memory():
     gc.collect()
 
 
+
 def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처럼', threshold=0.35):
     detected = False
 
@@ -26,7 +27,7 @@ def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처�
             if logo_template is None:
                 continue
             
-            for template_scale in np.linspace(0.6, 1.0, 5):  # 템플릿 크기 조정 감소
+            for template_scale in np.linspace(0.5, 1.0, 5):  # 템플릿 크기 조정 감소
                 resized_template = cv2.resize(logo_template, 
                                               (int(logo_template.shape[1] * template_scale), 
                                                int(logo_template.shape[0] * template_scale)))
@@ -38,79 +39,57 @@ def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처�
                 
                 for pt in zip(*loc[::-1]):
                     logo_roi = resized_image[pt[1]:pt[1]+resized_template.shape[0], pt[0]:pt[0]+resized_template.shape[1]]
-                    tess_text = pytesseract.image_to_string(logo_roi, config='--psm 6', lang='kor').strip()
                     easyocr_results = reader.readtext(logo_roi, detail=0)
-
-                    # easyocr_results 리스트를 문자열로 변환하여 로고 텍스트와 비교
-                    easyocr_text = ' '.join(easyocr_results)  # 리스트의 요소들을 하나의 문자열로 결합
-
-                    if logo_text in tess_text or logo_text in easyocr_text:
-                        print("로고 텍스트 감지 성공")
+                    easyocr_text = ' '.join(easyocr_results)
+                    
+                    if logo_text in easyocr_text:
+                        print("로고 텍스트 감지 성공 (EasyOCR)")
                         clear_memory()
                         return True
-                    
+                    else:
+                        # EasyOCR 실패 시에만 Tesseract 검증
+                        tess_text = pytesseract.image_to_string(logo_roi, config='--psm 6', lang='kor').strip()
+                        if logo_text in tess_text:
+                            print("로고 텍스트 감지 성공 (Tesseract)")
+                            clear_memory()
+                            return True
                 clear_memory()
     print("로고 텍스트 감지 실패")
     clear_memory()
     return False
 
 
-
 def extract_text(image):
-    # Tesseract를 사용하여 전체 텍스트 추출
-    img_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    img_filtered = cv2.bilateralFilter(img_gray, 9, 75, 75)
-    img_blurred = cv2.GaussianBlur(img_filtered, (5, 5), 0)
-    img_resized = cv2.resize(img_blurred, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
-
-    # Tesseract를 사용하여 전체 텍스트 추출
-    ocr_data = pytesseract.image_to_data(img_resized, output_type=pytesseract.Output.DICT, config='--psm 6 -l kor')
-
-
-    #  Tesseract OCR 결과 출력
-    #print(f"Tesseract 전체 텍스트 결과: {ocr_data['text']}")
-
-    # EasyOCR 결과로 필드 탐지
+    # EasyOCR로 필드 탐지 시도
     easyocr_results = reader.readtext(image, detail=0)
-
-    # EasyOCR 결과 출력
-    #print(f"EasyOCR 전체 텍스트 결과: {easyocr_results}")
-
-
-    tesseract_results = ocr_data['text'] if isinstance(ocr_data['text'], list) else [ocr_data['text']]
-    combined_results = easyocr_results + tesseract_results
-    
     text_data = {'아이디': None, '이름': None, '휴대폰': None}
 
-    # EasyOCR 통합 필드 탐지
-    for i, word in enumerate(combined_results):
+    # EasyOCR 결과 필드 탐지
+    for i, word in enumerate(easyocr_results):
         if re.search(r'아이\s*디|아이다|아이디', word):
-            if i + 1 < len(easyocr_results):
-                text_data['아이디'] = easyocr_results[i + 1]
+            text_data['아이디'] = easyocr_results[i + 1] if i + 1 < len(easyocr_results) else None
         elif '이름' in word:
-            if i + 1 < len(easyocr_results):
-                text_data['이름'] = easyocr_results[i + 1]
+            text_data['이름'] = easyocr_results[i + 1] if i + 1 < len(easyocr_results) else None
         elif re.search(r'휴대폰|휴대포|휴대.*', word):
-            if i + 1 < len(easyocr_results):
-                text_data['휴대폰'] = easyocr_results[i + 1]
+            text_data['휴대폰'] = easyocr_results[i + 1] if i + 1 < len(easyocr_results) else None
 
+    # 필드가 검출되지 않았을 때 Tesseract로 재시도
+    if not any(text_data.values()):
+        print("EasyOCR로 필드 검출 실패, Tesseract로 재시도")
+        img_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        img_filtered = cv2.bilateralFilter(img_gray, 9, 75, 75)
+        img_blurred = cv2.GaussianBlur(img_filtered, (5, 5), 0)
+        img_resized = cv2.resize(img_blurred, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
+        ocr_data = pytesseract.image_to_data(img_resized, output_type=pytesseract.Output.DICT, config='--psm 6 -l kor')
 
-    # 필드 매칭 함수
-    def find_field(field, text_result):
-        for text in text_result:
-            if field in text:
-                return text
-        return None
-    
-    # 필드별 결과 통합 (Tesseract + EasyOCR)
-    text_data['이름'] = find_field('이름', ocr_data['text']) or find_field('이름', easyocr_results)
-    text_data['아이디'] = find_field('아이디', ocr_data['text']) or find_field('아이디', easyocr_results)
-    text_data['휴대폰'] = find_field('휴대폰', ocr_data['text']) or find_field('휴대폰', easyocr_results) or find_field('휴대', combined_results)
-   
-    # # 필드 검출이 실패한 경우에만 OCR 결과 출력
-    # if text_data['이름'] is None or text_data['아이디'] is None or text_data['휴대폰'] is None:
-    #     print(f"Tesseract 전체 텍스트 결과: {ocr_data['text']}")
-    #     print(f"EasyOCR 전체 텍스트 결과: {easyocr_results}")
+        # Tesseract로 필드 검출
+        for i, word in enumerate(ocr_data['text']):
+            if re.search(r'아이\s*디|아이다|아이디', word):
+                text_data['아이디'] = ocr_data['text'][i + 1] if i + 1 < len(ocr_data['text']) else None
+            elif '이름' in word:
+                text_data['이름'] = ocr_data['text'][i + 1] if i + 1 < len(ocr_data['text']) else None
+            elif re.search(r'휴대폰|휴대포|휴대.*', word):
+                text_data['휴대폰'] = ocr_data['text'][i + 1] if i + 1 < len(ocr_data['text']) else None
 
     return text_data
    
