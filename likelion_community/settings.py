@@ -161,7 +161,7 @@ SOCIAL_AUTH_KAKAO_REDIRECT_URI = env('SOCIAL_AUTH_KAKAO_REDIRECT_URI')
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 LOGIN_REDIRECT_URL = '/home/'
 LOGOUT_REDIRECT_URL = '/'
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/signup/complete_profile/'
+#SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/signup/complete_profile/'
 LOGIN_URL = '/signup/login/home/'
 
 
