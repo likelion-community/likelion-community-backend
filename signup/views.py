@@ -134,22 +134,26 @@ class CompleteProfileAPIView(APIView):
     def get(self, request):
         user_id = request.session.get('partial_pipeline_user')
         if not user_id:
-            # 프로필이 완성되지 않은 경우 프론트엔드의 카카오 가입 페이지로 리디렉션
             return redirect("https://localhost:5173/kakaoSignup")
 
         try:
             user = CustomUser.objects.get(pk=user_id)
         except CustomUser.DoesNotExist:
-            # 사용자가 존재하지 않는 경우에도 카카오 가입 페이지로 리디렉션
             request.session.pop('partial_pipeline_user', None)
             return redirect("https://localhost:5173/kakaoSignup")
 
         if user.is_profile_complete:
-            # 프로필이 완료된 경우 프론트엔드 메인 페이지로 리디렉션
             return redirect("https://localhost:5173/main")
 
-        # 프로필이 완성되지 않은 경우에만 카카오 가입 페이지로 리디렉션
+        # 세션에 저장된 닉네임을 가져와 쿼리 파라미터로 전달
+        nickname = request.session.get('nickname')
+        if nickname:
+            # 닉네임을 쿼리 파라미터로 포함하여 리디렉션
+            return redirect(f"https://localhost:5173/kakaoSignup?nickname={nickname}")
+        
+        # 닉네임이 없는 경우 기본 리디렉션
         return redirect("https://localhost:5173/kakaoSignup")
+        
 
     def post(self, request):
         user_id = request.session.get('partial_pipeline_user')
