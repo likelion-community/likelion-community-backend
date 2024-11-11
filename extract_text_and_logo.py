@@ -22,53 +22,48 @@ def resize_image_for_ocr(img, max_dim=500):
     return img
 
 
-def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사자처럼', threshold=0.2):
-    """로고와 텍스트 검출 최적화."""
-    # 상단 1/4 영역만 사용하여 로고 감지
+def detect_logo_with_text(image, logo_templates, logo_text='멋쟁이사자처럼', threshold=0.35):
     h, w = image.shape[:2]
-    roi = image[:h // 4, :]
-    resized_image = resize_image_for_ocr(roi, max_dim=500)  # 빠른 처리 위해 축소
-    img_gray = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
-
-    # 템플릿 스케일 설정: 작은 로고를 감지할 수 있는 적절한 크기 선택
-    scales = [0.6, 0.8, 1.0]  # 너무 많은 스케일 시도를 줄임
-    template_scales = [0.5, 0.75]  # 템플릿 크기를 줄여 작은 로고 감지 시도
-
+    roi = image[:h // 4, :w]
+    # 이미지 자체 확대 (작은 로고 검출을 위해)
+    scales = [1.0, 2.0]  # 원본 크기와 확대 크기
     for scale in scales:
-        scaled_image = cv2.resize(img_gray, (int(img_gray.shape[1] * scale), int(img_gray.shape[0] * scale)))
-
+        resized_image = cv2.resize(roi, (int(image.shape[1] * scale), int(image.shape[0] * scale)))
+        img_gray = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
+        
         for logo_template in logo_templates:
             if logo_template is None:
                 continue
-
-            for t_scale in template_scales:
+            
+            for template_scale in np.linspace(0.4, 1.0, 5):  # 템플릿 크기 조정 감소
                 resized_template = cv2.resize(logo_template, 
-                                              (int(logo_template.shape[1] * t_scale), 
-                                               int(logo_template.shape[0] * t_scale)))
-                
-                if resized_template.shape[0] > scaled_image.shape[0] or resized_template.shape[1] > scaled_image.shape[1]:
+                                              (int(logo_template.shape[1] * template_scale), 
+                                               int(logo_template.shape[0] * template_scale)))
+                if resized_template.shape[0] > img_gray.shape[0] or resized_template.shape[1] > img_gray.shape[1]:
                     continue
-
-                result = cv2.matchTemplate(scaled_image, resized_template, cv2.TM_CCOEFF_NORMED)
+                
+                result = cv2.matchTemplate(img_gray, resized_template, cv2.TM_CCOEFF_NORMED)
                 loc = np.where(result >= threshold)
-
+                
                 for pt in zip(*loc[::-1]):
-                    logo_roi = scaled_image[pt[1]:pt[1] + resized_template.shape[0], pt[0]:pt[0] + resized_template.shape[1]]
+                    logo_roi = resized_image[pt[1]:pt[1]+resized_template.shape[0], pt[0]:pt[0]+resized_template.shape[1]]
+                    tess_text = pytesseract.image_to_string(logo_roi, config='--psm 6', lang='kor').strip()
                     easyocr_results = reader.readtext(logo_roi, detail=0)
-                    easyocr_text = ' '.join(easyocr_results)
 
-                    if logo_text in easyocr_text:
+                    # easyocr_results 리스트를 문자열로 변환하여 로고 텍스트와 비교
+                    easyocr_text = ' '.join(easyocr_results)  # 리스트의 요소들을 하나의 문자열로 결합
+
+                    # 두 OCR 결과에서 텍스트가 포함되어 있는지 확인
+                    if logo_text in tess_text or logo_text in easyocr_text:
                         print("로고 텍스트 감지 성공")
                         clear_memory()
                         return True
-
+                    
                 clear_memory()
-
     print("로고 텍스트 감지 실패")
     clear_memory()
     return False
 
-    
 
 
 def extract_text(image, reader):
