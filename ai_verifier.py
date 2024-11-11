@@ -47,8 +47,8 @@ def verify_like_a_lion_member(uploaded_image):
         
         # 병렬 처리로 로고 검출과 텍스트 필드 추출
         with ThreadPoolExecutor() as executor:
-            logo_future = executor.submit(detect_logo_with_text, img, logo_templates, reader)
-            text_future = executor.submit(extract_text, img, reader)
+            logo_future = executor.submit(detect_logo_with_text, img, logo_templates)
+            text_future = executor.submit(extract_text, img)  # reader 인수 제거
         
         # 결과 받기
         logo_detected = logo_future.result()
