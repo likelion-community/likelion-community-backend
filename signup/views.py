@@ -117,22 +117,28 @@ class SignupAPIView(APIView):
         # AJAX 요청인 경우 사진 유효성 검사
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             uploaded_image = request.FILES.get('verification_photo')
-            is_verified = verify_like_a_lion_member(uploaded_image)
-            return JsonResponse({'is_valid': bool(is_verified)})
+            if uploaded_image:
+                is_verified = verify_like_a_lion_member(uploaded_image)
+                return JsonResponse({'is_valid': bool(is_verified)})
+            return JsonResponse({'is_valid': True})  # 이미지가 없을 때도 유효한 것으로 처리
 
         # 회원가입 시 모든 정보가 유효한지 확인
         serializer = CustomUserCreationSerializer(data=request.data)
         if serializer.is_valid():
             uploaded_image = request.FILES.get('verification_photo')
-            is_verified = verify_like_a_lion_member(uploaded_image)
+            is_verified = True  # 이미지가 없을 때 기본적으로 유효성 통과로 처리
+            if uploaded_image:
+                is_verified = verify_like_a_lion_member(uploaded_image)
+                
             if is_verified:
                 user = serializer.save()
                 user.is_profile_complete = True  
-                user.verification_photo = uploaded_image
+                user.verification_photo = uploaded_image  # 사진이 있을 때만 저장
                 user.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response({'error': '이미지 인증 실패'}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 
