@@ -161,8 +161,8 @@ SOCIAL_AUTH_KAKAO_REDIRECT_URI = env('SOCIAL_AUTH_KAKAO_REDIRECT_URI')
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 LOGIN_REDIRECT_URL = '/home/'
 LOGOUT_REDIRECT_URL = '/'
-#SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/signup/complete_profile/'
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'https://localhost:5173/kakaoSignup'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/signup/complete_profile/'
+#SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'https://localhost:5173/kakaoSignup'
 LOGIN_URL = '/signup/login/home/'
 
 
