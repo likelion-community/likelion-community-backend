@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 class LoginHomeAPIView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [AllowAny]  # 누구나 접근 가능하게 설정
 
     def get(self, request):
         return Response({
@@ -33,25 +33,21 @@ class LoginHomeAPIView(APIView):
 
 class KakaoLoginAPIView(APIView):
     permission_classes = [AllowAny]
-
     def get(self, request):
         if request.user.is_authenticated:
             if not request.user.is_profile_complete:
                 request.session['partial_pipeline_user'] = request.user.pk
-                return HttpResponseRedirect('signup:complete_profile')
+                return redirect('signup:complete_profile')
             login(request, request.user)
-            return HttpResponseRedirect('home:mainpage')
+            return redirect('home:mainpage')
+        
+        # 카카오 백엔드 로드
+        strategy = load_strategy(request)
+        backend = load_backend(strategy, 'kakao', redirect_uri=settings.SOCIAL_AUTH_KAKAO_REDIRECT_URI)
 
-        try:
-            strategy = load_strategy(request)
-            backend = load_backend(strategy, 'kakao', redirect_uri=settings.SOCIAL_AUTH_KAKAO_REDIRECT_URI)
-
-            auth_url = backend.auth_url()
-            logger.debug(f"Generated Kakao auth URL: {auth_url}")
-            return HttpResponseRedirect(auth_url)
-        except Exception as e:
-            logger.error(f"Error in Kakao login process: {e}")
-            return JsonResponse({"error": "Failed to generate Kakao auth URL"}, status=500)
+        # 카카오 인증 URL로 리디렉션
+        auth_url = backend.auth_url()
+        return redirect(auth_url)
 
 class TokenLoginAPIView(APIView):
     def post(self, request):
@@ -60,13 +56,16 @@ class TokenLoginAPIView(APIView):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
+            # 기존 토큰이 있다면 반환, 없으면 생성
             token, created = CustomUserToken.objects.get_or_create(user=user)
             if not created:
+                # 기존 토큰이 있는 경우 새로운 UUID로 갱신
                 token.token = uuid.uuid4()
                 token.save()
             return Response({'token': str(token.token), 'user_id': user.pk}, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
+        
 
 class CustomLoginAPIView(APIView):
     permission_classes = [AllowAny]
@@ -78,13 +77,14 @@ class CustomLoginAPIView(APIView):
             password = serializer.validated_data.get('password')
             user = authenticate(request, username=username, password=password)
             if user:
+                # 로그인 후 바로 프론트엔드 메인 페이지로 리디렉트
                 login(request, user)
-                return HttpResponseRedirect("https://localhost:5173/main")
+                return redirect("https://localhost:5173/main")
         return Response({'error': '아이디 또는 비밀번호가 잘못되었습니다.'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class CheckPasswordAPIView(APIView):
     permission_classes = [AllowAny]
-
     def post(self, request):
         password = request.data.get('password')
         try:
@@ -93,6 +93,7 @@ class CheckPasswordAPIView(APIView):
         except ValidationError as e:
             return Response({'is_valid': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+
 class LogoutAPIView(APIView):
     def post(self, request):
         logout(request)
@@ -100,32 +101,32 @@ class LogoutAPIView(APIView):
         cache.clear()
         return Response({'message': '로그아웃 성공'}, status=status.HTTP_200_OK)
 
+
 class SignupAPIView(APIView):
     permission_classes = [AllowAny]
-
+    
     def post(self, request):
+        # AJAX 요청인 경우 사진 유효성 검사
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             uploaded_image = request.FILES.get('verification_photo')
-            if uploaded_image:
-                is_verified = verify_like_a_lion_member(uploaded_image)
-                return JsonResponse({'is_valid': bool(is_verified)})
-            return JsonResponse({'is_valid': True})
+            is_verified = verify_like_a_lion_member(uploaded_image)
+            return JsonResponse({'is_valid': bool(is_verified)})
 
+        # 회원가입 시 모든 정보가 유효한지 확인
         serializer = CustomUserCreationSerializer(data=request.data)
         if serializer.is_valid():
             uploaded_image = request.FILES.get('verification_photo')
-            is_verified = True
-            if uploaded_image:
-                is_verified = verify_like_a_lion_member(uploaded_image)
-
+            is_verified = verify_like_a_lion_member(uploaded_image)
             if is_verified:
                 user = serializer.save()
-                user.is_profile_complete = True
+                user.is_profile_complete = True  
                 user.verification_photo = uploaded_image
                 user.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response({'error': '이미지 인증 실패'}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class CompleteProfileAPIView(APIView):
     permission_classes = [AllowAny]
@@ -133,17 +134,25 @@ class CompleteProfileAPIView(APIView):
     def get(self, request):
         user_id = request.session.get('partial_pipeline_user')
         if not user_id:
-            return HttpResponseRedirect("https://localhost:5173/kakaoSignup")
+            # 기존: 단순히 Response로 닉네임 정보를 반환했음
+            # 수정: 프로필이 완성되지 않은 경우 프론트엔드의 카카오 가입 페이지로 리디렉션
+            return redirect("https://localhost:5173/kakaoSignup")
 
         try:
             user = CustomUser.objects.get(pk=user_id)
         except CustomUser.DoesNotExist:
+            # 기존: 예외 처리 후 닉네임 정보만 반환했음
+            # 수정: 사용자가 존재하지 않는 경우에도 카카오 가입 페이지로 리디렉션
             request.session.pop('partial_pipeline_user', None)
-            return HttpResponseRedirect("https://localhost:5173/kakaoSignup")
+            return redirect("https://localhost:5173/kakaoSignup")
 
         if user.is_profile_complete:
-            return HttpResponseRedirect("https://localhost:5173/main")
+            # 기존: 프로필 완성 여부를 확인하지 않고 닉네임 정보만 반환
+            # 수정: 프로필이 완료된 경우 프론트엔드 메인 페이지로 리디렉션
+            return redirect("https://localhost:5173/main")
 
+        # 기존: 닉네임 정보만 반환
+        # 수정: 프로필이 완성되지 않은 경우에만 닉네임 정보 반환
         nickname = request.session.get('nickname')
         initial_data = {'nickname': nickname} if nickname else {}
         form_data = {'initial': initial_data}
@@ -152,17 +161,23 @@ class CompleteProfileAPIView(APIView):
     def post(self, request):
         user_id = request.session.get('partial_pipeline_user')
         if not user_id:
-            return HttpResponseRedirect("https://localhost:5173/kakaoSignup")
+            # 기존: 단순히 닉네임 정보를 반환했음
+            # 수정: 프로필이 완성되지 않은 경우 카카오 가입 페이지로 리디렉션
+            return redirect("https://localhost:5173/kakaoSignup")
 
         try:
             user = CustomUser.objects.get(pk=user_id)
         except CustomUser.DoesNotExist:
+            # 기존: 예외 처리 후 닉네임 정보만 반환했음
+            # 수정: 사용자가 존재하지 않는 경우 카카오 가입 페이지로 리디렉션
             request.session.pop('partial_pipeline_user', None)
-            return HttpResponseRedirect("https://localhost:5173/kakaoSignup")
+            return redirect("https://localhost:5173/kakaoSignup")
 
         if user.is_profile_complete:
+            # 기존: 단순히 프로필 상태를 반환했음
+            # 수정: 프로필이 완료된 경우 메인 페이지로 리디렉션
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return HttpResponseRedirect("https://localhost:5173/main")
+            return redirect("https://localhost:5173/main")
 
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             uploaded_image = request.FILES.get('verification_photo')
@@ -179,12 +194,19 @@ class CompleteProfileAPIView(APIView):
                 login(request, user, backend='social_core.backends.kakao.KakaoOAuth2')
                 request.session.pop('partial_pipeline_user', None)
                 request.session.pop('photo_verified', None)
-                return HttpResponseRedirect("https://localhost:5173/main")
+                # 기존: 성공적으로 저장한 후에도 단순히 Response로 데이터를 반환했음
+                # 수정: 성공적으로 프로필이 완성되었을 때 메인 페이지로 리디렉션
+                return redirect("https://localhost:5173/main")
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+        # 기존: 단순히 Response로 에러 메시지를 반환했음
+        # 수정: 메시지 처리 후에도 Response로 에러 메시지를 반환 (이 부분은 그대로 유지)
         messages.error(request, "사진 유효성 검사에 실패했습니다. 다시 시도해 주세요.")
         return Response({'error': "사진 유효성 검사에 실패했습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
+
+    
+    
 class DeleteIncompleteUserAPIView(APIView):
     def delete(self, request):
         user_id = request.session.get('partial_pipeline_user')
@@ -206,4 +228,3 @@ class DeleteUserAPIView(APIView):
         request.session.flush()
         cache.clear()
         return Response({'message': '계정이 삭제되었습니다.'}, status=status.HTTP_204_NO_CONTENT)
-
