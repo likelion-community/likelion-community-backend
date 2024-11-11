@@ -30,7 +30,7 @@ def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사
     resized_top_half_image = resize_image_for_ocr(top_half_image)
 
      # 다양한 스케일 설정: 큰 이미지의 작은 로고 검출을 위해 0.3 스케일까지 추가
-    scales = [0.3, 0.5, 0.75, 1.0, 1.25]
+    scales = [0.35, 0.7, 1.0]
     for scale in scales:
         resized_image = cv2.resize(resized_top_half_image, (int(resized_top_half_image.shape[1] * scale), int(resized_top_half_image.shape[0] * scale)))
         img_gray = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
@@ -38,8 +38,9 @@ def detect_logo_with_text(image, logo_templates, reader, logo_text='멋쟁이사
         for logo_template in logo_templates:
             if logo_template is None:
                 continue
-
-            for template_scale in np.linspace(0.3, 1.2, 6):
+            template_scales = [0.75, 1.0]
+            
+            for template_scale in template_scales:
                 resized_template = cv2.resize(logo_template, 
                                               (int(logo_template.shape[1] * template_scale), 
                                                int(logo_template.shape[0] * template_scale)))
