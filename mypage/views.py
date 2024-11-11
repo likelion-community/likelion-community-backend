@@ -7,6 +7,10 @@ from signup.models import CustomUser
 from .serializers import *
 from post.models import MainBoard, SchoolBoard, QuestionBoard
 from post.serializers import MainBoardSerializer, SchoolBoardSerializer, QuestionBoardSerializer
+from django.core.mail import send_mail
+from django.utils.crypto import get_random_string
+from django.contrib.auth.hashers import make_password
+from django.conf import settings
 
 # Create your views here.
 class ProfileImageUpdateView(APIView):
@@ -64,3 +68,111 @@ class ExecutiveVerificationView(APIView):
             serializer.save(user=user)
             return Response({"detail": "운영진 인증 사진이 제출되었습니다."}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class FindIDEmailView(APIView):
+    def post (self, request, *args, **kwargs):
+            email = request.data.get('email')
+            if email:
+                try:
+                    user = CustomUser.objects.get(email=email)
+                    verification_code = get_random_string(6, allowed_chars='0123456789')    # 6자리의 랜덤한 인증코드 값
+
+                    send_mail(
+                        '[이메일 인증] Everion 아이디 찾기 인증 코드',
+                        f'인증 코드는 {verification_code}입니다.',
+                        settings.EMAIL_HOST_USER,
+                        [email],
+                        fail_silently=False,
+                    )
+
+                    request.session['verification_code'] = verification_code
+                    request.session['user_id'] = user.id
+
+                    return Response({"detail": "인증 코드가 이메일로 전송되었습니다."}, status=status.HTTP_200_OK)
+                except CustomUser.DoesNotExist:
+                    return Response({"error": "해당 이메일을 가진 사용자가 없습니다."}, status=status.HTTP_404_NOT_FOUND)
+            else:
+                return Response({"error": "이메일을 입력하세요."}, status=status.HTTP_400_BAD_REQUEST)
+            
+class FindPasswordEmailView(APIView):
+    def post (self, request, *args, **kwargs):
+            email = request.data.get('email')
+            if email:
+                try:
+                    user = CustomUser.objects.get(email=email)
+                    verification_code = get_random_string(6, allowed_chars='0123456789')    # 6자리의 랜덤한 인증코드 값
+
+                    send_mail(
+                        '[이메일 인증] Everion 비밀번호 재설정 인증 코드',
+                        f'인증 코드는 {verification_code}입니다.',
+                        settings.EMAIL_HOST_USER,
+                        [email],
+                        fail_silently=False,
+                    )
+
+                    request.session['verification_code'] = verification_code
+                    request.session['user_id'] = user.id
+
+                    return Response({"detail": "인증 코드가 이메일로 전송되었습니다."}, status=status.HTTP_200_OK)
+                except CustomUser.DoesNotExist:
+                    return Response({"error": "해당 이메일을 가진 사용자가 없습니다."}, status=status.HTTP_404_NOT_FOUND)
+            else:
+                return Response({"error": "이메일을 입력하세요."}, status=status.HTTP_400_BAD_REQUEST)
+
+class VerifyIDView(APIView):
+    def post(self, request, *args, **kwargs):
+        input_code = request.data.get('code')
+        saved_code = request.session.get('verification_code')
+        user_id = request.session.get('user_id')
+
+        if input_code == saved_code:
+            try:
+                user = CustomUser.objects.get(id=user_id)
+                return Response({"username": user.username}, status=status.HTTP_200_OK)
+            except CustomUser.DoesNotExist:
+                return Response({"error": "사용자를 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"error": "인증 코드가 일치하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
+        
+class VerifyPasswordView(APIView):
+    def post(self, request, *args, **kwargs):
+        input_code = request.data.get('code')
+        saved_code = request.session.get('verification_code')
+        user_id = request.session.get('user_id')
+
+        if input_code == saved_code:
+            try:
+                user = CustomUser.objects.get(id=user_id)
+                return Response({
+                    "message": "인증 성공. 새 비밀번호를 입력하세요.",
+                    "username": user.username
+                }, status=status.HTTP_200_OK)
+            except CustomUser.DoesNotExist:
+                return Response({"error": "사용자를 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"error": "인증 코드가 일치하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
+        
+class ResetPasswordView(APIView):
+    def post(self, request, *args, **kwargs):
+        new_password = request.data.get('new_password')
+        confirm_password = request.data.get('confirm_password')
+        saved_code = request.session.get('verification_code')
+        user_id = request.session.get('user_id')
+
+        if new_password != confirm_password:
+            return Response({"error": "비밀번호가 일치하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if saved_code:
+            try:
+                user = CustomUser.objects.get(id=user_id)
+                user.password = make_password(new_password)
+                user.save()
+
+                del request.session['verification_code']
+                del request.session['user_id']
+
+                return Response({"detail": "비밀번호가 성공적으로 재설정되었습니다."}, status=status.HTTP_200_OK)
+            except CustomUser.DoesNotExist:
+                return Response({"error": "사용자를 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"error": "유효하지 않은 요청입니다."}, status=status.HTTP_400_BAD_REQUEST)
