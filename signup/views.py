@@ -158,45 +158,50 @@ class CompleteProfileAPIView(APIView):
     def post(self, request):
         user_id = request.session.get('partial_pipeline_user')
         if not user_id:
-            # 프로필이 완성되지 않은 경우 카카오 가입 페이지로 리디렉션
             return redirect("https://localhost:5173/kakaoSignup")
 
         try:
             user = CustomUser.objects.get(pk=user_id)
         except CustomUser.DoesNotExist:
-            # 사용자가 존재하지 않는 경우 카카오 가입 페이지로 리디렉션
             request.session.pop('partial_pipeline_user', None)
             return redirect("https://localhost:5173/kakaoSignup")
 
         if user.is_profile_complete:
-            # 프로필이 완료된 경우 메인 페이지로 리디렉션
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect("https://localhost:5173/main")
 
-        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            uploaded_image = request.FILES.get('verification_photo')
-            is_verified = verify_like_a_lion_member(uploaded_image)
-            if is_verified:
-                request.session['photo_verified'] = True
-            return JsonResponse({'is_valid': bool(is_verified)})
+        # 이미지가 업로드되지 않은 경우 오류 메시지 반환
+        uploaded_image = request.FILES.get('verification_photo')
+        if not uploaded_image:
+            return Response({'error': "회원 인증 이미지를 업로드해야 합니다."}, status=status.HTTP_400_BAD_REQUEST)
 
+        # 이미지 유효성 검사
+        is_verified = verify_like_a_lion_member(uploaded_image)
+        if is_verified:
+            request.session['photo_verified'] = True
+        else:
+            return Response({'error': "유효하지 않은 인증 이미지입니다. 다시 시도해 주세요."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # 추가 정보 저장
         if request.session.get('photo_verified', False):
             serializer = AdditionalInfoSerializer(data=request.data, instance=user)
             if serializer.is_valid():
-                serializer.save()  # 추가 정보 저장
-                # 추가 정보 저장 후 is_profile_complete 설정
+                serializer.save()
+                
+                # 프로필 완성 상태로 설정
                 user.is_profile_complete = True
-                user.save()  # 최종적으로 DB에 저장
+                user.verification_photo = uploaded_image  # 인증된 이미지 저장
+                user.save()
+
+                # 로그인 및 세션 정리
                 login(request, user, backend='social_core.backends.kakao.KakaoOAuth2')
                 request.session.pop('partial_pipeline_user', None)
                 request.session.pop('photo_verified', None)
-                # 프로필이 완성되었을 때 메인 페이지로 리디렉션
+                
+                # 프로필 완성 후 메인 페이지로 리디렉션
                 return redirect("https://localhost:5173/main")
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        # 사진 유효성 검사 실패 메시지를 리턴
-        messages.error(request, "사진 유효성 검사에 실패했습니다. 다시 시도해 주세요.")
-        return Response({'error': "사진 유효성 검사에 실패했습니다."}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     
     
