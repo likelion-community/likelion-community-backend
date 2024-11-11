@@ -12,7 +12,7 @@ def clear_memory():
     """메모리 관리."""
     gc.collect()
 
-def resize_image_for_ocr(img, max_dim=600):
+def resize_image_for_ocr(img, max_dim=500):
     """유동적인 리사이즈: 가장 긴 변을 기준으로 max_dim에 맞추어 원본 비율을 유지하여 리사이즈."""
     h, w = img.shape[:2]
     if max(h, w) > max_dim:
