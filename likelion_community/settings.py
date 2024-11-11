@@ -138,9 +138,11 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',  # 기본적으로 인증된 사용자에게만 허용
     ],
+    '''
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',  # JSON 포맷을 기본으로 사용
     ],
+    '''
 }
 
 # Authentication Backends
@@ -161,8 +163,8 @@ SOCIAL_AUTH_KAKAO_REDIRECT_URI = env('SOCIAL_AUTH_KAKAO_REDIRECT_URI')
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 LOGIN_REDIRECT_URL = '/home/'
 LOGOUT_REDIRECT_URL = '/'
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/signup/complete_profile/'
-#SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'https://localhost:5173/kakaoSignup'
+#SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/signup/complete_profile/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'https://localhost:5173/kakaoSignup'
 LOGIN_URL = '/signup/login/home/'
 
 
