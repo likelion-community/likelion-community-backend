@@ -68,7 +68,7 @@ def extract_text(image):
     text_data = {'아이디': None, '이름': None, '휴대폰': None}
 
     # EasyOCR로 필드 탐지 시도 (다양한 스케일 적용)
-    easyocr_scales = [1.0, 2.0]
+    easyocr_scales = [1.0, 1.5]
     for scale in easyocr_scales:
         resized_image = cv2.resize(image, (int(image.shape[1] * scale), int(image.shape[0] * scale)))
         easyocr_results = reader.readtext(resized_image, detail=0)
@@ -90,7 +90,7 @@ def extract_text(image):
     # EasyOCR로 검출 실패 시 Tesseract로 재시도 (다양한 스케일 적용)
     if not any(text_data.values()):
         print("EasyOCR로 필드 검출 실패, Tesseract로 재시도")
-        tesseract_scales = [1.0, 2.0]
+        tesseract_scales = [1.0, 1.5]
         for scale in tesseract_scales:
             resized_image = cv2.resize(image, (int(image.shape[1] * scale), int(image.shape[0] * scale)))
             img_gray = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
