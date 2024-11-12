@@ -157,21 +157,51 @@ class CompleteProfileAPIView(APIView):
         # 세션에 저장된 임시 카카오 사용자 정보 확인
         kakao_user = request.session.get('kakao_user')
         if not kakao_user:
-            return Response({"error": "세션이 만료되었습니다. 다시 로그인해 주세요.", "redirect_url": "https://localhost:5173/login"}, status=status.HTTP_400_BAD_REQUEST)
+            # 세션이 만료된 경우 로그인 페이지로 리디렉션
+            return redirect("https://localhost:5173/login")
 
         # 사용자가 추가 정보가 필요한지 확인
         try:
             user = CustomUser.objects.get(kakao_id=kakao_user['kakao_id'])
             if user.is_profile_complete:
-                # 프로필이 완성된 경우 메인 페이지 URL 전달
-                return Response({"redirect_url": "https://localhost:5173/main"}, status=status.HTTP_200_OK)
+                # 프로필이 완성된 경우 메인 페이지로 리디렉션
+                return redirect("https://localhost:5173/main")
             else:
-                # 프로필이 완성되지 않은 경우 추가 정보 입력 페이지 URL 전달
-                return Response({"redirect_url": "https://localhost:5173/kakaoSignup", "nickname": user.nickname}, status=status.HTTP_200_OK)
+                # 프로필이 완성되지 않은 경우 추가 정보 입력 페이지로 리디렉션
+                return redirect(f"https://localhost:5173/kakaoSignup?nickname={user.nickname}")
         
         except CustomUser.DoesNotExist:
-            # 최초 로그인 시 추가 정보 입력 페이지 URL 전달
-            return Response({"redirect_url": "https://localhost:5173/kakaoSignup", "nickname": kakao_user.get('nickname')}, status=status.HTTP_200_OK)
+            # 최초 로그인 시 추가 정보 입력 페이지로 리디렉션
+            return redirect(f"https://localhost:5173/kakaoSignup?nickname={kakao_user.get('nickname')}")
+
+    def post(self, request):
+        # 세션에 저장된 임시 카카오 사용자 정보 확인
+        kakao_user = request.session.get('kakao_user')
+        if not kakao_user:
+            return Response({"error": "세션이 만료되었습니다. 다시 로그인해 주세요."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # 추가 프로필 정보 유효성 검사 및 저장
+        serializer = AdditionalInfoSerializer(data=request.data)
+        if serializer.is_valid():
+            # CustomUser 생성 또는 기존 사용자 업데이트
+            user, created = CustomUser.objects.update_or_create(
+                kakao_id=kakao_user['kakao_id'],
+                defaults={
+                    "nickname": kakao_user['nickname'],
+                    **serializer.validated_data,
+                    "is_profile_complete": True,
+                }
+            )
+            user.save()
+
+            # 세션에서 kakao_user 정보 삭제
+            del request.session['kakao_user']
+            login(request, user)
+            return Response({"message": "프로필이 성공적으로 완성되었습니다."}, status=status.HTTP_200_OK)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 class ClearIncompleteSessionAPIView(APIView):
