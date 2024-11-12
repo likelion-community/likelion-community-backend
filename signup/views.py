@@ -47,6 +47,7 @@ class KakaoLoginAPIView(APIView):
         
         # 카카오 인증 처리
         try:
+            # 카카오 로그인 처리
             user = backend.do_auth(request.GET.get('code'))
             if user:
                 login(request, user)
@@ -54,10 +55,9 @@ class KakaoLoginAPIView(APIView):
                     request.session['partial_pipeline_user'] = user.pk
                     return redirect('signup:complete_profile')
                 return redirect('home:mainpage')
-            else:
-                return redirect('signup:login_home')
+            return redirect('signup:login_home')
         except Exception as e:
-            logger.error(f"카카오 인증 오류: {e}")
+            logger.error(f"Kakao 인증 오류: {e}")
             return redirect('signup:login_home')
 
 
