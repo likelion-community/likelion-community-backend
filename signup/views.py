@@ -199,10 +199,22 @@ class CompleteProfileAPIView(APIView):
                 request.session.pop('photo_verified', None)
                 
                 # 프로필 완성 후 메인 페이지로 리디렉션
-                return redirect("https://localhost:5173/main")
+                return Response({
+                    'is_valid': True,
+                    'message': "프로필이 성공적으로 완성되었습니다."
+                }, status=status.HTTP_200_OK)
             else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                # 추가 정보 저장 실패 시 오류 메시지 반환
+                return Response({
+                    'is_valid': False,
+                    'errors': serializer.errors,
+                    'message': "프로필 업데이트 중 오류가 발생했습니다."
+                }, status=status.HTTP_400_BAD_REQUEST)
 
+        return Response({
+            'is_valid': False,
+            'message': "인증에 실패했습니다. 다시 시도해 주세요."
+        }, status=status.HTTP_400_BAD_REQUEST)
     
     
 class DeleteIncompleteUserAPIView(APIView):
