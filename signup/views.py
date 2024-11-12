@@ -154,25 +154,35 @@ class CompleteProfileAPIView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        # 세션에 저장된 임시 카카오 사용자 정보 확인
         kakao_user = request.session.get('kakao_user')
+        
+        # 세션 만료 시 프론트엔드로 JSON 응답 전달하여 리디렉션 결정
         if not kakao_user:
-            # 세션이 만료된 경우 카카오 로그인 페이지로 리디렉션
-            return redirect("/signup/login/kakao/")
+            return Response(
+                {"error": "session_expired", "redirect_url": "/signup/login/kakao/"},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
 
-        # 사용자가 추가 정보가 필요한지 확인
+        # 추가 정보가 필요한 사용자 확인
         try:
             user = CustomUser.objects.get(kakao_id=kakao_user['kakao_id'])
             if user.is_profile_complete:
                 # 프로필이 완성된 경우 메인 페이지로 리디렉션
-                return redirect("https://localhost:5173/main")
+                return Response({"redirect_url": "https://localhost:5173/main"}, status=status.HTTP_200_OK)
             else:
-                # 프로필이 완성되지 않은 경우 추가 정보 입력 페이지로 리디렉션
-                return redirect(f"https://localhost:5173/kakaoSignup?nickname={user.nickname}")
+                # 프로필이 완성되지 않은 경우 추가 정보 입력 페이지 URL 전달
+                return Response(
+                    {"redirect_url": "https://localhost:5173/kakaoSignup", "nickname": user.nickname},
+                    status=status.HTTP_200_OK
+                )
         
         except CustomUser.DoesNotExist:
-            # 최초 로그인 시 추가 정보 입력 페이지로 리디렉션
-            return redirect(f"https://localhost:5173/kakaoSignup?nickname={kakao_user.get('nickname')}")
+            # 추가 정보가 없는 신규 사용자일 경우, 추가 정보 입력 페이지로 이동
+            return Response(
+                {"redirect_url": "https://localhost:5173/kakaoSignup", "nickname": kakao_user.get('nickname')},
+                status=status.HTTP_200_OK
+            )
+
 
     def post(self, request):
         # 세션에 저장된 임시 카카오 사용자 정보 확인
