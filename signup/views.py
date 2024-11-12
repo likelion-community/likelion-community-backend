@@ -210,39 +210,21 @@ class CompleteProfileAPIView(APIView):
         else:
             return Response({'error': "유효하지 않은 인증 이미지입니다. 다시 시도해 주세요."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # 추가 정보 저장
-        if request.session.get('photo_verified', False):
-            serializer = AdditionalInfoSerializer(data=request.data, instance=user)
-            if serializer.is_valid():
-                serializer.save()
-                
-                # 프로필 완성 상태로 설정
-                user.is_profile_complete = True
-                user.verification_photo = uploaded_image  # 인증된 이미지 저장
-                user.save()
-
-                # 로그인 및 세션 정리
-                login(request, user, backend='social_core.backends.kakao.KakaoOAuth2')
-                request.session.pop('partial_pipeline_user', None)
-                request.session.pop('photo_verified', None)
-                
-                # 프로필 완성 후 메인 페이지로 리디렉션
-                return Response({
-                    'is_valid': True,
-                    'message': "프로필이 성공적으로 완성되었습니다."
-                }, status=status.HTTP_200_OK)
-            else:
-                # 추가 정보 저장 실패 시 오류 메시지 반환
-                return Response({
-                    'is_valid': False,
-                    'errors': serializer.errors,
-                    'message': "프로필 업데이트 중 오류가 발생했습니다."
-                }, status=status.HTTP_400_BAD_REQUEST)
-
-        return Response({
-            'is_valid': False,
-            'message': "인증에 실패했습니다. 다시 시도해 주세요."
-        }, status=status.HTTP_400_BAD_REQUEST)
+        # 유효성 검사를 통과한 경우 추가 정보 저장
+        serializer = AdditionalInfoSerializer(data=request.data, instance=user)
+        if serializer.is_valid():
+            serializer.save()
+            user.is_profile_complete = True
+            user.verification_photo = uploaded_image
+            user.save()
+            login(request, user, backend='social_core.backends.kakao.KakaoOAuth2')
+            request.session.pop('partial_pipeline_user', None)
+            request.session.pop('photo_verified', None)
+            return Response({'is_valid': True, 'message': "프로필이 성공적으로 완성되었습니다."}, status=status.HTTP_200_OK)
+        else:
+            # 에러 출력
+            print("추가 정보 저장 실패:", serializer.errors)
+            return Response({'is_valid': False, 'errors': serializer.errors, 'message': "프로필 업데이트 중 오류가 발생했습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
     
     
