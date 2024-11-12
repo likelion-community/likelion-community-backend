@@ -17,6 +17,9 @@ import logging
 from rest_framework.permissions import AllowAny
 from social_django.utils import load_strategy, load_backend
 from django.conf import settings
+from rest_framework.decorators import api_view, permission_classes
+from django.core.exceptions import ObjectDoesNotExist
+
 
 logger = logging.getLogger(__name__)
 
@@ -129,91 +132,49 @@ class CompleteProfileAPIView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        user_id = request.session.get('partial_pipeline_user')
+        user_id = request.session.get("partial_pipeline_user")
         if not user_id:
-            return redirect("https://localhost:5173/kakaoSignup")
+            return Response({"error": "세션이 만료되었습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             user = CustomUser.objects.get(pk=user_id)
+            if user.is_profile_complete:
+                return redirect("https://localhost:5173/main")
+            return Response({"nickname": user.nickname}, status=status.HTTP_200_OK)
         except CustomUser.DoesNotExist:
-            request.session.pop('partial_pipeline_user', None)
-            return redirect("https://localhost:5173/kakaoSignup")
-
-        if user.is_profile_complete:
-            return redirect("https://localhost:5173/main")
-
-        # 세션에 저장된 닉네임을 가져와 쿼리 파라미터로 전달
-        nickname = request.session.get('nickname')
-        if nickname:
-            # 닉네임을 쿼리 파라미터로 포함하여 리디렉션
-            return redirect(f"https://localhost:5173/kakaoSignup?nickname={nickname}")
-        
-        # 닉네임이 없는 경우 기본 리디렉션
-        return redirect("https://localhost:5173/kakaoSignup")
-        
+            return Response({"error": "사용자를 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request):
-        user_id = request.session.get('partial_pipeline_user')
+        user_id = request.session.get("partial_pipeline_user")
         if not user_id:
-            return redirect("https://localhost:5173/kakaoSignup")
+            return Response({"error": "세션이 만료되었습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             user = CustomUser.objects.get(pk=user_id)
-        except CustomUser.DoesNotExist:
-            request.session.pop('partial_pipeline_user', None)
-            return redirect("https://localhost:5173/kakaoSignup")
+        except ObjectDoesNotExist:
+            return Response({"error": "사용자를 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)
 
-        if user.is_profile_complete:
-            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return redirect("https://localhost:5173/main")
+        serializer = AdditionalInfoSerializer(data=request.data, instance=user)
+        if serializer.is_valid():
+            serializer.save()
+            user.is_profile_complete = True
+            user.save()
+            login(request, user)
+            return Response({"message": "추가 정보 입력이 완료되었습니다."}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        # 이미지가 업로드되지 않은 경우 오류 메시지 반환
-        uploaded_image = request.FILES.get('verification_photo')
-        if not uploaded_image:
-            return Response({'error': "회원 인증 이미지를 업로드해야 합니다."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # 이미지 유효성 검사
-        is_verified = verify_like_a_lion_member(uploaded_image)
-        if is_verified:
-            request.session['photo_verified'] = True
-        else:
-            return Response({'error': "유효하지 않은 인증 이미지입니다. 다시 시도해 주세요."}, status=status.HTTP_400_BAD_REQUEST)
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def photo_validation_view(request):
+    uploaded_image = request.FILES.get('verification_photo')
+    if not uploaded_image:
+        return JsonResponse({'error': '사진 파일이 필요합니다.'}, status=400)
 
-        # 추가 정보 저장
-        if request.session.get('photo_verified', False):
-            serializer = AdditionalInfoSerializer(data=request.data, instance=user)
-            if serializer.is_valid():
-                serializer.save()
-                
-                # 프로필 완성 상태로 설정
-                user.is_profile_complete = True
-                user.verification_photo = uploaded_image  # 인증된 이미지 저장
-                user.save()
+    # 사진 유효성 검사 로직 호출
+    is_verified = verify_like_a_lion_member(uploaded_image)
+    return JsonResponse({'is_valid': is_verified})
 
-                # 로그인 및 세션 정리
-                login(request, user, backend='social_core.backends.kakao.KakaoOAuth2')
-                request.session.pop('partial_pipeline_user', None)
-                request.session.pop('photo_verified', None)
-                
-                # 프로필 완성 후 메인 페이지로 리디렉션
-                return Response({
-                    'is_valid': True,
-                    'message': "프로필이 성공적으로 완성되었습니다."
-                }, status=status.HTTP_200_OK)
-            else:
-                # 추가 정보 저장 실패 시 오류 메시지 반환
-                return Response({
-                    'is_valid': False,
-                    'errors': serializer.errors,
-                    'message': "프로필 업데이트 중 오류가 발생했습니다."
-                }, status=status.HTTP_400_BAD_REQUEST)
-
-        return Response({
-            'is_valid': False,
-            'message': "인증에 실패했습니다. 다시 시도해 주세요."
-        }, status=status.HTTP_400_BAD_REQUEST)
-
-    
     
 class DeleteIncompleteUserAPIView(APIView):
     def delete(self, request):
