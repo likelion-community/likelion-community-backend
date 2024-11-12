@@ -17,6 +17,8 @@ import logging
 from rest_framework.permissions import AllowAny
 from social_django.utils import load_strategy, load_backend
 from django.conf import settings
+from rest_framework.decorators import api_view, permission_classes
+
 
 logger = logging.getLogger(__name__)
 
@@ -123,6 +125,26 @@ class SignupAPIView(APIView):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response({'error': '이미지 인증 실패'}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# Session clearing API view
+class ClearIncompleteSessionAPIView(APIView):
+    def post(self, request):
+        if 'partial_pipeline_user' in request.session:
+            del request.session['partial_pipeline_user']
+            return Response({"message": "세션 데이터가 초기화되었습니다."}, status=status.HTTP_200_OK)
+        return Response({"message": "삭제할 세션 데이터가 없습니다."}, status=status.HTTP_200_OK)
+
+# Photo validation API view
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def photo_validation_view(request):
+    uploaded_image = request.FILES.get('verification_photo')
+    if not uploaded_image:
+        return JsonResponse({'error': '사진 파일이 필요합니다.'}, status=400)
+
+    # Call the validation logic
+    is_verified = verify_like_a_lion_member(uploaded_image)
+    return JsonResponse({'is_valid': is_verified})
 
 
 class CompleteProfileAPIView(APIView):
