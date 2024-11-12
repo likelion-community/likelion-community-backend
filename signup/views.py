@@ -130,89 +130,104 @@ class CompleteProfileAPIView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
+        print("CompleteProfileAPIView GET 요청 시작")
         user_id = request.session.get('partial_pipeline_user')
         if not user_id:
+            print("세션에 'partial_pipeline_user' 없음, 리디렉션")
             return redirect("https://localhost:5173/kakaoSignup")
 
         try:
             user = CustomUser.objects.get(pk=user_id)
+            print(f"사용자 {user.username} 불러오기 성공")
         except CustomUser.DoesNotExist:
+            print("사용자를 찾을 수 없음, 세션 정리 및 리디렉션")
             request.session.pop('partial_pipeline_user', None)
             return redirect("https://localhost:5173/kakaoSignup")
 
         if user.is_profile_complete:
+            print("사용자 프로필이 이미 완료됨, 메인 페이지로 리디렉션")
             return redirect("https://localhost:5173/main")
 
-        # 세션에 저장된 닉네임을 가져와 쿼리 파라미터로 전달
         nickname = request.session.get('nickname')
         if nickname:
-            # 닉네임을 쿼리 파라미터로 포함하여 리디렉션
+            print(f"세션에 닉네임 {nickname}이 있음, 쿼리 파라미터로 전달")
             return redirect(f"https://localhost:5173/kakaoSignup?nickname={nickname}")
         
-        # 닉네임이 없는 경우 기본 리디렉션
+        print("기본 리디렉션")
         return redirect("https://localhost:5173/kakaoSignup")
         
 
     def post(self, request):
+        print("CompleteProfileAPIView POST 요청 시작")
         user_id = request.session.get('partial_pipeline_user')
         if not user_id:
+            print("세션에 'partial_pipeline_user' 없음, 리디렉션")
             return redirect("https://localhost:5173/kakaoSignup")
 
         try:
             user = CustomUser.objects.get(pk=user_id)
+            print(f"사용자 {user.username} 불러오기 성공")
         except CustomUser.DoesNotExist:
+            print("사용자를 찾을 수 없음, 세션 정리 및 리디렉션")
             request.session.pop('partial_pipeline_user', None)
             return redirect("https://localhost:5173/kakaoSignup")
 
         if user.is_profile_complete:
+            print("사용자 프로필이 이미 완료됨, 메인 페이지로 리디렉션")
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect("https://localhost:5173/main")
 
-        # 이미지가 업로드되지 않은 경우 오류 메시지 반환
         uploaded_image = request.FILES.get('verification_photo')
         if not uploaded_image:
+            print("이미지 파일이 업로드되지 않음")
             return Response({'error': "회원 인증 이미지를 업로드해야 합니다."}, status=status.HTTP_400_BAD_REQUEST)
 
         # 이미지 유효성 검사
-        is_verified = verify_like_a_lion_member(uploaded_image)
-        if is_verified:
-            request.session['photo_verified'] = True
-        else:
-            return Response({'error': "유효하지 않은 인증 이미지입니다. 다시 시도해 주세요."}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            is_verified = verify_like_a_lion_member(uploaded_image)
+            if not is_verified:
+                print("유효하지 않은 인증 이미지")
+                return Response({'error': "유효하지 않은 인증 이미지입니다. 다시 시도해 주세요."}, status=status.HTTP_400_BAD_REQUEST)
+            print("이미지 인증 성공")
+        except Exception as e:
+            print(f"이미지 인증 중 오류 발생: {e}")
+            return Response({'error': "이미지 인증 처리 중 오류가 발생했습니다."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        request.session['photo_verified'] = True
 
         # 추가 정보 저장
         if request.session.get('photo_verified', False):
             serializer = AdditionalInfoSerializer(data=request.data, instance=user)
             if serializer.is_valid():
                 serializer.save()
-                
-                # 프로필 완성 상태로 설정
                 user.is_profile_complete = True
-                user.verification_photo = uploaded_image  # 인증된 이미지 저장
+                user.verification_photo = uploaded_image
                 user.save()
 
-                # 로그인 및 세션 정리
                 login(request, user, backend='social_core.backends.kakao.KakaoOAuth2')
                 request.session.pop('partial_pipeline_user', None)
                 request.session.pop('photo_verified', None)
                 
-                # 프로필 완성 후 메인 페이지로 리디렉션
+                print("프로필 정보가 성공적으로 저장되고, 메인 페이지로 리디렉션")
                 return Response({
                     'is_valid': True,
                     'message': "프로필이 성공적으로 완성되었습니다."
                 }, status=status.HTTP_200_OK)
             else:
-                # 추가 정보 저장 실패 시 오류 메시지 반환
+                print("프로필 추가 정보 저장 실패:", serializer.errors)
                 return Response({
                     'is_valid': False,
                     'errors': serializer.errors,
                     'message': "프로필 업데이트 중 오류가 발생했습니다."
                 }, status=status.HTTP_400_BAD_REQUEST)
 
+        print("인증에 실패했습니다. 세션에서 'photo_verified' 없음")
         return Response({
             'is_valid': False,
             'message': "인증에 실패했습니다. 다시 시도해 주세요."
         }, status=status.HTTP_400_BAD_REQUEST)
+
+
     
     
 class DeleteIncompleteUserAPIView(APIView):
