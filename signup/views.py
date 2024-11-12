@@ -131,14 +131,13 @@ class CompleteProfileAPIView(APIView):
     def get(self, request):
         user_id = request.session.get('partial_pipeline_user')
         if not user_id:
-            return Response({'message': '세션 만료 또는 유효하지 않은 접근입니다.'}, status=status.HTTP_400_BAD_REQUEST)
+            return redirect("https://localhost:5173/kakaoSignup")
 
         try:
             user = CustomUser.objects.get(pk=user_id)
         except CustomUser.DoesNotExist:
             request.session.pop('partial_pipeline_user', None)
-            return Response({'message': '유효하지 않은 사용자입니다.'}, status=status.HTTP_400_BAD_REQUEST)
-
+            return redirect("https://localhost:5173/kakaoSignup")
 
         if user.is_profile_complete:
             return redirect("https://localhost:5173/main")
@@ -213,7 +212,6 @@ class CompleteProfileAPIView(APIView):
             'is_valid': False,
             'message': "인증에 실패했습니다. 다시 시도해 주세요."
         }, status=status.HTTP_400_BAD_REQUEST)
-
 
     
     
