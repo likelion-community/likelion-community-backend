@@ -34,6 +34,10 @@ class LoginHomeAPIView(APIView):
 class KakaoLoginAPIView(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
+        strategy = load_strategy(request)
+        backend = load_backend(strategy, 'kakao', redirect_uri=settings.SOCIAL_AUTH_KAKAO_REDIRECT_URI)
+
+        # 인증 완료된 후 세션에 유저 정보 저장
         if request.user.is_authenticated:
             if not request.user.is_profile_complete:
                 request.session['partial_pipeline_user'] = request.user.pk
@@ -41,13 +45,21 @@ class KakaoLoginAPIView(APIView):
             login(request, request.user)
             return redirect('home:mainpage')
         
-        # 카카오 백엔드 로드
-        strategy = load_strategy(request)
-        backend = load_backend(strategy, 'kakao', redirect_uri=settings.SOCIAL_AUTH_KAKAO_REDIRECT_URI)
+        # 카카오 인증 처리
+        try:
+            user = backend.do_auth(request.GET.get('code'))
+            if user:
+                login(request, user)
+                if not user.is_profile_complete:
+                    request.session['partial_pipeline_user'] = user.pk
+                    return redirect('signup:complete_profile')
+                return redirect('home:mainpage')
+            else:
+                return redirect('signup:login_home')
+        except Exception as e:
+            logger.error(f"카카오 인증 오류: {e}")
+            return redirect('signup:login_home')
 
-        # 카카오 인증 URL로 리디렉션
-        auth_url = backend.auth_url()
-        return redirect(auth_url)
 
 class TokenLoginAPIView(APIView):
     def post(self, request):
