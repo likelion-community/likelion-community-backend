@@ -157,8 +157,8 @@ class CompleteProfileAPIView(APIView):
         # 세션에 저장된 임시 카카오 사용자 정보 확인
         kakao_user = request.session.get('kakao_user')
         if not kakao_user:
-            # 세션이 만료된 경우 로그인 페이지로 리디렉션
-            return redirect("https://localhost:5173/login")
+            # 세션이 만료된 경우 카카오 로그인 페이지로 리디렉션
+            return redirect("/signup/login/kakao/")
 
         # 사용자가 추가 정보가 필요한지 확인
         try:
