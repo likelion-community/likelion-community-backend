@@ -70,6 +70,11 @@ CORS_ALLOW_HEADERS = [
     'content-type',
     'x-requested-with',
 ]
+# 추가로 CORS_ORIGIN_WHITELIST 설정
+CORS_ORIGIN_WHITELIST = [
+    "https://localhost:5173",
+    "https://everion.store",
+]
 
 CORS_ALLOW_CREDENTIALS = True
 
