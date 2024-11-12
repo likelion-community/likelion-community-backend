@@ -134,17 +134,26 @@ class ClearIncompleteSessionAPIView(APIView):
             return Response({"message": "세션 데이터가 초기화되었습니다."}, status=status.HTTP_200_OK)
         return Response({"message": "삭제할 세션 데이터가 없습니다."}, status=status.HTTP_200_OK)
 
-# Photo validation API view
+# 사진 유효성 검사 API 뷰
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def photo_validation_view(request):
+    print("사진 유효성 검사 뷰 호출됨.")
     uploaded_image = request.FILES.get('verification_photo')
+
     if not uploaded_image:
+        print("업로드된 이미지 파일이 없음.")
         return JsonResponse({'error': '사진 파일이 필요합니다.'}, status=400)
 
-    # Call the validation logic
-    is_verified = verify_like_a_lion_member(uploaded_image)
-    return JsonResponse({'is_valid': is_verified})
+    # 유효성 검사 로직 호출 및 결과 출력
+    try:
+        is_verified = verify_like_a_lion_member(uploaded_image)
+        print(f"유효성 검사 결과: {is_verified}")
+    except Exception as e:
+        print(f"사진 유효성 검사 중 오류 발생: {str(e)}")
+        return JsonResponse({'error': '사진 유효성 검사 중 오류가 발생했습니다.'}, status=500)
+
+    return JsonResponse({'is_valid': bool(is_verified)})
 
 
 class CompleteProfileAPIView(APIView):
