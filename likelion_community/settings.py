@@ -64,6 +64,12 @@ CORS_ALLOWED_ORIGINS = [
     "https://everion.store",  # HTTPS를 사용하는 도메인 추가
     "http://everion.store"    # HTTP를 사용하는 도메인 추가 
 ]
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'authorization',
+    'content-type',
+    'x-requested-with',
+]
 
 CORS_ALLOW_CREDENTIALS = True
 
