@@ -178,7 +178,13 @@ class CompleteProfileAPIView(APIView):
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    
+class ClearIncompleteSessionAPIView(APIView):
+    def post(self, request):
+        if 'kakao_user' in request.session:
+            del request.session['kakao_user']
+            return Response({"message": "세션 데이터가 초기화되었습니다."}, status=status.HTTP_200_OK)
+        return Response({"message": "삭제할 세션 데이터가 없습니다."}, status=status.HTTP_200_OK)
+
     
 @api_view(['POST'])
 @permission_classes([AllowAny])
