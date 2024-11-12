@@ -45,6 +45,46 @@ class MyScrapView(APIView):
             "questionscrap": questionscrap_serializer.data
         }, status=status.HTTP_200_OK)
     
+class MyPostView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+
+        mainpost = MainBoard.objects.filter(writer=user)
+        schoolpost = SchoolBoard.objects.filter(writer=user)
+        questionpost = QuestionBoard.objects.filter(writer=user)
+
+        mainpost_serializer = MainBoardSerializer(mainpost, many=True)
+        schoolpost_serializer = SchoolBoardSerializer(schoolpost, many=True)
+        questionpost_serializer = QuestionBoardSerializer(questionpost, many=True)
+
+        return Response({
+            "mainscrap": mainpost_serializer.data,
+            "schoolscrap": schoolpost_serializer.data,
+            "questionscrap": questionpost_serializer.data
+        }, status=status.HTTP_200_OK)
+    
+class MyCommentView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request, *args, **kwargs):
+        user = request.user
+
+        maincomment = MainBoard.objects.filter(writer=user)
+        schoolcomment = SchoolBoard.objects.filter(writer=user)
+        questioncomment = QuestionBoard.objects.filter(writer=user)
+
+        maincomment_serializer = MainBoardSerializer(maincomment, many=True)
+        schoolcomment_serializer = SchoolBoardSerializer(schoolcomment, many=True)
+        questioncomment_serializer = QuestionBoardSerializer(questioncomment, many=True)
+
+        return Response({
+            "mainscrap": maincomment_serializer.data,
+            "schoolscrap": schoolcomment_serializer.data,
+            "questionscrap": questioncomment_serializer.data
+        }, status=status.HTTP_200_OK)
+    
 class SchoolVerificationView(APIView):
     permission_classes = [IsAuthenticated]
 
