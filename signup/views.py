@@ -134,19 +134,19 @@ class CompleteProfileAPIView(APIView):
     def get(self, request):
         user_id = request.session.get("partial_pipeline_user")
         if not user_id:
-            # 세션이 만료된 경우 오류 메시지와 함께 프론트엔드 로그인 페이지로 리디렉션
-            return JsonResponse({"error": "세션이 만료되었습니다."}, status=status.HTTP_400_BAD_REQUEST)
+            # 세션이 없으면 프론트엔드 카카오 가입 페이지로 리디렉트
+            return redirect("https://localhost:5173/kakaoSignup")
 
         try:
             user = CustomUser.objects.get(pk=user_id)
             if user.is_profile_complete:
-                # 프로필이 완성된 경우 메인 페이지로 이동하도록 응답
-                return JsonResponse({"redirect_url": "https://localhost:5173/main"}, status=status.HTTP_200_OK)
-            # 추가 정보 입력 페이지로 리디렉션
-            return JsonResponse({"redirect_url": "https://localhost:5173/kakaoSignup", "nickname": user.nickname}, status=status.HTTP_200_OK)
+                # 프로필이 완성된 사용자는 메인 페이지로 리디렉트
+                return redirect("https://localhost:5173/main")
+            
+            # 프로필이 미완성 상태라면 닉네임 반환
+            return Response({"nickname": user.nickname}, status=status.HTTP_200_OK)
         except CustomUser.DoesNotExist:
-            # 사용자가 없을 경우 오류 메시지와 함께 추가 정보 입력 페이지로 리디렉션
-            return JsonResponse({"error": "사용자를 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"error": "사용자를 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request):
         user_id = request.session.get("partial_pipeline_user")
