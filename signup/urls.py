@@ -1,8 +1,8 @@
 # signup/urls.py
 from django.urls import path
 from .views import (
-    LoginHomeAPIView, CustomLoginAPIView, SignupAPIView, CompleteProfileAPIView,
-    LogoutAPIView, CheckPasswordAPIView, DeleteUserAPIView, TokenLoginAPIView
+    LoginHomeAPIView, CustomLoginAPIView, SignupAPIView, CompleteProfileAPIView, ClearIncompleteSessionAPIView,
+    LogoutAPIView, CheckPasswordAPIView, DeleteUserAPIView, TokenLoginAPIView, photo_validation_view
 )
 from social_django import views as social_views
 
@@ -20,6 +20,8 @@ urlpatterns = [
     # 회원가입 및 프로필 완성
     path('signup/', SignupAPIView.as_view(), name='signup'),
     path('complete_profile/', CompleteProfileAPIView.as_view(), name='complete_profile'),
+    path('photo_validation/', photo_validation_view, name='photo_validation'),
+    path('clear_incomplete_session/', ClearIncompleteSessionAPIView.as_view(), name='clear_incomplete_session'),
 
     # 비밀번호 유효성 검사
     path('check-password/', CheckPasswordAPIView.as_view(), name='check_password'),  
