@@ -225,6 +225,8 @@ CSRF_TRUSTED_ORIGINS = [
     "https://everion.store",
     "http://everion.store",
 ]
+CSRF_COOKIE_SAMESITE = None
+
 
 import os
 LOGGING = {
