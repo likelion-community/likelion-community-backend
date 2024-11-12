@@ -66,7 +66,6 @@ class TokenLoginAPIView(APIView):
         else:
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
         
-
 class CustomLoginAPIView(APIView):
     permission_classes = [AllowAny]
 
@@ -77,11 +76,10 @@ class CustomLoginAPIView(APIView):
             password = serializer.validated_data.get('password')
             user = authenticate(request, username=username, password=password)
             if user:
-                # 로그인 후 클라이언트에서 처리하도록 로그인 응답 반환
+                # 로그인 후 바로 프론트엔드 메인 페이지로 리디렉트
                 login(request, user)
-                return Response({'redirect_url': 'https://localhost:5173/main'}, status=status.HTTP_200_OK)
+                return redirect("https://localhost:5173/main")
         return Response({'error': '아이디 또는 비밀번호가 잘못되었습니다.'}, status=status.HTTP_400_BAD_REQUEST)
-
 
 class CheckPasswordAPIView(APIView):
     permission_classes = [AllowAny]
