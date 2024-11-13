@@ -185,7 +185,6 @@ class CompleteProfileAPIView(APIView):
         
 
     def post(self, request):
-        print("post가 시작")
         user_id = request.session.get('partial_pipeline_user')
         if not user_id:
             return Response({'error': "세션이 만료되었습니다. 다시 로그인해주세요."}, status=status.HTTP_403_FORBIDDEN)
