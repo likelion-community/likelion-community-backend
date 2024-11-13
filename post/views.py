@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from datetime import timedelta
 from django.utils import timezone
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view
 from .models import *
 from .serializers import *
 from home.models import Notification
@@ -174,3 +174,22 @@ class PopularPostViewSet(APIView):
             data.append(serializer.data)
         
         return Response(data)
+    
+# 가장 최근 공지 반환
+@api_view(['GET'])
+def latest_main_notice(request):
+    try:
+        latest_notice = MainNoticeBoard.objects.latest('time')
+        serializer = MainNoticeBoardSerializer(latest_notice)
+        return Response(serializer.data)
+    except MainNoticeBoard.DoesNotExist:
+        return Response({'detail': 'No notices available.'}, status=404)
+    
+@api_view(['GET'])
+def latest_school_notice(request):
+    try:
+        latest_notice = SchoolNoticeBoard.objects.latest('time')
+        serializer = SchoolNoticeBoardSerializer(latest_notice)
+        return Response(serializer.data)
+    except SchoolNoticeBoard.DoesNotExist:
+        return Response({'detail': 'No notices available.'}, status=404)
