@@ -4,6 +4,9 @@ from signup.models import CustomUser
 
 class AttendanceSerializer(serializers.ModelSerializer):
     created_by = serializers.ReadOnlyField(source='created_by.username')
+    creator_name = serializers.CharField(source='created_by.name', read_only=True)
+    creator_term = serializers.IntegerField(source='created_by.membership_term', read_only=True)
+    creator_position = serializers.CharField(source='created_by.is_staff', read_only=True)
     file = serializers.FileField(allow_null=True, required=False)
     track = serializers.ChoiceField(choices=Attendance.TRACK_CHOICES)  # 모델의 TRACK_CHOICES와 통일
     auth_code = serializers.CharField(write_only=True, required=True)  # 운영진이 출석 코드를 생성
@@ -13,7 +16,7 @@ class AttendanceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Attendance
-        fields = ['id', 'date', 'time', 'title', 'auth_code', 'description', 'file', 'track', 'created_by', 'late_threshold', 'absent_threshold']
+        fields = ['id', 'date', 'time', 'title', 'auth_code', 'description', 'file', 'track', 'created_by', 'creator_name', 'creator_term', 'creator_position', 'late_threshold', 'absent_threshold']
 
 
 

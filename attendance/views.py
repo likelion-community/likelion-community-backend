@@ -29,12 +29,26 @@ class AttendanceSetView(viewsets.ModelViewSet):
         
         
         # 출석 코드는 운영진(작성자)이 직접 생성하도록
-        serializer.save(created_by=self.request.user)
+        serializer.save(
+            created_by=self.request.user,
+            creator_name=self.request.user.name,
+            creator_term=self.request.user.membership_term,
+            creator_position='운영진'
+        )
 
     def perform_update(self, serializer):
         # 수정 시에도 created_by가 현재 사용자로 설정되도록 설정
         serializer.save(created_by=self.request.user)
 
+class CreatorInfoView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        # 현재 로그인된 사용자의 정보를 조회합니다
+        user = request.user
+        serializer = CreatorProfileSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
 
 class AttendanceDetailView(RetrieveAPIView):
     permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup]
