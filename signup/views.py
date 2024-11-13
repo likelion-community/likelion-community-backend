@@ -157,6 +157,7 @@ def photo_validation_view(request):
 
 
 
+
 class CompleteProfileAPIView(APIView):
     permission_classes = [AllowAny]
 
@@ -196,7 +197,7 @@ class CompleteProfileAPIView(APIView):
             return redirect("https://localhost:5173/kakaoSignup")
 
         if user.is_profile_complete:
-            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            login(request, user)
             return redirect("https://localhost:5173/main")
 
         # 이미지가 업로드되지 않은 경우 오류 메시지 반환
@@ -215,14 +216,13 @@ class CompleteProfileAPIView(APIView):
             user.is_profile_complete = True
             user.verification_photo = uploaded_image
             user.save()
-            login(request, user, backend='social_core.backends.kakao.KakaoOAuth2')
+            login(request, user)
             request.session.pop('partial_pipeline_user', None)
             request.session.pop('photo_verified', None)
             return Response({'is_valid': True, 'message': "프로필이 성공적으로 완성되었습니다."}, status=status.HTTP_200_OK)
         else:
-            # 에러 출력
-            print("추가 정보 저장 실패:", serializer.errors)
             return Response({'is_valid': False, 'errors': serializer.errors, 'message': "프로필 업데이트 중 오류가 발생했습니다."}, status=status.HTTP_400_BAD_REQUEST)
+
 
     
     
