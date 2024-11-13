@@ -109,8 +109,6 @@ DATABASES = {
         'PORT': '3306',                               # MySQL 포트
     }
 }
-# MySQL 데이터베이스에 세션 저장
-SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 
 # Password Validation
@@ -143,7 +141,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',  # 기본적으로 인증된 사용자에게만 허용
+        'rest_framework.permissions.IsAuthenticated',  # 기본적으로 인증된 사용자에게만 허용
     ],
 
 }
@@ -194,6 +192,8 @@ SOCIAL_AUTH_KAKAO_PROFILE_EXTRA_PARAMS = {
 SOCIAL_AUTH_KAKAO_FORCE_STATE = False
 SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 
+SESSION_COOKIE_AGE = 3600  # 1시간 (초 단위)
+SESSION_SAVE_EVERY_REQUEST = True  # 매 요청 시마다 세션 갱신
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SAMESITE = None
