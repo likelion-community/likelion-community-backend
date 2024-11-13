@@ -8,9 +8,14 @@ router = DefaultRouter()
 router.register(r'mainboard', MainBoardViewSet)
 router.register(r'schoolboard', SchoolBoardViewSet)
 router.register(r'questionboard', QuestionBoardViewSet)
+router.register(r'mainnoticeboard', MainNoticeBoardViewSet)
+router.register(r'schoolnoticeboard', SchoolNoticeBoardViewSet)
+
 router.register(r'maincomment', MainCommentViewSet)
 router.register(r'schoolcomment', SchoolCommentViewSet)
 router.register(r'questioncomment', QuestionCommentViewSet)
+router.register(r'mainnoticecomment', MainNoticeCommentViewSet)
+router.register(r'schoolnoticecomment', SchoolNoticeCommentViewSet)
 
 app_name = 'post'
 
