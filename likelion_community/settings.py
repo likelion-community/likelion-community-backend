@@ -196,7 +196,7 @@ SESSION_COOKIE_AGE = 3600  # 1시간 (초 단위)
 SESSION_SAVE_EVERY_REQUEST = True  # 매 요청 시마다 세션 갱신
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SAMESITE = None
+SESSION_COOKIE_SAMESITE = 'None'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -235,7 +235,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://everion.store",
     "http://everion.store",
 ]
-CSRF_COOKIE_SAMESITE = None
+CSRF_COOKIE_SAMESITE = 'None'
 
 
 import os
