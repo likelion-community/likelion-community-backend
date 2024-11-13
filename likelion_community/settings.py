@@ -14,7 +14,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env('SECRET_KEY', default='your-default-secret-key')
 
 # Debug
-DEBUG = env.bool('DEBUG', default=False)
+DEBUG = env.bool('DEBUG', default=True)
 
 # Allowed Hosts
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -59,11 +60,15 @@ MIDDLEWARE = [
 
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
     "https://localhost:5173",  # HTTPS 로컬 환경
-    "http://3.39.168.41:80",
     "https://everion.store",  # HTTPS를 사용하는 도메인 추가
     "http://everion.store"    # HTTP를 사용하는 도메인 추가 
+]
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'authorization',
+    'content-type',
+    'x-requested-with',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -122,6 +127,8 @@ USE_TZ = True
 # Static and Media Files
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+WHITENOISE_ADD_HEADERS_FUNCTION = None
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
@@ -135,9 +142,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',  # 기본적으로 인증된 사용자에게만 허용
     ],
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',  # JSON 포맷을 기본으로 사용
-    ],
+
 }
 
 # Authentication Backends
@@ -158,7 +163,9 @@ SOCIAL_AUTH_KAKAO_REDIRECT_URI = env('SOCIAL_AUTH_KAKAO_REDIRECT_URI')
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 LOGIN_REDIRECT_URL = '/home/'
 LOGOUT_REDIRECT_URL = '/'
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/signup/complete_profile/'
+#SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/signup/complete_profile/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+#SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'https://localhost:5173/kakaoSignup'
 LOGIN_URL = '/signup/login/home/'
 
 
@@ -186,6 +193,7 @@ SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'None'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -220,12 +228,12 @@ CHANNEL_LAYERS = {
 CSRF_COOKIE_NAME = 'csrftoken'  # 쿠키에 저장될 CSRF 토큰의 이름 (기본값: 'csrftoken')
 CSRF_COOKIE_HTTPONLY = False    # JavaScript에서 CSRF 토큰에 접근할 수 있게 설정
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:5173",
     "https://localhost:5173", 
-    "http://3.39.168.41:8000",
     "https://everion.store",
     "http://everion.store",
 ]
+CSRF_COOKIE_SAMESITE = None
+
 
 import os
 LOGGING = {
@@ -256,3 +264,30 @@ LOGGING = {
     },
 }
 
+# settings.py
+
+import os
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'error.log'),  # 에러 로그 파일 경로
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        '': {  # root logger
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    },
+}

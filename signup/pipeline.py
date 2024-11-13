@@ -18,12 +18,12 @@ def add_kakao_uid(strategy, details, backend, response=None, user=None, *args, *
 
     # 기존 사용자이지만 추가 정보가 없는 경우
     if existing_user:
-        if not existing_user.name or not existing_user.verification_photo:
-            logger.info("기존 사용자이지만 추가 정보가 부족합니다. 프로필 완성 페이지로 이동합니다.")
+        if not existing_user.is_profile_complete:
+            print("기존 사용자이지만 추가 정보가 부족합니다. 프로필 완성 페이지로 이동합니다.")
             strategy.session_set('partial_pipeline_user', existing_user.pk)
             return {'user': existing_user, 'uid': uid}
         else:
-            logger.info("기존 사용자입니다. 로그인 진행 중.")
+            print("기존 사용자입니다. 로그인 진행 중.")
             return {'user': existing_user, 'uid': uid}
 
     # 새로운 사용자: 세션에 uid 저장
@@ -40,7 +40,7 @@ def require_additional_info(strategy, details, backend, response=None, user=None
         strategy.request.session.save()
     if user:
         strategy.session_set('partial_pipeline_user', user.pk)
-
+    print("사용자의 프로필이 완성되지 않았습니다. complete_profile로 이동합니다.")
     return strategy.redirect(reverse('signup:complete_profile'))
 
 
@@ -72,7 +72,3 @@ def save_user_details(strategy, details, response=None, user=None, is_new=False,
     # 세션에 임시 사용자 ID를 저장
     strategy.session_set('partial_pipeline_user', user.pk)
     return {'is_new': is_new, 'user': user}
-
-
-
-
