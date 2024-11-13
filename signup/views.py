@@ -211,26 +211,27 @@ class CompleteProfileAPIView(APIView):
         # 유효성 검사를 통과한 경우 추가 정보 저장
         serializer = AdditionalInfoSerializer(data=request.data, instance=user)
         if serializer.is_valid():
-            user = serializer.save()
+            serializer.save()
             user.is_profile_complete = True
             user.verification_photo = uploaded_image
             user.save()
 
-            # Debug log to verify updated user instance
-            logger.debug("프로필 저장 후 유저 상태 확인:")
-            logger.debug(f"유저 ID: {user.pk}")
-            logger.debug(f"프로필 완료 상태: {user.is_profile_complete}")
-            logger.debug(f"이메일: {user.email}")
-            logger.debug(f"닉네임: {user.nickname}")
+            # Debug print to verify updated user instance
+            print("프로필 저장 후 유저 상태 확인:")
+            print("유저 ID:", user.pk)
+            print("프로필 완료 상태:", user.is_profile_complete)
+            print("이메일:", user.email)
+            print("닉네임:", user.nickname)
             
             login(request, user)
             request.session.pop('partial_pipeline_user', None)
             request.session.pop('photo_verified', None)
             return Response({'is_valid': True, 'message': "프로필이 성공적으로 완성되었습니다."}, status=status.HTTP_200_OK)
         else:
-            logger.debug("추가 정보 저장 실패:")
-            logger.debug(f"에러: {serializer.errors}")
-            logger.debug(f"전달된 데이터: {request.data}")
+            print("추가 정보 저장 실패:", serializer.errors)
+            print("전달된 데이터:", request.data)
+            print("유저 ID:", user.pk)
+            print("프로필 완료 상태:", user.is_profile_complete)
             return Response({'is_valid': False, 'errors': serializer.errors, 'message': "프로필 업데이트 중 오류가 발생했습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
     
