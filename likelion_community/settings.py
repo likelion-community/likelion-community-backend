@@ -48,11 +48,11 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',  
-    'django.contrib.auth.middleware.AuthenticationMiddleware',  
-    'django.middleware.csrf.CsrfViewMiddleware', 
+    'django.contrib.sessions.middleware.SessionMiddleware',  # 세션 
+    'django.contrib.auth.middleware.AuthenticationMiddleware',  # 인증 
+    'signup.middlewares.CompleteProfileRequiredMiddleware',  # 추가 프로필 입력 요구 
     'django.middleware.common.CommonMiddleware',
-    'signup.middlewares.CompleteProfileRequiredMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',  # CSRF 미들웨어 
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
