@@ -9,6 +9,8 @@ from .models import *
 from .serializers import *
 from home.models import Notification
 from home.serializers import NotificationSerializer
+from rest_framework.permissions import IsAuthenticated
+from attendance.permissions import IsStaffOrReadOnly, IsSchoolVerifiedAndSameGroup, IsAdminorReadOnly
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
@@ -72,16 +74,29 @@ class BaseBoardViewSet(viewsets.ModelViewSet):
             return Response({'error': 'Post not found'}, status=status.HTTP_404_NOT_FOUND)
 
 class MainBoardViewSet(BaseBoardViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = MainBoard.objects.all()
     serializer_class = MainBoardSerializer
 
 class SchoolBoardViewSet(BaseBoardViewSet):
+    permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup]
     queryset = SchoolBoard.objects.all()
     serializer_class = SchoolBoardSerializer
 
 class QuestionBoardViewSet(BaseBoardViewSet):
+    permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup]
     queryset = QuestionBoard.objects.all()
     serializer_class = QuestionBoardSerializer
+
+class MainNoticeBoardViewSet(BaseBoardViewSet):
+    permission_classes = [IsAuthenticated, IsAdminorReadOnly]
+    queryset = MainNoticeBoard.objects.all()
+    serializer_class = MainNoticeBoardSerializer
+
+class SchoolNoticeBoardViewSet(BaseBoardViewSet):
+    permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup, IsStaffOrReadOnly]
+    queryset = SchoolNoticeBoard.objects.all()
+    serializer_class = SchoolNoticeBoardSerializer
 
 class CommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
@@ -96,16 +111,29 @@ class CommentViewSet(viewsets.ModelViewSet):
             send_notification(notification)
 
 class MainCommentViewSet(CommentViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = MainComment.objects.all()
     serializer_class = MainCommentSerializer
 
 class SchoolCommentViewSet(CommentViewSet):
+    permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup]
     queryset = SchoolComment.objects.all()
     serializer_class = SchoolCommentSerializer
 
 class QuestionCommentViewSet(CommentViewSet):
+    permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup]
     queryset = QuestionComment.objects.all()
     serializer_class = QuestionCommentSerializer
+
+class MainNoticeCommentViewSet(CommentViewSet):
+    permission_classes = [IsAuthenticated]
+    queryset = MainNoticeComment.objects.all()
+    serializer_class = MainNoticeCommentSerializer
+
+class SchoolNoticeCommentViewSet(CommentViewSet):
+    permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup]
+    queryset = SchoolNoticeComment.objects.all()
+    serializer_class = SchoolNoticeCommentSerializer
 
 class PopularPostViewSet(APIView):
     def get(self, request, *args, **kwargs):
