@@ -8,13 +8,17 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+
 class ChatRoomListView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = ChatRoomSerializer
 
     def get_queryset(self):
-        return ChatRoom.objects.filter(participants=self.request.user)
-
+        user = self.request.user
+        print(f"Authenticated user: {user}")  # 인증된 사용자 출력
+        chat_rooms = ChatRoom.objects.filter(participants=user)
+        print(f"Chat rooms for user {user}: {chat_rooms}")  # 필터링된 쿼리셋 출력
+        return chat_rooms
 
 class ChatRoomDetailView(views.APIView):
     permission_classes = [IsAuthenticated]
