@@ -70,11 +70,6 @@ CORS_ALLOW_HEADERS = [
     'content-type',
     'x-requested-with',
 ]
-# 추가로 CORS_ORIGIN_WHITELIST 설정
-CORS_ORIGIN_WHITELIST = [
-    "https://localhost:5173",
-    "https://everion.store",
-]
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -198,6 +193,7 @@ SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'None'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
