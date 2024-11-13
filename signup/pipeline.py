@@ -31,17 +31,17 @@ def add_kakao_uid(strategy, details, backend, response=None, user=None, *args, *
     return {'uid': uid, 'username': uid}
 
 
-@partial
-def require_additional_info(strategy, details, backend, response=None, user=None, *args, **kwargs):
-    nickname = response.get('properties', {}).get('nickname')
-    if nickname:
-        strategy.session_set('nickname', nickname)
-        strategy.session_set('partial_pipeline_user', user.pk if user else None)
-        strategy.request.session.save()
-    if user:
-        strategy.session_set('partial_pipeline_user', user.pk)
-    print("사용자의 프로필이 완성되지 않았습니다. complete_profile로 이동합니다.")
-    return strategy.redirect(reverse('signup:complete_profile'))
+# @partial
+# def require_additional_info(strategy, details, backend, response=None, user=None, *args, **kwargs):
+#     nickname = response.get('properties', {}).get('nickname')
+#     if nickname:
+#         strategy.session_set('nickname', nickname)
+#         strategy.session_set('partial_pipeline_user', user.pk if user else None)
+#         strategy.request.session.save()
+#     if user:
+#         strategy.session_set('partial_pipeline_user', user.pk)
+#     print("사용자의 프로필이 완성되지 않았습니다. complete_profile로 이동합니다.")
+#     return strategy.redirect(reverse('signup:complete_profile'))
 
 
 def save_user_details(strategy, details, response=None, user=None, is_new=False, *args, **kwargs):
