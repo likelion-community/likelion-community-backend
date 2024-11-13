@@ -50,14 +50,13 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',  # 세션 
     'django.contrib.auth.middleware.AuthenticationMiddleware',  # 인증 
-    'signup.middlewares.CompleteProfileRequiredMiddleware',  # 추가 프로필 입력 요구 
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',  # CSRF 미들웨어 
+    'signup.middlewares.CompleteProfileRequiredMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
-
 
 
 
