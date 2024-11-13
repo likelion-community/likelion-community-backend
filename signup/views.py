@@ -148,12 +148,13 @@ def photo_validation_view(request):
     # 유효성 검사 로직 호출 및 결과 출력
     try:
         is_verified = verify_like_a_lion_member(uploaded_image)
-        print(f"유효성 검사 결과: {is_verified}")
+        request.session['photo_verified'] = is_verified
+        return JsonResponse({'is_valid': bool(is_verified)})
+
     except Exception as e:
         print(f"사진 유효성 검사 중 오류 발생: {str(e)}")
         return JsonResponse({'error': '사진 유효성 검사 중 오류가 발생했습니다.'}, status=500)
 
-    return JsonResponse({'is_valid': bool(is_verified)})
 
 
 class CompleteProfileAPIView(APIView):
@@ -203,12 +204,9 @@ class CompleteProfileAPIView(APIView):
         if not uploaded_image:
             return Response({'error': "회원 인증 이미지를 업로드해야 합니다."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # 이미지 유효성 검사
-        is_verified = verify_like_a_lion_member(uploaded_image)
-        if is_verified:
-            request.session['photo_verified'] = True
-        else:
-            return Response({'error': "유효하지 않은 인증 이미지입니다. 다시 시도해 주세요."}, status=status.HTTP_400_BAD_REQUEST)
+        # 유효성 검사가 완료되지 않았으면 오류 반환
+        if not request.session.get('photo_verified'):
+            return Response({'error': "사진 유효성 검사를 먼저 완료해주세요."}, status=status.HTTP_400_BAD_REQUEST)
 
         # 유효성 검사를 통과한 경우 추가 정보 저장
         serializer = AdditionalInfoSerializer(data=request.data, instance=user)
