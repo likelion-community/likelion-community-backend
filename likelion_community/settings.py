@@ -196,7 +196,7 @@ SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = None
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -235,7 +235,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://everion.store",
     "http://everion.store",
 ]
-CSRF_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SAMESITE = None
 
 
 import os
