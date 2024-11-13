@@ -109,6 +109,8 @@ DATABASES = {
         'PORT': '3306',                               # MySQL 포트
     }
 }
+# MySQL 데이터베이스에 세션 저장
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 
 # Password Validation
