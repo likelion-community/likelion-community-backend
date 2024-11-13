@@ -57,7 +57,7 @@ class BaseBoardViewSet(viewsets.ModelViewSet):
                 notification = Notification.objects.create(
                     user=post.writer,
                     message=f"'{post.title}' 게시글에 좋아요가 달렸습니다.",
-                    related_board=post
+                    #related_board=post
                 )
                 send_notification(notification)
 
