@@ -11,6 +11,7 @@ from home.models import Notification
 from home.serializers import NotificationSerializer
 from rest_framework.permissions import IsAuthenticated
 from attendance.permissions import IsStaffOrReadOnly, IsSchoolVerifiedAndSameGroup, IsAdminorReadOnly
+from django.db.models import Count, Max
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
@@ -135,11 +136,41 @@ class SchoolNoticeCommentViewSet(CommentViewSet):
     queryset = SchoolNoticeComment.objects.all()
     serializer_class = SchoolNoticeCommentSerializer
 
+# 인기글 반환
 class PopularPostViewSet(APIView):
-    def get(self, request, *args, **kwargs):
-        now = timezone.now()
-        term = now - timedelta(days=1)
-
-        popular_posts = MainBoard.objects.filter(time__gte=term).order_by('-like')[:2]
-        serializer = MainBoardSerializer(popular_posts, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get(self, request):
+        top_posts = []
+        
+        # 현재 시간으로부터 24시간 전
+        time_threshold = timezone.now() - timezone.timedelta(hours=24)
+        
+        # MainBoard 각 카테고리별로 24시간 내 작성된 게시물 중 like가 가장 많은 게시물 가져오기
+        for board_type, _ in MainBoard.BOARD_CHOICES:
+            post = (MainBoard.objects.filter(board_title=board_type, time__gte=time_threshold)
+                    .annotate(likes_count=Count('like'), scraps_count=Count('scrap'))
+                    .order_by('-likes_count', '-time')
+                    .first())
+            
+            if post:
+                top_posts.append(post)
+        
+        # MainNoticeBoard에서 24시간 내 작성된 게시물 중 like가 가장 많은 게시물 가져오기
+        for board_type, _ in MainNoticeBoard.BOARD_CHOICES:
+            notice_post = (MainNoticeBoard.objects.filter(board_title=board_type, time__gte=time_threshold)
+                           .annotate(likes_count=Count('like'), scraps_count=Count('scrap'))
+                           .order_by('-likes_count', '-time')
+                           .first())
+            
+            if notice_post:
+                top_posts.append(notice_post)
+        
+        # 직렬화를 통해 응답 데이터 반환
+        data = []
+        for post in top_posts:
+            if isinstance(post, MainBoard):
+                serializer = MainBoardSerializer(post)
+            else:
+                serializer = MainNoticeBoardSerializer(post)
+            data.append(serializer.data)
+        
+        return Response(data)
