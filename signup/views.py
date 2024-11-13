@@ -215,6 +215,14 @@ class CompleteProfileAPIView(APIView):
             user.is_profile_complete = True
             user.verification_photo = uploaded_image
             user.save()
+
+            # Debug print to verify updated user instance
+            print("프로필 저장 후 유저 상태 확인:")
+            print("유저 ID:", user.pk)
+            print("프로필 완료 상태:", user.is_profile_complete)
+            print("이메일:", user.email)
+            print("닉네임:", user.nickname)
+            
             login(request, user)
             request.session.pop('partial_pipeline_user', None)
             request.session.pop('photo_verified', None)
