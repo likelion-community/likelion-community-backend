@@ -188,14 +188,14 @@ class CompleteProfileAPIView(APIView):
         print("post가 시작")
         user_id = request.session.get('partial_pipeline_user')
         if not user_id:
-            return redirect("https://localhost:5173/kakaoSignup")
-    
+            return Response({'error': "세션이 만료되었습니다. 다시 로그인해주세요."}, status=status.HTTP_403_FORBIDDEN)
+
         try:
             user = CustomUser.objects.get(pk=user_id)
         except CustomUser.DoesNotExist:
             request.session.pop('partial_pipeline_user', None)
-            return redirect("https://localhost:5173/kakaoSignup")
-    
+            return Response({'error': "사용자가 존재하지 않습니다. 다시 로그인해주세요."}, status=status.HTTP_403_FORBIDDEN)
+
         if user.is_profile_complete:
             login(request, user)
             return redirect("https://localhost:5173/main")
