@@ -18,7 +18,7 @@ from rest_framework.permissions import AllowAny
 from social_django.utils import load_strategy, load_backend
 from django.conf import settings
 from rest_framework.decorators import api_view, permission_classes
-
+from django.middleware.csrf import get_token
 
 logger = logging.getLogger(__name__)
 
@@ -35,14 +35,23 @@ class LoginHomeAPIView(APIView):
 
 class KakaoLoginAPIView(APIView):
     permission_classes = [AllowAny]
+    
     def get(self, request):
         if request.user.is_authenticated:
             if not request.user.is_profile_complete:
                 request.session['partial_pipeline_user'] = request.user.pk
                 return redirect('signup:complete_profile')
+            
+            # 로그인 처리 및 CSRF 토큰 생성
             login(request, request.user)
-            return redirect('home:mainpage')
-        
+            csrf_token = get_token(request)  # CSRF 토큰 생성
+            
+            # 쿠키에 CSRF 토큰 추가
+            response = JsonResponse({'message': '카카오 로그인 성공', 'redirect_url': '/home/mainpage'})
+            response.set_cookie('csrftoken', csrf_token)  # CSRF 토큰을 쿠키에 설정
+
+            return response
+
         # 카카오 백엔드 로드
         strategy = load_strategy(request)
         backend = load_backend(strategy, 'kakao', redirect_uri=settings.SOCIAL_AUTH_KAKAO_REDIRECT_URI)
@@ -50,6 +59,7 @@ class KakaoLoginAPIView(APIView):
         # 카카오 인증 URL로 리디렉션
         auth_url = backend.auth_url()
         return redirect(auth_url)
+    
 
 class TokenLoginAPIView(APIView):
     def post(self, request):
@@ -79,7 +89,13 @@ class CustomLoginAPIView(APIView):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
-                return Response({'message': '로그인 성공'}, status=status.HTTP_200_OK)
+                response = JsonResponse({'message': '로그인 성공'}, status=status.HTTP_200_OK)
+                
+                # CSRF 토큰 생성 후 쿠키에 설정
+                csrf_token = get_token(request)
+                response.set_cookie('csrftoken', csrf_token)
+
+                return response
         return Response({'error': '아이디 또는 비밀번호가 잘못되었습니다.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -185,6 +201,7 @@ class CompleteProfileAPIView(APIView):
         
 
     def post(self, request):
+        print("post가 시작")
         user_id = request.session.get('partial_pipeline_user')
         if not user_id:
             return Response({'error': "세션이 만료되었습니다. 다시 로그인해주세요."}, status=status.HTTP_403_FORBIDDEN)
@@ -198,28 +215,40 @@ class CompleteProfileAPIView(APIView):
         if user.is_profile_complete:
             login(request, user)
             return redirect("https://localhost:5173/main")
-    
+
+        # 이미지가 업로드되지 않은 경우 오류 메시지 반환
         uploaded_image = request.FILES.get('verification_photo')
         if not uploaded_image:
             return Response({'error': "회원 인증 이미지를 업로드해야 합니다."}, status=status.HTTP_400_BAD_REQUEST)
-    
+
+        # 유효성 검사가 완료되지 않았으면 오류 반환
         if not request.session.get('photo_verified'):
             return Response({'error': "사진 유효성 검사를 먼저 완료해주세요."}, status=status.HTTP_400_BAD_REQUEST)
-    
+
+        # 유효성 검사를 통과한 경우 추가 정보 저장
         serializer = AdditionalInfoSerializer(data=request.data, instance=user)
         if serializer.is_valid():
             serializer.save()
             user.is_profile_complete = True
             user.verification_photo = uploaded_image
             user.save()
-    
-            # 응답 데이터 명시적으로 반환
-            return Response({
-                'is_valid': True,
-                'message': "프로필이 성공적으로 완성되었습니다.",
-                'data': serializer.data
-            }, status=status.HTTP_200_OK)
+
+            # Debug print to verify updated user instance
+            print("프로필 저장 후 유저 상태 확인:")
+            print("유저 ID:", user.pk)
+            print("프로필 완료 상태:", user.is_profile_complete)
+            print("이메일:", user.email)
+            print("닉네임:", user.nickname)
+            
+            login(request, user)
+            request.session.pop('partial_pipeline_user', None)
+            request.session.pop('photo_verified', None)
+            return Response({'is_valid': True, 'message': "프로필이 성공적으로 완성되었습니다."}, status=status.HTTP_200_OK)
         else:
+            print("추가 정보 저장 실패:", serializer.errors)
+            print("전달된 데이터:", request.data)
+            print("유저 ID:", user.pk)
+            print("프로필 완료 상태:", user.is_profile_complete)
             return Response({'is_valid': False, 'errors': serializer.errors, 'message': "프로필 업데이트 중 오류가 발생했습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
     
