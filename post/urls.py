@@ -3,6 +3,7 @@ from rest_framework.routers import DefaultRouter
 from django.conf.urls.static import static
 from django.conf import settings
 from .views import *
+from . import views
 
 router = DefaultRouter()
 router.register(r'mainboard', MainBoardViewSet)
@@ -22,4 +23,6 @@ app_name = 'post'
 urlpatterns = [
     path('', include(router.urls)),
     path('popularposts/', PopularPostViewSet.as_view(), name='popularposts'),
+    path('latest-main-notice/', views.latest_main_notice, name='latest-main-notice'),
+    path('latest-school-notice/', views.latest_school_notice, name='latest-school-notice'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
