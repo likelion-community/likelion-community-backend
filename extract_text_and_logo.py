@@ -138,7 +138,6 @@ def extract_text_and_logo(image):
 
     print("로고 검출 검사 시작")
     logo_detected = detect_logo_with_text(img, logo_templates)
-    print("로고 검출 검사 완료")
     if logo_detected:
         print("텍스트 추출 시작") 
         text_data = extract_text(img)
