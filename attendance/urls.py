@@ -10,6 +10,6 @@ urlpatterns = [
     path('detail/<int:pk>/', AttendanceDetailView.as_view(), name='attendance-detail'),
     path('<int:id>/check/', AttendanceCheckView.as_view(), name='attendance-check'),
     path('profile/<int:user_id>/', CreatorProfileView.as_view(), name='profile'),
-    path('attendance/creator-info/', CreatorInfoView.as_view(), name='creator-info'),
+    path('creator-info/', CreatorInfoView.as_view(), name='creator-info'),
 
 ]
