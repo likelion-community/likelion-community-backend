@@ -19,7 +19,6 @@ def clear_memory():
 
 # 회원 검증 함수
 def verify_like_a_lion_member(uploaded_image):
-    print("이미지 업로드 처리 시작")
     start_time = time.time()
 
     # 이미지 데이터를 NumPy 배열로 변환
@@ -31,8 +30,6 @@ def verify_like_a_lion_member(uploaded_image):
         print("이미지를 불러올 수 없습니다.")
         return False
 
-    print("이미지 디코딩 완료")
-
     # OCR에 필요한 이미지 크기 조정
     img = resize_image_for_ocr(img)  # 해상도를 더 낮춤
 
@@ -43,9 +40,7 @@ def verify_like_a_lion_member(uploaded_image):
     try:
         print("텍스트 및 로고 추출 시작")
         # extract_text_and_logo 함수 호출 전후에 디버깅 로그 추가
-        print("extract_text_and_logo 호출 시작")
         text_data, logo_detected = extract_text_and_logo(img)  # 문제 발생 가능 지점
-        print("extract_text_and_logo 호출 성공")
         print(f"텍스트 및 로고 추출 완료: {time.time() - extraction_start}초 소요")
     except Exception as e:
         print(f"오류 발생: {str(e)}")
