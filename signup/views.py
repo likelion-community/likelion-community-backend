@@ -157,7 +157,6 @@ def photo_validation_view(request):
 
 
 
-
 class CompleteProfileAPIView(APIView):
     permission_classes = [AllowAny]
 
@@ -221,8 +220,11 @@ class CompleteProfileAPIView(APIView):
             request.session.pop('photo_verified', None)
             return Response({'is_valid': True, 'message': "프로필이 성공적으로 완성되었습니다."}, status=status.HTTP_200_OK)
         else:
+            print("추가 정보 저장 실패:", serializer.errors)
+            print("전달된 데이터:", request.data)
+            print("유저 ID:", user.pk)
+            print("프로필 완료 상태:", user.is_profile_complete)
             return Response({'is_valid': False, 'errors': serializer.errors, 'message': "프로필 업데이트 중 오류가 발생했습니다."}, status=status.HTTP_400_BAD_REQUEST)
-
 
     
     
