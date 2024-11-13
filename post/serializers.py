@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import *
 
+# 게시물
 class MainBoardSerializer(serializers.ModelSerializer):
     comments_count = serializers.SerializerMethodField(read_only=True)
     likes_count = serializers.IntegerField(read_only=True)
@@ -37,7 +38,33 @@ class QuestionBoardSerializer(serializers.ModelSerializer):
 
     def get_comments_count(self, obj):
         return obj.comments_count()
+    
+class MainNoticeBoardSerializer(serializers.ModelSerializer):
+    comments_count = serializers.SerializerMethodField(read_only=True)
+    likes_count = serializers.IntegerField(read_only=True)
+    scraps_count = serializers.IntegerField(read_only=True)
 
+    class Meta:
+        model = MainNoticeBoard
+        fields = '__all__'
+
+    def get_comments_count(self, obj):
+        return obj.comments_count()
+    
+class SchoolNoticeBoardSerializer(serializers.ModelSerializer):
+    comments_count = serializers.SerializerMethodField(read_only=True)
+    likes_count = serializers.IntegerField(read_only=True)
+    scraps_count = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = SchoolNoticeBoard
+        fields = '__all__'
+
+    def get_comments_count(self, obj):
+        return obj.comments_count()
+
+
+# 댓글
 class MainCommentSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -54,4 +81,16 @@ class QuestionCommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = QuestionComment
+        fields = '__all__'
+
+class MainNoticeCommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = MainNoticeComment
+        fields = '__all__'
+
+class SchoolNoticeCommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SchoolNoticeComment
         fields = '__all__'

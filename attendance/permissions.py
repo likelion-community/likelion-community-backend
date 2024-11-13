@@ -1,5 +1,6 @@
 # permissions.py
 from rest_framework import permissions
+from rest_framework.permissions import SAFE_METHODS
 
 class IsStaffOrReadOnly(permissions.BasePermission):
     #출석 글을 staff만 수정할 수 있도록 제한하는 권한 클래스
@@ -27,3 +28,15 @@ class IsSchoolVerifiedAndSameGroup(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         # 운영진이 자신과 같은 학교 그룹의 데이터만 접근할 수 있도록 제한
         return request.user.school_name == obj.school_name
+    
+class IsAdminorReadOnly(permissions.BasePermission):
+    """
+    admin만 접근 허용
+    """
+    def has_permission(self, request, view):
+        # SAFE_METHODS에는 GET, HEAD, OPTIONS가 포함됨.
+        if request.method in SAFE_METHODS:
+            return True
+        
+        # POST, PUT, DELETE 등의 요청은 슈퍼유저만 가능
+        return request.user and request.user.is_superuser
