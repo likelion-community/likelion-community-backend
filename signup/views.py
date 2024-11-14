@@ -186,6 +186,7 @@ class CompleteProfileAPIView(APIView):
             return redirect("https://localhost:5173/kakaoSignup")
 
         if user.is_profile_complete:
+            user.backend = 'social_core.backends.kakao.KakaoOAuth2'
             login(request, user)
             return redirect("https://localhost:5173/main")
 
@@ -212,6 +213,7 @@ class CompleteProfileAPIView(APIView):
             return Response({'error': "사용자가 존재하지 않습니다. 다시 로그인해주세요."}, status=status.HTTP_403_FORBIDDEN)
 
         if user.is_profile_complete:
+            user.backend = 'social_core.backends.kakao.KakaoOAuth2'
             login(request, user)
             return redirect("https://localhost:5173/main")
 
@@ -241,6 +243,7 @@ class CompleteProfileAPIView(APIView):
         else:
             return Response({'is_valid': False, 'errors': serializer.errors, 'message': "프로필 업데이트 중 오류가 발생했습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
+    
     
     
     
