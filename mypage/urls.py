@@ -7,6 +7,7 @@ from .views import *
 app_name = 'mypage'
 
 urlpatterns = [
+    path('', MyPageOverviewView.as_view(), name='overview'), 
     path('profileimage/', ProfileImageUpdateView.as_view(), name='profileimage'),
     path('myscraps/', MyScrapView.as_view(), name='myscraps'),
     path('myposts/', MyPostView.as_view(), name='myposts'),

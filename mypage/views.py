@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.urls import reverse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -12,7 +13,25 @@ from django.utils.crypto import get_random_string
 from django.contrib.auth.hashers import make_password
 from django.conf import settings
 
-# Create your views here.
+class MyPageOverviewView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        return Response({
+            "profile_image_update": request.build_absolute_uri(reverse('mypage:profileimage')),
+            "my_scraps": request.build_absolute_uri(reverse('mypage:myscraps')),
+            "my_posts": request.build_absolute_uri(reverse('mypage:myposts')),
+            "my_comments": request.build_absolute_uri(reverse('mypage:mycomments')),
+            "school_verification": request.build_absolute_uri(reverse('mypage:schoolverification')),
+            "executive_verification": request.build_absolute_uri(reverse('mypage:executiveverification')),
+            "find_id": request.build_absolute_uri(reverse('mypage:findid')),
+            "find_password": request.build_absolute_uri(reverse('mypage:findpassword')),
+            "verify_id": request.build_absolute_uri(reverse('mypage:verifyid')),
+            "verify_password": request.build_absolute_uri(reverse('mypage:verifypassword')),
+            "reset_password": request.build_absolute_uri(reverse('mypage:resetpassword'))
+        }, status=status.HTTP_200_OK)
+
+
 class ProfileImageUpdateView(APIView):
     permission_classes = [IsAuthenticated]
 
