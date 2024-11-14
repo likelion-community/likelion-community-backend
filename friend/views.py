@@ -51,3 +51,17 @@ class ChatRoomDetailView(views.APIView):
             serializer.save(chatroom=chatroom, sender=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class StartChatView(views.APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, username):
+        """특정 사용자와의 새로운 채팅방 생성 또는 기존 채팅방 반환"""
+        other_user = get_object_or_404(User, username=username)
+        sorted_usernames = sorted([request.user.username, other_user.username])
+        chatroom_name = f'chat_{"_".join(sorted_usernames)}'
+        chatroom, created = ChatRoom.objects.get_or_create(name=chatroom_name)
+        chatroom.participants.add(request.user, other_user)
+        return Response({'chatroom_id': chatroom.pk, 'created': created}, status=status.HTTP_200_OK)
+    
