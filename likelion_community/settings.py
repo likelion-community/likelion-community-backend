@@ -2,6 +2,8 @@
 from pathlib import Path
 import os, environ
 from dotenv import load_dotenv
+from corsheaders.defaults import default_headers
+
 
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -66,11 +68,12 @@ CORS_ALLOWED_ORIGINS = [
     "https://everion.store",  # HTTPS를 사용하는 도메인 추가
     "http://everion.store"    # HTTP를 사용하는 도메인 추가 
 ]
-CORS_ALLOW_HEADERS = [
+CORS_ALLOW_HEADERS = list(default_headers) + [
     'accept',
     'authorization',
     'content-type',
     'x-requested-with',
+    'X-CSRFToken',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
