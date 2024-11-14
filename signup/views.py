@@ -52,12 +52,15 @@ class KakaoLoginAPIView(APIView):
             
             return JsonResponse({'message': '카카오 로그인 성공', 'redirect_url': '/home/mainpage'})
         
+        # 세션 갱신 확인
+        request.session.modified = True
+
         # 카카오 백엔드 로드 및 인증 URL로 리디렉션하는 부분은 그대로 둡니다.
         strategy = load_strategy(request)
         backend = load_backend(strategy, 'kakao', redirect_uri=settings.SOCIAL_AUTH_KAKAO_REDIRECT_URI)
         auth_url = backend.auth_url()
         return redirect(auth_url)
-    
+        
 
 class TokenLoginAPIView(APIView):
     def post(self, request):
