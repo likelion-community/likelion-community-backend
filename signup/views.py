@@ -59,7 +59,7 @@ class KakaoLoginAPIView(APIView):
                 'csrftoken',
                 csrf_token,
                 httponly=False,
-                secure=False,     # HTTPS 사용 시 True
+                secure=True,     # HTTPS 사용 시 True
                 samesite='None'  # 필요에 따라 설정
             )
             return response
@@ -111,7 +111,7 @@ class CustomLoginAPIView(APIView):
                     'csrftoken',
                     csrf_token,
                     httponly=False,
-                    secure=False,    # HTTPS 사용 시 True
+                    secure=True,    # HTTPS 사용 시 True
                     samesite='None'  # 필요에 따라 설정
                 )
 
