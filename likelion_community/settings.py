@@ -45,18 +45,19 @@ INSTALLED_APPS = [
 
 # Middleware
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # CORS 미들웨어는 앞에 위치
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',  # 세션 
-    'django.contrib.auth.middleware.AuthenticationMiddleware',  # 인증 
+    'django.contrib.sessions.middleware.SessionMiddleware',  # 세션 미들웨어
+    'django.middleware.csrf.CsrfViewMiddleware',  # CSRF 미들웨어는 세션 다음, 인증 앞에
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',  # CSRF 미들웨어 
+    'django.contrib.auth.middleware.AuthenticationMiddleware',  # 인증 미들웨어
     'signup.middlewares.CompleteProfileRequiredMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
+
 
 
 
