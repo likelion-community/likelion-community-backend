@@ -19,6 +19,10 @@ from social_django.utils import load_strategy, load_backend
 from django.conf import settings
 from rest_framework.decorators import api_view, permission_classes
 from django.middleware.csrf import get_token
+from django.middleware.csrf import rotate_token
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.http import require_GET
+
 
 logger = logging.getLogger(__name__)
 
@@ -33,6 +37,9 @@ class LoginHomeAPIView(APIView):
             'custom_login_url': '/signup/login/custom/'
         }, status=status.HTTP_200_OK)
 
+from django.utils.decorators import method_decorator
+
+@method_decorator(ensure_csrf_cookie, name='dispatch')
 class KakaoLoginAPIView(APIView):
     permission_classes = [AllowAny]
     
@@ -42,14 +49,18 @@ class KakaoLoginAPIView(APIView):
                 request.session['partial_pipeline_user'] = request.user.pk
                 return redirect('signup:complete_profile')
             
-            # 로그인 처리 및 CSRF 토큰 생성
-            login(request, request.user)
-            csrf_token = get_token(request)  # CSRF 토큰 생성
-            
-            # 쿠키에 CSRF 토큰 추가
-            response = JsonResponse({'message': '카카오 로그인 성공', 'redirect_url': '/home/mainpage'})
-            response.set_cookie('csrftoken', csrf_token)  # CSRF 토큰을 쿠키에 설정
+            # CSRF 토큰 생성 및 갱신
+            rotate_token(request)
+            csrf_token = get_token(request)
 
+            response = JsonResponse({'message': '카카오 로그인 성공', 'redirect_url': '/home/mainpage'})
+            response.set_cookie(
+                'csrftoken',
+                csrf_token,
+                httponly=False,
+                secure=True,     # HTTPS 사용 시 True
+                samesite='None'  # 필요에 따라 설정
+            )
             return response
 
         # 카카오 백엔드 로드
@@ -89,14 +100,23 @@ class CustomLoginAPIView(APIView):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
+
+                # CSRF 토큰 갱신
+                rotate_token(request)
+                csrf_token = get_token(request) 
+
                 response = JsonResponse({'message': '로그인 성공'}, status=status.HTTP_200_OK)
-                
-                # CSRF 토큰 생성 후 쿠키에 설정
-                csrf_token = get_token(request)
-                response.set_cookie('csrftoken', csrf_token)
+                response.set_cookie(
+                    'csrftoken',
+                    csrf_token,
+                    httponly=False,
+                    secure=True,     # HTTPS 사용 시 True
+                    samesite='None'  # 필요에 따라 설정
+                )
 
                 return response
         return Response({'error': '아이디 또는 비밀번호가 잘못되었습니다.'}, status=status.HTTP_400_BAD_REQUEST)
+    
 
 
 class CheckPasswordAPIView(APIView):
@@ -276,11 +296,9 @@ class DeleteUserAPIView(APIView):
         return Response({'message': '계정이 삭제되었습니다.'}, status=status.HTTP_204_NO_CONTENT)
 
 
-from django.middleware.csrf import get_token
-from django.views.decorators.csrf import csrf_exempt
 
-@csrf_exempt
-@api_view(['GET'])
+@ensure_csrf_cookie
+@require_GET
+@permission_classes([AllowAny])
 def get_csrf_token(request):
-    csrf_token = get_token(request)
-    return JsonResponse({'csrfToken': csrf_token})
+    return JsonResponse({'csrfToken': get_token(request)})
