@@ -50,25 +50,11 @@ class KakaoLoginAPIView(APIView):
                 request.session['partial_pipeline_user'] = request.user.pk
                 return redirect('signup:complete_profile')
             
-            # CSRF 토큰 생성 및 갱신
-            rotate_token(request)
-            csrf_token = get_token(request)
-
-            response = JsonResponse({'message': '카카오 로그인 성공', 'redirect_url': '/home/mainpage'})
-            response.set_cookie(
-                'csrftoken',
-                csrf_token,
-                httponly=False,
-                secure=True,     # HTTPS 사용 시 True
-                samesite='None'  # 필요에 따라 설정
-            )
-            return response
-
-        # 카카오 백엔드 로드
+            return JsonResponse({'message': '카카오 로그인 성공', 'redirect_url': '/home/mainpage'})
+        
+        # 카카오 백엔드 로드 및 인증 URL로 리디렉션하는 부분은 그대로 둡니다.
         strategy = load_strategy(request)
         backend = load_backend(strategy, 'kakao', redirect_uri=settings.SOCIAL_AUTH_KAKAO_REDIRECT_URI)
-
-        # 카카오 인증 URL로 리디렉션
         auth_url = backend.auth_url()
         return redirect(auth_url)
     
@@ -102,20 +88,7 @@ class CustomLoginAPIView(APIView):
             if user:
                 login(request, user)
 
-                # CSRF 토큰 갱신
-                rotate_token(request)
-                csrf_token = get_token(request) 
-
-                response = JsonResponse({'message': '로그인 성공'}, status=status.HTTP_200_OK)
-                response.set_cookie(
-                    'csrftoken',
-                    csrf_token,
-                    httponly=False,
-                    secure=True,     # HTTPS 사용 시 True
-                    samesite='None'  # 필요에 따라 설정
-                )
-
-                return response
+                return JsonResponse({'message': '로그인 성공'}, status=status.HTTP_200_OK)
         return Response({'error': '아이디 또는 비밀번호가 잘못되었습니다.'}, status=status.HTTP_400_BAD_REQUEST)
     
 
@@ -297,9 +270,21 @@ class DeleteUserAPIView(APIView):
         return Response({'message': '계정이 삭제되었습니다.'}, status=status.HTTP_204_NO_CONTENT)
 
 
+@method_decorator(ensure_csrf_cookie, name='dispatch')
+class SetCSRFCookieView(APIView):
+    permission_classes = [AllowAny]
 
-@ensure_csrf_cookie
-@require_GET
-@permission_classes([AllowAny])
-def get_csrf_token(request):
-    return JsonResponse({'csrfToken': get_token(request)})
+    def get(self, request):
+        # CSRF 토큰을 생성하고 쿠키에 설정합니다.
+        csrf_token = get_token(request)
+        response = JsonResponse({'message': 'CSRF 쿠키 설정됨'})
+        response.set_cookie(
+            'csrftoken',
+            csrf_token,
+            httponly=False,
+            secure=True,
+            samesite='None',
+            domain='localhost',
+            path='/'
+        )
+        return response
