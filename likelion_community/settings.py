@@ -77,6 +77,7 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
 
 # URL Configuration
 ROOT_URLCONF = 'likelion_community.urls'
