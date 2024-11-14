@@ -274,3 +274,11 @@ class DeleteUserAPIView(APIView):
         request.session.flush()
         cache.clear()
         return Response({'message': '계정이 삭제되었습니다.'}, status=status.HTTP_204_NO_CONTENT)
+
+
+from django.middleware.csrf import get_token
+
+@api_view(['GET'])
+def get_csrf_token(request):
+    csrf_token = get_token(request)
+    return JsonResponse({'csrfToken': csrf_token})
