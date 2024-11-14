@@ -22,6 +22,7 @@ from django.middleware.csrf import get_token
 from django.middleware.csrf import rotate_token
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_GET
+from django.views.decorators.csrf import csrf_protect
 
 
 logger = logging.getLogger(__name__)
@@ -130,13 +131,13 @@ class CheckPasswordAPIView(APIView):
             return Response({'is_valid': False, 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
+@method_decorator(csrf_protect, name='dispatch')
 class LogoutAPIView(APIView):
     def post(self, request):
         logout(request)
         request.session.flush()
         cache.clear()
         return Response({'message': '로그아웃 성공'}, status=status.HTTP_200_OK)
-
 
 class SignupAPIView(APIView):
     permission_classes = [AllowAny]
