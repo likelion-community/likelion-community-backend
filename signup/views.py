@@ -271,20 +271,9 @@ class DeleteUserAPIView(APIView):
 
 
 @method_decorator(ensure_csrf_cookie, name='dispatch')
-class SetCSRFCookieView(APIView):
+class GetCSRFTokenView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        # CSRF 토큰을 생성하고 쿠키에 설정합니다.
         csrf_token = get_token(request)
-        response = JsonResponse({'message': 'CSRF 쿠키 설정됨'})
-        response.set_cookie(
-            'csrftoken',
-            csrf_token,
-            httponly=False,
-            secure=True,
-            samesite='None',
-            domain='localhost',
-            path='/'
-        )
-        return response
+        return JsonResponse({'csrfToken': csrf_token})
