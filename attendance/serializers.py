@@ -13,10 +13,11 @@ class AttendanceSerializer(serializers.ModelSerializer):
     time = serializers.TimeField(required=True) 
     late_threshold = serializers.IntegerField(required=True)  # 지각 기준 필드
     absent_threshold = serializers.IntegerField(required=True)  # 결석 기준 필드
+    place = serializers.CharField(required=False, allow_blank=True)  
 
     class Meta:
         model = Attendance
-        fields = ['id', 'date', 'time', 'title', 'auth_code', 'description', 'file', 'track', 'created_by', 'creator_name', 'creator_term', 'creator_position', 'late_threshold', 'absent_threshold']
+        fields = ['id', 'date', 'time', 'title', 'auth_code', 'description', 'file', 'track', 'created_by', 'creator_name', 'creator_term', 'creator_position', 'late_threshold', 'absent_threshold', 'place']
 
 
 
