@@ -2,6 +2,8 @@
 from pathlib import Path
 import os, environ
 from dotenv import load_dotenv
+from corsheaders.defaults import default_headers
+
 
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,13 +47,13 @@ INSTALLED_APPS = [
 
 # Middleware
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # CORS 미들웨어는 앞에 위치
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',  # 세션 미들웨어
+    'django.middleware.csrf.CsrfViewMiddleware',  # CSRF 미들웨어는 세션 다음, 인증 앞에
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',  # 인증 미들웨어
     'signup.middlewares.CompleteProfileRequiredMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -59,16 +61,19 @@ MIDDLEWARE = [
 ]
 
 
+
+
 CORS_ALLOWED_ORIGINS = [
     "https://localhost:5173",  # HTTPS 로컬 환경
     "https://everion.store",  # HTTPS를 사용하는 도메인 추가
     "http://everion.store"    # HTTP를 사용하는 도메인 추가 
 ]
-CORS_ALLOW_HEADERS = [
+CORS_ALLOW_HEADERS = list(default_headers) + [
     'accept',
     'authorization',
     'content-type',
     'x-requested-with',
+    'X-CSRFToken',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -100,8 +105,12 @@ WSGI_APPLICATION = 'likelion_community.wsgi.application'
 # Database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',  
+        'ENGINE': 'django.db.backends.mysql',         # MySQL 데이터베이스 엔진
+        'NAME': 'everion_db2',                        # 데이터베이스 이름
+        'USER': 'root',                               # MySQL 사용자 이름
+        'PASSWORD': os.environ.get('DB_PASSWORD'),    # MySQL 사용자 비밀번호
+        'HOST': '3.39.168.41',                        # MySQL 서버 IP 주소
+        'PORT': '3306',                               # MySQL 포트
     }
 }
 
@@ -187,6 +196,8 @@ SOCIAL_AUTH_KAKAO_PROFILE_EXTRA_PARAMS = {
 SOCIAL_AUTH_KAKAO_FORCE_STATE = False
 SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 
+#SESSION_COOKIE_AGE = 3600  # 1시간 (초 단위)
+SESSION_SAVE_EVERY_REQUEST = True  # 매 요청 시마다 세션 갱신
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SAMESITE = 'None'
@@ -228,7 +239,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://everion.store",
     "http://everion.store",
 ]
-CSRF_COOKIE_SAMESITE = None
+CSRF_COOKIE_SAMESITE = 'None'
 
 
 import os

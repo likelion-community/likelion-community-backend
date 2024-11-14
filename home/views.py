@@ -18,7 +18,7 @@ class HealthCheckAPIView(APIView):
 
 
 class HomeAPIView(APIView):
-    permission_classes = [AllowAny]  # 모든 사용자가 접근 가능하도록 설정
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         if not request.user.is_authenticated:
