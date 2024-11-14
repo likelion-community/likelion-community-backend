@@ -6,6 +6,7 @@ from .views import (
     LoginHomeAPIView, CustomLoginAPIView, SignupAPIView, CompleteProfileAPIView, ClearIncompleteSessionAPIView,
     LogoutAPIView, CheckPasswordAPIView, DeleteUserAPIView, TokenLoginAPIView, photo_validation_view
 )
+from . import views
 from social_django import views as social_views
 
 app_name = 'signup'
@@ -34,4 +35,6 @@ urlpatterns = [
     # 카카오 소셜 로그인
     path('login/kakao/', social_views.auth, name='kakao-login', kwargs={'backend': 'kakao'}),
     path('complete/kakao/', social_views.complete, name='kakao-complete', kwargs={'backend': 'kakao'}),
+    path('get-csrf-token/', views.get_csrf_token, name='get_csrf_token'),
+    
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
