@@ -8,27 +8,40 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-
 class ChatRoomListView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = ChatRoomSerializer
 
     def get_queryset(self):
         user = self.request.user
-        print(f"Authenticated user: {user}")  # 인증된 사용자 출력
         chat_rooms = ChatRoom.objects.filter(participants=user)
-        print(f"Chat rooms for user {user}: {chat_rooms}")  # 필터링된 쿼리셋 출력
         return chat_rooms
 
 class ChatRoomDetailView(views.APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, pk):
-        """특정 채팅방의 모든 메시지 조회"""
+        """특정 채팅방의 모든 메시지 조회 및 상대방 정보 포함"""
         chatroom = get_object_or_404(ChatRoom, pk=pk, participants=request.user)
+        
+        # 상대방 정보 가져오기
+        other_participant = chatroom.participants.exclude(id=request.user.id).first()
+        if not other_participant:
+            return Response({"error": "상대방을 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)
+
+        # 메시지 및 상대방 정보 직렬화
         messages = chatroom.messages.all().order_by('timestamp')
-        serializer = MessageSerializer(messages, many=True)
-        return Response(serializer.data)
+        message_serializer = MessageSerializer(messages, many=True)
+        
+        return Response({
+            "messages": message_serializer.data,
+            "other_participant": {
+                "id": other_participant.id,
+                "username": other_participant.username,
+                "nickname": other_participant.nickname,  # assuming 'nickname' field exists in User model
+                "profile_image": other_participant.profile_image.url if other_participant.profile_image else None,
+            }
+        })
 
     def post(self, request, pk):
         """특정 채팅방에 메시지 전송 (텍스트 또는 사진 포함 가능)"""
@@ -38,16 +51,3 @@ class ChatRoomDetailView(views.APIView):
             serializer.save(chatroom=chatroom, sender=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class StartChatView(views.APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request, username):
-        """특정 사용자와의 새로운 채팅방 생성 또는 기존 채팅방 반환"""
-        other_user = get_object_or_404(User, username=username)
-        sorted_usernames = sorted([request.user.username, other_user.username])
-        chatroom_name = f'chat_{"_".join(sorted_usernames)}'
-        chatroom, created = ChatRoom.objects.get_or_create(name=chatroom_name)
-        chatroom.participants.add(request.user, other_user)
-        return Response({'chatroom_id': chatroom.pk, 'created': created}, status=status.HTTP_200_OK)

@@ -52,12 +52,15 @@ class KakaoLoginAPIView(APIView):
             
             return JsonResponse({'message': '카카오 로그인 성공', 'redirect_url': '/home/mainpage'})
         
+        # 세션 갱신 확인
+        request.session.modified = True
+
         # 카카오 백엔드 로드 및 인증 URL로 리디렉션하는 부분은 그대로 둡니다.
         strategy = load_strategy(request)
         backend = load_backend(strategy, 'kakao', redirect_uri=settings.SOCIAL_AUTH_KAKAO_REDIRECT_URI)
         auth_url = backend.auth_url()
         return redirect(auth_url)
-    
+        
 
 class TokenLoginAPIView(APIView):
     def post(self, request):
@@ -89,6 +92,7 @@ class CustomLoginAPIView(APIView):
                 login(request, user)
 
                 return JsonResponse({'message': '로그인 성공'}, status=status.HTTP_200_OK)
+
         return Response({'error': '아이디 또는 비밀번호가 잘못되었습니다.'}, status=status.HTTP_400_BAD_REQUEST)
     
 
@@ -182,6 +186,8 @@ class CompleteProfileAPIView(APIView):
             return redirect("https://localhost:5173/kakaoSignup")
 
         if user.is_profile_complete:
+            user.backend = 'social_core.backends.kakao.KakaoOAuth2'
+            login(request, user)
             return redirect("https://localhost:5173/main")
 
         # 세션에 저장된 닉네임을 가져와 쿼리 파라미터로 전달
@@ -207,6 +213,7 @@ class CompleteProfileAPIView(APIView):
             return Response({'error': "사용자가 존재하지 않습니다. 다시 로그인해주세요."}, status=status.HTTP_403_FORBIDDEN)
 
         if user.is_profile_complete:
+            user.backend = 'social_core.backends.kakao.KakaoOAuth2'
             login(request, user)
             return redirect("https://localhost:5173/main")
 
@@ -226,25 +233,18 @@ class CompleteProfileAPIView(APIView):
             user.is_profile_complete = True
             user.verification_photo = uploaded_image
             user.save()
-
-            # Debug print to verify updated user instance
-            print("프로필 저장 후 유저 상태 확인:")
-            print("유저 ID:", user.pk)
-            print("프로필 완료 상태:", user.is_profile_complete)
-            print("이메일:", user.email)
-            print("닉네임:", user.nickname)
             
+            user.backend = 'social_core.backends.kakao.KakaoOAuth2'
             login(request, user)
+
             request.session.pop('partial_pipeline_user', None)
             request.session.pop('photo_verified', None)
             return Response({'is_valid': True, 'message': "프로필이 성공적으로 완성되었습니다."}, status=status.HTTP_200_OK)
         else:
-            print("추가 정보 저장 실패:", serializer.errors)
-            print("전달된 데이터:", request.data)
-            print("유저 ID:", user.pk)
-            print("프로필 완료 상태:", user.is_profile_complete)
             return Response({'is_valid': False, 'errors': serializer.errors, 'message': "프로필 업데이트 중 오류가 발생했습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
+    
+    
     
     
 class DeleteIncompleteUserAPIView(APIView):
