@@ -186,6 +186,7 @@ class CompleteProfileAPIView(APIView):
             return redirect("https://localhost:5173/kakaoSignup")
 
         if user.is_profile_complete:
+            login(request, user)
             return redirect("https://localhost:5173/main")
 
         # 세션에 저장된 닉네임을 가져와 쿼리 파라미터로 전달
@@ -230,25 +231,17 @@ class CompleteProfileAPIView(APIView):
             user.is_profile_complete = True
             user.verification_photo = uploaded_image
             user.save()
-
-            # Debug print to verify updated user instance
-            print("프로필 저장 후 유저 상태 확인:")
-            print("유저 ID:", user.pk)
-            print("프로필 완료 상태:", user.is_profile_complete)
-            print("이메일:", user.email)
-            print("닉네임:", user.nickname)
             
+            user.backend = 'social_core.backends.kakao.KakaoOAuth2'
             login(request, user)
+
             request.session.pop('partial_pipeline_user', None)
             request.session.pop('photo_verified', None)
             return Response({'is_valid': True, 'message': "프로필이 성공적으로 완성되었습니다."}, status=status.HTTP_200_OK)
         else:
-            print("추가 정보 저장 실패:", serializer.errors)
-            print("전달된 데이터:", request.data)
-            print("유저 ID:", user.pk)
-            print("프로필 완료 상태:", user.is_profile_complete)
             return Response({'is_valid': False, 'errors': serializer.errors, 'message': "프로필 업데이트 중 오류가 발생했습니다."}, status=status.HTTP_400_BAD_REQUEST)
 
+    
     
     
 class DeleteIncompleteUserAPIView(APIView):
