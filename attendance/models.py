@@ -17,7 +17,9 @@ class Attendance(models.Model):
     file = models.FileField(upload_to='attendance_files/', blank=True, null=True) 
     created_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='created_attendances')
     track = models.CharField(max_length=20, choices=TRACK_CHOICES, default='backend')
+    place = models.CharField(max_length=100, blank=True, null=True)  
 
+    
     # 지각 및 결석 기준 시간 (운영진이 설정 가능)
     late_threshold = models.IntegerField()  # 지각 기준 (분)
     absent_threshold = models.IntegerField()  # 결석 기준 (분)
