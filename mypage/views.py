@@ -12,12 +12,17 @@ from django.core.mail import send_mail
 from django.utils.crypto import get_random_string
 from django.contrib.auth.hashers import make_password
 from django.conf import settings
+from .serializers import UserSerializer
 
 class MyPageOverviewView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
+        user = request.user  # 현재 인증된 사용자 객체 가져오기
+        user_serializer = UserSerializer(user)  # 사용자 정보를 직렬화
+
         return Response({
+            "user_info": user_serializer.data,  # 사용자 정보 추가
             "profile_image_update": request.build_absolute_uri(reverse('mypage:profileimage')),
             "my_scraps": request.build_absolute_uri(reverse('mypage:myscraps')),
             "my_posts": request.build_absolute_uri(reverse('mypage:myposts')),
