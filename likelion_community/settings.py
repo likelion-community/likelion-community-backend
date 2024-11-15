@@ -227,7 +227,7 @@ CHANNEL_LAYERS = {
             "hosts": [
                 ("127.0.0.1", 6379),  # 로컬 접근용
                 ("3.39.168.41", 6379),  # 외부 접근용
-                ("everion.store", 6379),
+                ("redis.everion.store", 6379),
             ],
         },
     },
