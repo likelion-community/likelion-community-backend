@@ -44,18 +44,21 @@ class AttendanceSetView(viewsets.ModelViewSet):
         if not self.request.user.is_staff:
             raise PermissionDenied("출석 등록은 staff만 할 수 있습니다.")
         
+        # is_staff에 따라 creator_position 설정
+        creator_position = '운영진' if self.request.user.is_staff else '아기사자'
         
         # 출석 코드는 운영진(작성자)이 직접 생성하도록
         serializer.save(
             created_by=self.request.user,
             creator_name=self.request.user.name,
             creator_term=self.request.user.membership_term,
-            creator_position='운영진'
+            creator_position=creator_position
         )
 
     def perform_update(self, serializer):
         # 수정 시에도 created_by가 현재 사용자로 설정되도록 설정
         serializer.save(created_by=self.request.user)
+
 
 class CreatorInfoView(APIView):
     permission_classes = [IsAuthenticated]

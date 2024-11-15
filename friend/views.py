@@ -3,10 +3,22 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from .models import ChatRoom, Message
-from .serializers import ChatRoomSerializer, MessageSerializer
+from .serializers import ChatRoomSerializer, MessageSerializer, UserSerializer
 from django.contrib.auth import get_user_model
+from rest_framework.views import APIView
 
 User = get_user_model()
+
+class CurrentUserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        return Response({
+            "username": user.username,
+            "nickname": user.nickname,
+            "profile_image": user.profile_image.url if user.profile_image else None,
+        })
 
 class ChatRoomListView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
@@ -21,18 +33,17 @@ class ChatRoomDetailView(views.APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, pk):
-        """특정 채팅방의 모든 메시지 조회 및 상대방 정보 포함"""
         chatroom = get_object_or_404(ChatRoom, pk=pk, participants=request.user)
 
-        # 참여자 ID 리스트
-        participants = list(chatroom.participants.values_list('id', flat=True))
+        # 참여자 정보 직렬화
+        participants = UserSerializer(chatroom.participants, many=True).data
 
-        # 상대방 정보 가져오기
+        # 상대방 정보
         other_participant = chatroom.participants.exclude(id=request.user.id).first()
         if not other_participant:
             return Response({"error": "상대방을 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)
 
-        # 메시지 및 상대방 정보 직렬화
+        # 메시지 직렬화
         messages = chatroom.messages.all().order_by('timestamp')
         message_serializer = MessageSerializer(messages, many=True)
 
@@ -45,9 +56,8 @@ class ChatRoomDetailView(views.APIView):
                 "profile_image": other_participant.profile_image.url if other_participant.profile_image else None,
             },
             "room_name": chatroom.name,
-            "participants": participants  # 추가된 participants 필드
+            "participants": participants  # 직렬화된 participants 반환
         })
-
 
     def post(self, request, pk):
         """특정 채팅방에 메시지 전송 (텍스트 또는 사진 포함 가능)"""
