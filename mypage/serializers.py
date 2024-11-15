@@ -20,18 +20,18 @@ class SchoolVerificationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SchoolVerification
-        fields = ['user', 'verification_photo']
-
-    def get_status_choices(self, obj):
-        return SchoolVerification.STATUS_CHOICES
+        fields = ['user', 'verification_photo', 'status', 'submission_date', 'review_date']
 
     def create(self, validated_data):
         user = self.context['user']
         return SchoolVerification.objects.create(user=user, **validated_data)
-    
+
 
 class ExecutiveVerificationSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = ExecutiveVerification
-        fields = ['verification_photo']
+        fields = ['user', 'verification_photo', 'status', 'submission_date', 'review_date']
+
+
