@@ -17,17 +17,15 @@ class IsSchoolVerifiedAndSameGroup(permissions.BasePermission):
     def has_permission(self, request, view):
         # 학교 인증 여부 확인
         if not request.user.is_school_verified:
-            return False
+            return False  # 학교 인증이 없으면 접근 금지
 
-        # 요청하는 사용자가 운영진일 경우에만 자신의 학교 그룹에 접근 가능
-        if request.user.is_staff:
-            return True
-
-        return False
+        # 학교 인증을 받은 운영진이나 일반 사용자 모두 접근 허용
+        return True
 
     def has_object_permission(self, request, view, obj):
-        # 운영진이 자신과 같은 학교 그룹의 데이터만 접근할 수 있도록 제한
+        # 같은 학교 그룹인지 확인 (운영진과 일반 사용자 모두 적용)
         return request.user.school_name == obj.school_name
+    
     
 class IsAdminorReadOnly(permissions.BasePermission):
     """
