@@ -23,8 +23,18 @@ class Verification(models.Model):
     submission_date = models.DateTimeField(auto_now_add=True)
     review_date = models.DateTimeField(null=True, blank=True)
 
-    is_school_verified = models.BooleanField(default=False)  
-
     def __str__(self):
         return f"인증 - {self.user.username} - 학교: {self.school_status}, 운영진: {self.executive_status}"
-    
+
+    def save(self, *args, **kwargs):
+        # executive_status에 따라 CustomUser의 is_staff 값 업데이트
+        if self.executive_status == 'approved':
+            self.user.is_staff = True
+        elif self.executive_status == 'rejected':
+            self.user.is_staff = False
+        
+        # CustomUser 저장
+        self.user.save()
+        
+        # Verification 저장
+        super().save(*args, **kwargs)
