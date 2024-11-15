@@ -109,7 +109,8 @@ class SchoolNoticeBoardViewSet(BaseBoardViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
-        comment = serializer.save()
+        writer = self.request.user
+        comment = serializer.save(writer=writer)
         
         if comment.writer != comment.board.writer:
             notification = Notification.objects.create(
