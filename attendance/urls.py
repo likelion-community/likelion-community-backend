@@ -1,6 +1,6 @@
 # urls.py
 from django.urls import path
-from .views import AttendanceMainView, AttendanceSetView, AttendanceDetailView, AttendanceCheckView, CreatorProfileView, CreatorInfoView
+from .views import AttendanceMainView, AttendanceSetView, AttendanceDetailView, AttendanceCheckView, CreatorProfileView, CreatorInfoView, UserTrackAttendanceView
 
 app_name = 'attendance'
 
@@ -11,5 +11,5 @@ urlpatterns = [
     path('<int:id>/check/', AttendanceCheckView.as_view(), name='attendance-check'),
     path('profile/<int:user_id>/', CreatorProfileView.as_view(), name='profile'),
     path('creator-info/', CreatorInfoView.as_view(), name='creator-info'),
-
+    path('myattendance/', UserTrackAttendanceView.as_view(), name='myattendance'),
 ]
