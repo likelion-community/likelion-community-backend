@@ -8,7 +8,7 @@ class Attendance(models.Model):
         ('백엔드', '백엔드'),
         ('프론트엔드', '프론트엔드'),
         ('기획/디자인', '기획/디자인'),
-        ('전체', '전체')
+        ('전체트랙', '전체트랙')
     ]
 
     date = models.DateField()

@@ -149,7 +149,7 @@ class UserTrackAttendanceView(APIView):
 
         # 사용자 트랙과 '전체' 트랙을 포함한 출석 데이터 필터링
         all_attendances = Attendance.objects.filter(
-            track__in=[user.track, '전체'],
+            track__in=[user.track, '전체트랙'],
             created_by__school_name=user.school_name
         )
 
