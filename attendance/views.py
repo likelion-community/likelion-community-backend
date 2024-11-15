@@ -9,14 +9,29 @@ from .permissions import IsStaffOrReadOnly, IsSchoolVerifiedAndSameGroup
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.views import APIView
 from django.utils import timezone
+from signup.serializers import CustomUserSerializer
 
 class AttendanceMainView(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup]
     serializer_class = AttendanceSerializer
 
     def get_queryset(self):
-        # 운영진의 학교 그룹과 일치하는 출석 데이터만 반환
         return Attendance.objects.filter(created_by__school_name=self.request.user.school_name)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        attendance_data = self.get_serializer(queryset, many=True).data
+
+        # CustomUserSerializer로 사용자 정보 자동 처리
+        user_serializer = CustomUserSerializer(request.user)
+        user_data = user_serializer.data
+
+        response_data = {
+            "attendances": attendance_data,
+            "user_info": user_data,
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    
 
 class AttendanceSetView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, IsStaffOrReadOnly, IsSchoolVerifiedAndSameGroup]
