@@ -18,31 +18,30 @@ class MyPageOverviewView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        user = request.user  # 현재 인증된 사용자 객체 가져오기
-        user_serializer = UserSerializer(user)  # 사용자 정보를 직렬화
+        user = request.user
+        user_serializer = UserSerializer(user)
 
-        school_verification_choices = SchoolVerification.STATUS_CHOICES
-        executive_verification_choices = ExecutiveVerification.STATUS_CHOICES
+        try:
+            school_verification = SchoolVerification.objects.get(user=user)
+        except SchoolVerification.DoesNotExist:
+            school_verification = None
+
+        try:
+            executive_verification = ExecutiveVerification.objects.get(user=user)
+        except ExecutiveVerification.DoesNotExist:
+            executive_verification = None
 
         return Response({
-            "user_info": user_serializer.data,  # 사용자 정보 추가
+            "user_info": user_serializer.data,
+            "school_verification_status": school_verification.status if school_verification else "none",
+            "executive_verification_status": executive_verification.status if executive_verification else "none",
             "profile_image_update": request.build_absolute_uri(reverse('mypage:profileimage')),
             "my_scraps": request.build_absolute_uri(reverse('mypage:myscraps')),
             "my_posts": request.build_absolute_uri(reverse('mypage:myposts')),
             "my_comments": request.build_absolute_uri(reverse('mypage:mycomments')),
             "school_verification": request.build_absolute_uri(reverse('mypage:schoolverification')),
             "executive_verification": request.build_absolute_uri(reverse('mypage:executiveverification')),
-            "find_id": request.build_absolute_uri(reverse('mypage:findid')),
-            "find_password": request.build_absolute_uri(reverse('mypage:findpassword')),
-            "verify_id": request.build_absolute_uri(reverse('mypage:verifyid')),
-            "verify_password": request.build_absolute_uri(reverse('mypage:verifypassword')),
-            "reset_password": request.build_absolute_uri(reverse('mypage:resetpassword')),
-            "status_choices": {
-                "school_verification": school_verification_choices,
-                "executive_verification": executive_verification_choices
-            }
         }, status=status.HTTP_200_OK)
-
 
 
 class ProfileImageUpdateView(APIView):
@@ -130,10 +129,10 @@ class SchoolVerificationView(APIView):
             try:
                 school_verification, created = SchoolVerification.objects.get_or_create(user=user)
                 school_verification.verification_photo = serializer.validated_data['verification_photo']
-                school_verification.status = 'pending'
+                school_verification.status = 'pending'  # 기본값: 대기
                 school_verification.save()
-                
-                return Response({"detail": "학교 인증 사진이 제출되었습니다."}, status=status.HTTP_201_CREATED)
+
+                return Response({"detail": "학교 인증 사진이 제출되었습니다.", "status": school_verification.status}, status=status.HTTP_201_CREATED)
             except Exception as e:
                 print(f"Save error: {e}")  # 디버깅용
                 return Response({"error": "저장하는 도중 오류가 발생했습니다."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -141,20 +140,66 @@ class SchoolVerificationView(APIView):
         print(f"Validation errors: {serializer.errors}")  # 디버깅용
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def patch(self, request, *args, **kwargs):
+        # 관리자가 상태를 변경
+        verification_id = kwargs.get('pk')
+        status = request.data.get('status')
+
+        if status not in dict(SchoolVerification.STATUS_CHOICES):
+            return Response({"error": "유효하지 않은 상태입니다."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            school_verification = SchoolVerification.objects.get(id=verification_id)
+            school_verification.status = status
+            school_verification.save()
+
+            return Response({"detail": f"상태가 {status}로 변경되었습니다."}, status=status.HTTP_200_OK)
+        except SchoolVerification.DoesNotExist:
+            return Response({"error": "해당 인증 요청을 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)
+
 
     
 class ExecutiveVerificationView(APIView):
     permission_classes = [IsAuthenticated]
-    
+
     def post(self, request, *args, **kwargs):
         user = request.user
-        serializer = ExecutiveVerificationSerializer(data=request.data)
+        serializer = ExecutiveVerificationSerializer(data=request.data, context={'user': user})
 
         if serializer.is_valid():
-            serializer.save(user=user)
-            return Response({"detail": "운영진 인증 사진이 제출되었습니다."}, status=status.HTTP_201_CREATED)
+            try:
+                executive_verification, created = ExecutiveVerification.objects.get_or_create(user=user)
+                executive_verification.verification_photo = serializer.validated_data['verification_photo']
+                executive_verification.status = 'pending'  # 기본값: 대기
+                executive_verification.save()
+
+                return Response({"detail": "운영진 인증 사진이 제출되었습니다.", "status": executive_verification.status}, status=status.HTTP_201_CREATED)
+            except Exception as e:
+                print(f"Save error: {e}")  # 디버깅용
+                return Response({"error": "저장하는 도중 오류가 발생했습니다."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        print(f"Validation errors: {serializer.errors}")  # 디버깅용
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+    def patch(self, request, *args, **kwargs):
+        # 관리자가 상태를 변경
+        verification_id = kwargs.get('pk')
+        status = request.data.get('status')
+
+        if status not in dict(ExecutiveVerification.STATUS_CHOICES):
+            return Response({"error": "유효하지 않은 상태입니다."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            executive_verification = ExecutiveVerification.objects.get(id=verification_id)
+            executive_verification.status = status
+            executive_verification.save()
+
+            return Response({"detail": f"상태가 {status}로 변경되었습니다."}, status=status.HTTP_200_OK)
+        except ExecutiveVerification.DoesNotExist:
+            return Response({"error": "해당 인증 요청을 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)
+
+
+
 class FindIDEmailView(APIView):
     def post (self, request, *args, **kwargs):
             email = request.data.get('email')
