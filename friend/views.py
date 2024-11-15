@@ -15,10 +15,12 @@ class CurrentUserView(APIView):
     def get(self, request):
         user = request.user
         return Response({
+            "id": user.id,  
             "username": user.username,
             "nickname": user.nickname,
             "profile_image": user.profile_image.url if user.profile_image else None,
         })
+
 
 class ChatRoomListView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
