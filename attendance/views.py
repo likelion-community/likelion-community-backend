@@ -89,11 +89,11 @@ class AttendanceCheckView(APIView):
 
             # 출석 상태 결정
             if time_difference <= attendance.late_threshold:
-                status_type = 'present'  # 정상 출석
+                status_type = '출석'  # 정상 출석
             elif time_difference <= attendance.absent_threshold:
-                status_type = 'late'     # 지각
+                status_type = '지각'     # 지각
             else:
-                status_type = 'absent'   # 결석
+                status_type = '결석'   # 결석
 
             # AttendanceStatus 생성
             AttendanceStatus.objects.create(
@@ -144,7 +144,7 @@ class UserTrackAttendanceView(APIView):
                 AttendanceStatus.objects.create(
                     attendance=attendance,
                     user=user,
-                    status='absent',
+                    status='결석',
                     date=current_time.date()
                 )
 
