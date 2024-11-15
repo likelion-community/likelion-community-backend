@@ -90,7 +90,7 @@ class CustomLoginAPIView(APIView):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
-
+                request.session.save()
                 return JsonResponse({'message': '로그인 성공'}, status=status.HTTP_200_OK)
 
         return Response({'error': '아이디 또는 비밀번호가 잘못되었습니다.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -177,27 +177,28 @@ class CompleteProfileAPIView(APIView):
     def get(self, request):
         user_id = request.session.get('partial_pipeline_user')
         if not user_id:
-            return redirect("https://localhost:5173/kakaoSignup")
+            return redirect("https://hello.everion.store/kakaoSignup")
 
         try:
             user = CustomUser.objects.get(pk=user_id)
         except CustomUser.DoesNotExist:
             request.session.pop('partial_pipeline_user', None)
-            return redirect("https://localhost:5173/kakaoSignup")
+            return redirect("https://hello.everion.store/kakaoSignup")
 
         if user.is_profile_complete:
             user.backend = 'social_core.backends.kakao.KakaoOAuth2'
             login(request, user)
-            return redirect("https://localhost:5173/main")
+            request.session.save()
+            return redirect("https://hello.everion.store/main")
 
         # 세션에 저장된 닉네임을 가져와 쿼리 파라미터로 전달
         nickname = request.session.get('nickname')
         if nickname:
             # 닉네임을 쿼리 파라미터로 포함하여 리디렉션
-            return redirect(f"https://localhost:5173/kakaoSignup?nickname={nickname}")
+            return redirect(f"https://hello.everion.store/kakaoSignup?nickname={nickname}")
         
         # 닉네임이 없는 경우 기본 리디렉션
-        return redirect("https://localhost:5173/kakaoSignup")
+        return redirect("https://hello.everion.store/kakaoSignup")
         
 
     def post(self, request):
@@ -215,7 +216,8 @@ class CompleteProfileAPIView(APIView):
         if user.is_profile_complete:
             user.backend = 'social_core.backends.kakao.KakaoOAuth2'
             login(request, user)
-            return redirect("https://localhost:5173/main")
+            request.session.save()
+            return redirect("https://hello.everion.store/main")
 
         # 이미지가 업로드되지 않은 경우 오류 메시지 반환
         uploaded_image = request.FILES.get('verification_photo')
@@ -236,7 +238,7 @@ class CompleteProfileAPIView(APIView):
             
             user.backend = 'social_core.backends.kakao.KakaoOAuth2'
             login(request, user)
-
+            request.session.save()
             request.session.pop('partial_pipeline_user', None)
             request.session.pop('photo_verified', None)
             return Response({'is_valid': True, 'message': "프로필이 성공적으로 완성되었습니다."}, status=status.HTTP_200_OK)

@@ -16,6 +16,7 @@ class AttendanceConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         # WebSocket 연결 종료 시 그룹에서 제거
+        print(f"WebSocket 연결 종료: Close code = {close_code}")
         await self.channel_layer.group_discard(
             self.room_group_name,
             self.channel_name
