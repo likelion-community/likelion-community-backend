@@ -20,6 +20,7 @@ class Message(models.Model):
         on_delete=models.CASCADE
     )
     content = models.TextField(blank=True, null=True)
+    image = models.ImageField(upload_to='chat_images/', null=True, blank=True)  # 사진 추가
     timestamp = models.DateTimeField(auto_now_add=True)
 
     @property
@@ -27,3 +28,6 @@ class Message(models.Model):
         # 지연 로딩으로 사용자 모델 가져오기
         CustomUser = apps.get_model('signup', 'CustomUser')
         return CustomUser.objects.get(id=self.sender_id)
+
+    def __str__(self):
+        return f"{self.sender.username}: {self.content[:20]}"
