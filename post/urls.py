@@ -25,4 +25,5 @@ urlpatterns = [
     path('popularposts/', PopularPostViewSet.as_view(), name='popularposts'),
     path('latest-main-notice/', views.latest_main_notice, name='latest-main-notice'),
     path('latest-school-notice/', views.latest_school_notice, name='latest-school-notice'),
+    path('latest-main-board/', views.latest_main_board, name='latest-main-board'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
