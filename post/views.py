@@ -208,3 +208,26 @@ def latest_school_notice(request):
         return Response(serializer.data)
     except SchoolNoticeBoard.DoesNotExist:
         return Response({'detail': 'No notices available.'}, status=404)
+    
+# 메인 커뮤니티 가장 최근 글 반환
+@api_view(['GET'])
+def latest_main_board(request):
+    board_choices = [
+        '자유게시판',
+        '기획/디자인 게시판',
+        '프론트엔드 게시판',
+        '백엔드 게시판',
+        '아기사자게시판',
+        '참여게시판'
+    ]
+
+    latest_posts = []
+
+    for board_title in board_choices:
+        latest_post = MainBoard.objects.filter(board_title=board_title).order_by('-time').first()
+        if latest_post:
+            latest_posts.append(latest_post)
+
+    # 시리얼라이즈 모든 최신 게시물
+    serializer = MainBoardSerializer(latest_posts, many=True)
+    return Response(serializer.data)
