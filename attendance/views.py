@@ -9,6 +9,7 @@ from .permissions import IsStaffOrReadOnly, IsSchoolVerifiedAndSameGroup
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.views import APIView
 from django.utils import timezone
+from django.db.models import Count
 
 class AttendanceMainView(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup]
@@ -153,10 +154,19 @@ class UserTrackAttendanceView(APIView):
         # 사용자의 출석 상태 데이터 필터링
         user_attendance = AttendanceStatus.objects.filter(user=user)
         status_serializer = AttendanceStatusSerializer(user_attendance, many=True)
+        attendance_count = user_attendance.values('status').annotate(count=Count('status'))
+        status_count = {
+            '출석': 0,
+            '지각': 0,
+            '결석': 0
+        }
+        for entry in attendance_count:
+            status_count[entry['status']] = entry['count']
 
         response_data = {
             "all_attendances": attendance_serializer.data,
-            "user_attendance": status_serializer.data
+            "user_attendance": status_serializer.data,
+            "status_count": status_count
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
