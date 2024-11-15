@@ -10,6 +10,8 @@ from rest_framework.generics import RetrieveAPIView
 from rest_framework.views import APIView
 from django.utils import timezone
 from signup.serializers import CustomUserSerializer
+from django.db.models import Count
+
 
 class AttendanceMainView(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup]
@@ -104,11 +106,11 @@ class AttendanceCheckView(APIView):
 
             # 출석 상태 결정
             if time_difference <= attendance.late_threshold:
-                status_type = 'present'  # 정상 출석
+                status_type = '출석'  # 정상 출석
             elif time_difference <= attendance.absent_threshold:
-                status_type = 'late'     # 지각
+                status_type = '지각'     # 지각
             else:
-                status_type = 'absent'   # 결석
+                status_type = '결석'   # 결석
 
             # AttendanceStatus 생성
             AttendanceStatus.objects.create(
@@ -147,7 +149,7 @@ class UserTrackAttendanceView(APIView):
 
         # 사용자 트랙과 '전체' 트랙을 포함한 출석 데이터 필터링
         all_attendances = Attendance.objects.filter(
-            track__in=[user.track, '전체'],
+            track__in=[user.track, '전체트랙'],
             created_by__school_name=user.school_name
         )
 
@@ -159,7 +161,7 @@ class UserTrackAttendanceView(APIView):
                 AttendanceStatus.objects.create(
                     attendance=attendance,
                     user=user,
-                    status='absent',
+                    status='결석',
                     date=current_time.date()
                 )
 
@@ -168,10 +170,19 @@ class UserTrackAttendanceView(APIView):
         # 사용자의 출석 상태 데이터 필터링
         user_attendance = AttendanceStatus.objects.filter(user=user)
         status_serializer = AttendanceStatusSerializer(user_attendance, many=True)
+        attendance_count = user_attendance.values('status').annotate(count=Count('status'))
+        status_count = {
+            '출석': 0,
+            '지각': 0,
+            '결석': 0
+        }
+        for entry in attendance_count:
+            status_count[entry['status']] = entry['count']
 
         response_data = {
             "all_attendances": attendance_serializer.data,
-            "user_attendance": status_serializer.data
+            "user_attendance": status_serializer.data,
+            "status_count": status_count
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
