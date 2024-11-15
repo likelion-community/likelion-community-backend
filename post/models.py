@@ -1,7 +1,16 @@
 from django.db import models
 from signup.models import CustomUser
 
-# Create your models here.
+# 게시물 이미지 모델
+class PostImage(models.Model):
+    image = models.ImageField(upload_to='post/')
+    board = models.ForeignKey('MainBoard', related_name='images', on_delete=models.CASCADE, null=True, blank=True)
+    notice_board = models.ForeignKey('MainNoticeBoard', related_name='images', on_delete=models.CASCADE, null=True, blank=True)
+    school_board = models.ForeignKey('SchoolBoard', related_name='images', on_delete=models.CASCADE, null=True, blank=True)
+    school_notice_board = models.ForeignKey('SchoolNoticeBoard', related_name='images', on_delete=models.CASCADE, null=True, blank=True)
+    question_board = models.ForeignKey('QuestionBoard', related_name='images', on_delete=models.CASCADE, null=True, blank=True)
+
+
 # 게시물
 class MainBoard(models.Model):      # 전체 게시판 게시물
     BOARD_CHOICES = [
@@ -20,7 +29,6 @@ class MainBoard(models.Model):      # 전체 게시판 게시물
     anonymous = models.BooleanField(blank=True, default=True)  # True이면 익명, False이면 닉네임
     body = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to='post/', blank=True, null=True)
     like = models.ManyToManyField(CustomUser, related_name='main_like', blank=True)
     scrap = models.ManyToManyField(CustomUser, related_name='main_scrap', blank=True)
 
@@ -70,7 +78,6 @@ class SchoolBoard(models.Model):      # 학교 게시판 게시물
     anonymous = models.BooleanField(null=True, default=True)
     body = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to='post/', blank=True, null=True)
     like = models.ManyToManyField(CustomUser, related_name='school_like', blank=True)
     scrap = models.ManyToManyField(CustomUser, related_name='school_scrap', blank=True)
     
@@ -95,7 +102,6 @@ class SchoolNoticeBoard(models.Model):      # 학교 공지사항 게시물
     anonymous = models.BooleanField(blank=True, default=True)  # True이면 익명, False이면 닉네임
     body = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to='post/', blank=True, null=True)
     like = models.ManyToManyField(CustomUser, related_name='schoolnotice_like', blank=True)
     scrap = models.ManyToManyField(CustomUser, related_name='schoolnotice_scrap', blank=True)
 
@@ -121,7 +127,6 @@ class QuestionBoard(models.Model):    # 질문 게시판 게시물
     anonymous = models.BooleanField(null=True, default=True)
     body = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to='post/', blank=True, null=True)
     like = models.ManyToManyField(CustomUser, related_name='question_like', blank=True)
     scrap = models.ManyToManyField(CustomUser, related_name='question_scrap', blank=True)
 

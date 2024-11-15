@@ -3,11 +3,18 @@ from signup.serializers import CustomUserSerializer
 from .models import *
 
 # 게시물
+class PostImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PostImage
+        fields = ['id', 'image']
+        
 class MainBoardSerializer(serializers.ModelSerializer):
     comments_count = serializers.SerializerMethodField(read_only=True)
     likes_count = serializers.IntegerField(read_only=True)
     scraps_count = serializers.IntegerField(read_only=True)
+    images = PostImageSerializer(many=True, read_only=True) 
     writer = CustomUserSerializer(read_only=True)
+
 
     class Meta:
         model = MainBoard
@@ -15,6 +22,7 @@ class MainBoardSerializer(serializers.ModelSerializer):
 
     def get_comments_count(self, obj):
         return obj.comments_count()
+
 
 
 class SchoolBoardSerializer(serializers.ModelSerializer):

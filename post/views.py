@@ -28,7 +28,12 @@ def send_notification(notification):
 
 class BaseBoardViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
-        serializer.save(writer=self.request.user)
+        post = serializer.save(writer=self.request.user)
+
+        # 이미지 데이터 처리
+        images = self.request.FILES.getlist('images')
+        for image in images:
+            PostImage.objects.create(board=post, image=image) 
 
     def handle_like(self, request, post):
         user = request.user
