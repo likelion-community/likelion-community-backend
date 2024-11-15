@@ -84,7 +84,8 @@ class MyPageOverviewView(APIView):
                 "view_posts": request.build_absolute_uri(reverse_lazy('mypage:myposts')),
                 "view_comments": request.build_absolute_uri(reverse_lazy('mypage:mycomments')),
                 "verification_status": request.build_absolute_uri(reverse_lazy('mypage:verification')),
-            }
+            },
+            "is_staff": user.is_staff, 
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
