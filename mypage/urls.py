@@ -17,4 +17,5 @@ urlpatterns = [
     path('verifyid/', VerifyIDView.as_view(), name='verifyid'),
     path('verifypassword/', VerifyPasswordView.as_view(), name='verifypassword'),
     path('resetpassword/', ResetPasswordView.as_view(), name='resetpassword'),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

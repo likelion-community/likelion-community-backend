@@ -20,6 +20,39 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from django.urls import reverse
+from rest_framework.parsers import MultiPartParser, FormParser
+
+class UploadVerificationPhotoView(APIView):
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]  # 파일 업로드를 위한 파서 설정
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        photo_type = request.data.get("photo_type")  # school 또는 executive
+        photo = request.FILES.get("photo")  # 업로드된 파일 데이터
+
+        if not photo_type or photo_type not in ["school", "executive"]:
+            return Response({"error": "photo_type은 'school' 또는 'executive'여야 합니다."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            verification, created = Verification.objects.get_or_create(user=user)
+
+            if photo_type == "school":
+                verification.school_verification_photo = photo
+            elif photo_type == "executive":
+                verification.executive_verification_photo = photo
+
+            verification.save()
+
+            return Response({
+                "message": f"{photo_type} 인증 사진이 업로드되었습니다.",
+                "photo_url": verification.school_verification_photo.url if photo_type == "school" else verification.executive_verification_photo.url
+            }, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": f"업로드 중 오류가 발생했습니다: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+from rest_framework.reverse import reverse_lazy  # Lazy URL resolving for DRF
 
 class MyPageOverviewView(APIView):
     permission_classes = [IsAuthenticated]
@@ -34,19 +67,28 @@ class MyPageOverviewView(APIView):
         except Verification.DoesNotExist:
             verification = None
 
-        return Response({
+        # 데이터 구조 정리 및 URL 반환
+        response_data = {
             "user_info": user_serializer.data,
-            "school_verification_status": verification.school_status if verification else "none",
-            "executive_verification_status": verification.executive_status if verification else "none",
-            "school_name": user.school_name if verification and verification.school_status == "approved" else None,
-            "track": verification.track if verification and verification.school_status == "approved" else None,
-            "profile_image_update": request.build_absolute_uri(reverse('mypage:profileimage')),
-            "my_scraps": request.build_absolute_uri(reverse('mypage:myscraps')),
-            "my_posts": request.build_absolute_uri(reverse('mypage:myposts')),
-            "my_comments": request.build_absolute_uri(reverse('mypage:mycomments')),
-            "school_verification": request.build_absolute_uri(reverse('mypage:schoolverification')),
-            "executive_verification": request.build_absolute_uri(reverse('mypage:executiveverification')),
-        }, status=status.HTTP_200_OK)
+            "verification_status": {
+                "school_status": verification.school_status if verification else "none",
+                "executive_status": verification.executive_status if verification else "none",
+            },
+            "details": {
+                "school_name": user.school_name if verification and verification.school_status == "approved" else None,
+                "track": verification.track if verification and verification.school_status == "approved" else None,
+            },
+            "actions": {
+                "update_profile_image": request.build_absolute_uri(reverse_lazy('mypage:profileimage')),
+                "view_scraps": request.build_absolute_uri(reverse_lazy('mypage:myscraps')),
+                "view_posts": request.build_absolute_uri(reverse_lazy('mypage:myposts')),
+                "view_comments": request.build_absolute_uri(reverse_lazy('mypage:mycomments')),
+                "verification_status": request.build_absolute_uri(reverse_lazy('mypage:verification')),
+            }
+        }
+
+        return Response(response_data, status=status.HTTP_200_OK)
+
 
 
 class ProfileImageUpdateView(APIView):
@@ -125,6 +167,7 @@ class MyCommentView(APIView):
  #사용자가 이미 인증 정보를 가지고 있는 경우 기존 객체를 업데이트하도록 수정   
 class VerificationStatusView(APIView):
     permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]  # 파일 업로드 지원
 
     def get(self, request, *args, **kwargs):
         user = request.user
@@ -150,8 +193,17 @@ class VerificationStatusView(APIView):
             try:
                 # 기존 인증 요청이 있는 경우 업데이트, 없는 경우 생성
                 verification, created = Verification.objects.get_or_create(user=user)
+
+                # 요청 데이터로 모든 필드 업데이트
                 for field, value in serializer.validated_data.items():
                     setattr(verification, field, value)
+
+                # 파일 업로드 처리
+                if "school_verification_photo" in request.FILES:
+                    verification.school_verification_photo = request.FILES["school_verification_photo"]
+                if "executive_verification_photo" in request.FILES:
+                    verification.executive_verification_photo = request.FILES["executive_verification_photo"]
+
                 verification.save()
 
                 return Response({
@@ -162,8 +214,6 @@ class VerificationStatusView(APIView):
                 return Response({"error": f"인증 요청 중 오류가 발생했습니다: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 
 class FindIDEmailView(APIView):
     def post (self, request, *args, **kwargs):
