@@ -22,10 +22,13 @@ class SchoolVerificationSerializer(serializers.ModelSerializer):
         model = SchoolVerification
         fields = ['user', 'verification_photo']
 
+    def get_status_choices(self, obj):
+        return SchoolVerification.STATUS_CHOICES
+
     def create(self, validated_data):
         user = self.context['user']
         return SchoolVerification.objects.create(user=user, **validated_data)
-
+    
 
 class ExecutiveVerificationSerializer(serializers.ModelSerializer):
 
