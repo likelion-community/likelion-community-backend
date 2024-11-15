@@ -51,7 +51,11 @@ class ChatRoomDetailView(views.APIView):
         if serializer.is_valid():
             serializer.save(chatroom=chatroom, sender=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({
+                "error": "메시지 데이터가 유효하지 않습니다.",
+                "details": serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
 
 
 class StartChatView(views.APIView):
@@ -60,19 +64,28 @@ class StartChatView(views.APIView):
     def post(self, request, username):
         """특정 사용자와의 새로운 채팅방 생성 또는 기존 채팅방 반환"""
         other_user = get_object_or_404(User, username=username)
+
+        if request.user == other_user:
+            return Response({"error": "자기 자신과는 채팅방을 생성할 수 없습니다."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # 채팅방 이름 생성
         sorted_usernames = sorted([request.user.username, other_user.username])
         chatroom_name = f"{sorted_usernames[0]}_{sorted_usernames[1]}"
+
+        # 기존 채팅방 찾기 또는 생성
         chatroom, created = ChatRoom.objects.get_or_create(name=chatroom_name)
 
-        # 참가자가 이미 추가되어 있지 않은 경우에만 추가
+        # 현재 사용자와 대상 사용자를 참가자로 추가
         if not chatroom.participants.filter(id=request.user.id).exists():
             chatroom.participants.add(request.user)
 
         if not chatroom.participants.filter(id=other_user.id).exists():
             chatroom.participants.add(other_user)
 
+        # 응답 반환
         return Response({
             'chatroom_id': chatroom.pk,
-            'chatroom_name': chatroom.name,  # room_name 추가
+            'chatroom_name': chatroom.name,
             'created': created
         }, status=status.HTTP_200_OK)
+
