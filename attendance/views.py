@@ -121,3 +121,42 @@ class CreatorProfileView(APIView):
 
         except CustomUser.DoesNotExist:
             return Response({'message': '사용자를 찾을 수 없습니다.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        
+class UserTrackAttendanceView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        current_time = timezone.now()
+
+        # 사용자 트랙과 '전체' 트랙을 포함한 출석 데이터 필터링
+        all_attendances = Attendance.objects.filter(
+            track__in=[user.track, 'all'],
+            created_by__school_name=user.school_name
+        )
+
+        # 출석 코드 입력이 없는 경우 결석으로 기록
+        for attendance in all_attendances:
+            session_start = timezone.make_aware(timezone.datetime.combine(attendance.date, attendance.time))
+            if current_time > session_start and not AttendanceStatus.objects.filter(attendance=attendance, user=user).exists():
+                # 사용자의 출석 상태가 없으면 결석으로 기록
+                AttendanceStatus.objects.create(
+                    attendance=attendance,
+                    user=user,
+                    status='absent',
+                    date=current_time.date()
+                )
+
+        attendance_serializer = AttendanceSerializer(all_attendances, many=True)
+
+        # 사용자의 출석 상태 데이터 필터링
+        user_attendance = AttendanceStatus.objects.filter(user=user)
+        status_serializer = AttendanceStatusSerializer(user_attendance, many=True)
+
+        response_data = {
+            "all_attendances": attendance_serializer.data,
+            "user_attendance": status_serializer.data
+        }
+
+        return Response(response_data, status=status.HTTP_200_OK)

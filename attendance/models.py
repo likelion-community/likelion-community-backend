@@ -7,7 +7,8 @@ class Attendance(models.Model):
     TRACK_CHOICES = [
         ('backend', '백엔드'),
         ('frontend', '프론트엔드'),
-        ('planning_design', '기획/디자인')
+        ('planning_design', '기획/디자인'),
+        ('all', '전체'),
     ]
     date = models.DateField()
     time = models.TimeField()
@@ -54,4 +55,3 @@ class AttendanceStatus(models.Model):
                 'user': {'id': self.user.id, 'name': self.user.name}  # 전송할 데이터
             }
         )
-
