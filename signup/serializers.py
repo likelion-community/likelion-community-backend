@@ -35,3 +35,8 @@ class AdditionalInfoSerializer(serializers.ModelSerializer):
 class CustomLoginSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=100)
     password = serializers.CharField(write_only=True, style={'input_type': 'password'})
+
+class CustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'username', 'email', 'name', 'nickname', 'school_name', 'profile_image', 'membership_term']
