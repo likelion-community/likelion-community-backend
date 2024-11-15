@@ -33,7 +33,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         print("메시지 수신:", text_data)
         data = json.loads(text_data)
         message = data.get("message", "").strip()
-        username = data.get("username")
+        username = data.get("username")  # 여기는 username으로 사용자가 식별될 수 있도록 유지
 
         if not message:
             print("Message content is empty.")
@@ -43,7 +43,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             print("Username is missing.")
             return
 
-        # 사용자 객체 가져오기
+        # 사용자 객체 가져오기 (username으로 조회)
         sender = await database_sync_to_async(User.objects.filter(username=username).first)()
         if not sender:
             print(f"User with username {username} does not exist.")
@@ -67,7 +67,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             {
                 "type": "chat_message",
                 "message": message,
-                "username": username,
+                "username": sender.nickname,  # nickname을 사용하여 클라이언트에 표시
             }
         )
 
