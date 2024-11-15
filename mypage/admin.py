@@ -1,17 +1,12 @@
 from django.contrib import admin
-from .models import *
+from .models import Verification
 
-# Register your models here.
-class SchoolVerificationAdmin(admin.ModelAdmin):
-    list_display = ('user', 'status', 'submission_date', 'review_date')
-    list_filter = ('status')
-    search_fields = ('user__username', 'status')
+@admin.register(Verification)
+class VerificationAdmin(admin.ModelAdmin):
+    list_display = ('user', 'school_status', 'executive_status', 'track', 'submission_date', 'review_date')
+    list_filter = ('school_status', 'executive_status', 'track')
+    search_fields = ('user__username', 'user__email')
+    readonly_fields = ('submission_date', 'review_date')
 
-admin.site.register(SchoolVerification)
 
-class ExecutiveVerificationAdmin(admin.ModelAdmin):
-    list_display = ('user', 'status', 'submission_date', 'review_date')
-    list_filter = ('status')
-    search_fields = ('user__username', 'status')
-
-admin.site.register(ExecutiveVerification)
+admin.site.register(Verification)
