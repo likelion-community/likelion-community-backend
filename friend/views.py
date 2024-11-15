@@ -23,7 +23,7 @@ class ChatRoomDetailView(views.APIView):
     def get(self, request, pk):
         """특정 채팅방의 모든 메시지 조회 및 상대방 정보 포함"""
         chatroom = get_object_or_404(ChatRoom, pk=pk, participants=request.user)
-        
+
         # 상대방 정보 가져오기
         other_participant = chatroom.participants.exclude(id=request.user.id).first()
         if not other_participant:
@@ -32,15 +32,16 @@ class ChatRoomDetailView(views.APIView):
         # 메시지 및 상대방 정보 직렬화
         messages = chatroom.messages.all().order_by('timestamp')
         message_serializer = MessageSerializer(messages, many=True)
-        
+
         return Response({
             "messages": message_serializer.data,
             "other_participant": {
                 "id": other_participant.id,
                 "username": other_participant.username,
-                "nickname": other_participant.nickname,  # assuming 'nickname' field exists in User model
+                "nickname": other_participant.nickname,
                 "profile_image": other_participant.profile_image.url if other_participant.profile_image else None,
-            }
+            },
+            "room_name": chatroom.name,  # WebSocket에서 사용할 room_name 추가
         })
 
     def post(self, request, pk):
