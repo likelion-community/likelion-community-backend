@@ -5,10 +5,11 @@ from channels.layers import get_channel_layer
 
 class Attendance(models.Model):
     TRACK_CHOICES = [
-        ('backend', '백엔드'),
-        ('frontend', '프론트엔드'),
-        ('planning_design', '기획/디자인')
+        ('백엔드', '백엔드'),
+        ('프론트엔드', '프론트엔드'),
+        ('기획/디자인', '기획/디자인')
     ]
+
     date = models.DateField()
     time = models.TimeField()
     title = models.CharField(max_length=100)
@@ -29,9 +30,9 @@ class Attendance(models.Model):
 
 class AttendanceStatus(models.Model):
     STATUS_CHOICES = [
-        ('present', '출석'),
-        ('late', '지각'),
-        ('absent', '결석')
+        ('출석', '출석'),
+        ('지각', '지각'),
+        ('결석', '결석')
     ]
     
     attendance = models.ForeignKey(Attendance, on_delete=models.CASCADE, related_name='statuses')
