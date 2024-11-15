@@ -62,6 +62,12 @@ class StartChatView(views.APIView):
         sorted_usernames = sorted([request.user.username, other_user.username])
         chatroom_name = f'chat_{"_".join(sorted_usernames)}'
         chatroom, created = ChatRoom.objects.get_or_create(name=chatroom_name)
-        chatroom.participants.add(request.user, other_user)
+
+        # 참가자가 이미 추가되어 있지 않은 경우에만 추가
+        if not chatroom.participants.filter(id=request.user.id).exists():
+            chatroom.participants.add(request.user)
+
+        if not chatroom.participants.filter(id=other_user.id).exists():
+            chatroom.participants.add(other_user)
+
         return Response({'chatroom_id': chatroom.pk, 'created': created}, status=status.HTTP_200_OK)
-    
