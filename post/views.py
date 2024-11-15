@@ -120,6 +120,12 @@ class CommentViewSet(viewsets.ModelViewSet):
             )
             send_notification(notification)
 
+    def get_queryset(self):
+        board_id = self.request.query_params.get('board_id')
+        if board_id:
+            return self.queryset.filter(board_id=board_id)
+        return self.queryset
+
 class MainCommentViewSet(CommentViewSet):
     permission_classes = [IsAuthenticated]
     queryset = MainComment.objects.all()
