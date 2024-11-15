@@ -21,6 +21,9 @@ class MyPageOverviewView(APIView):
         user = request.user  # 현재 인증된 사용자 객체 가져오기
         user_serializer = UserSerializer(user)  # 사용자 정보를 직렬화
 
+        school_verification_choices = SchoolVerification.STATUS_CHOICES
+        executive_verification_choices = ExecutiveVerification.STATUS_CHOICES
+
         return Response({
             "user_info": user_serializer.data,  # 사용자 정보 추가
             "profile_image_update": request.build_absolute_uri(reverse('mypage:profileimage')),
@@ -33,8 +36,13 @@ class MyPageOverviewView(APIView):
             "find_password": request.build_absolute_uri(reverse('mypage:findpassword')),
             "verify_id": request.build_absolute_uri(reverse('mypage:verifyid')),
             "verify_password": request.build_absolute_uri(reverse('mypage:verifypassword')),
-            "reset_password": request.build_absolute_uri(reverse('mypage:resetpassword'))
+            "reset_password": request.build_absolute_uri(reverse('mypage:resetpassword')),
+            "status_choices": {
+                "school_verification": school_verification_choices,
+                "executive_verification": executive_verification_choices
+            }
         }, status=status.HTTP_200_OK)
+
 
 
 class ProfileImageUpdateView(APIView):
