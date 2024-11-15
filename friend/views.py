@@ -60,7 +60,7 @@ class StartChatView(views.APIView):
         """특정 사용자와의 새로운 채팅방 생성 또는 기존 채팅방 반환"""
         other_user = get_object_or_404(User, username=username)
         sorted_usernames = sorted([request.user.username, other_user.username])
-        chatroom_name = f'chat_{"_".join(sorted_usernames)}'
+        chatroom_name = f"{sorted_usernames[0]}_{sorted_usernames[1]}"
         chatroom, created = ChatRoom.objects.get_or_create(name=chatroom_name)
 
         # 참가자가 이미 추가되어 있지 않은 경우에만 추가
@@ -70,4 +70,8 @@ class StartChatView(views.APIView):
         if not chatroom.participants.filter(id=other_user.id).exists():
             chatroom.participants.add(other_user)
 
-        return Response({'chatroom_id': chatroom.pk, 'created': created}, status=status.HTTP_200_OK)
+        return Response({
+            'chatroom_id': chatroom.pk,
+            'chatroom_name': chatroom.name,  # room_name 추가
+            'created': created
+        }, status=status.HTTP_200_OK)
