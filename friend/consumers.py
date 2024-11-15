@@ -7,8 +7,8 @@ from channels.db import database_sync_to_async
 User = get_user_model()
 
 class ChatConsumer(AsyncWebsocketConsumer):
-    print("WebSocket 연결 성공")
     async def connect(self):
+        print("WebSocket 연결 성공")
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"chat_{self.room_name}"
 
