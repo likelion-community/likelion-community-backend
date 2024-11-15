@@ -5,14 +5,12 @@ from .models import Verification
 @admin.register(Verification)
 class VerificationAdmin(admin.ModelAdmin):
     list_display = ('user', 'school_status', 'executive_status', 'is_school_verified')  # is_school_verified 추가
-    list_filter = ('school_status', 'executive_status', 'is_school_verified')
+    list_filter = ('school_status', 'executive_status')  # DB 필드만 사용
     search_fields = ('user__username',)
     readonly_fields = ('submission_date', 'review_date')
 
-    # 인증 완료 시, is_school_verified 업데이트하는 옵션 추가
-    def save_model(self, request, obj, form, change):
-        if obj.school_status == 'approved':
-            obj.is_school_verified = True
-        else:
-            obj.is_school_verified = False
-        super().save_model(request, obj, form, change)
+    # is_school_verified 속성을 어드민에 표시
+    def is_school_verified(self, obj):
+        return obj.is_school_verified
+    is_school_verified.boolean = True  # Boolean 값을 아이콘으로 표시
+    is_school_verified.short_description = "학교 인증 완료 여부"  # 컬럼 헤더 이름
