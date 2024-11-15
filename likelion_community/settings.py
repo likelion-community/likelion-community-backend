@@ -64,7 +64,7 @@ MIDDLEWARE = [
 
 
 CORS_ALLOWED_ORIGINS = [
-    "https://hello.everion.store",  # HTTPS 로컬 환경
+    "https://localhost:5173",  # HTTPS 로컬 환경
     "https://everion.store",  # HTTPS를 사용하는 도메인 추가
     "http://everion.store"    # HTTP를 사용하는 도메인 추가 
 ]
@@ -171,7 +171,7 @@ LOGIN_REDIRECT_URL = '/home/'
 LOGOUT_REDIRECT_URL = '/'
 #SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/signup/complete_profile/'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
-#SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'https://hello.everion.store/kakaoSignup'
+#SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'https://localhost:5173/kakaoSignup'
 LOGIN_URL = '/signup/login/home/'
 
 
@@ -237,7 +237,7 @@ CHANNEL_LAYERS = {
 CSRF_COOKIE_NAME = 'csrftoken'  # 쿠키에 저장될 CSRF 토큰의 이름 (기본값: 'csrftoken')
 CSRF_COOKIE_HTTPONLY = False    # JavaScript에서 CSRF 토큰에 접근할 수 있게 설정
 CSRF_TRUSTED_ORIGINS = [
-    "https://hello.everion.store", 
+    "https://localhost:5173", 
     "https://everion.store",
     "http://everion.store",
 ]
