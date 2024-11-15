@@ -108,18 +108,32 @@ class MyCommentView(APIView):
             "schoolscrap": schoolcomment_serializer.data,
             "questionscrap": questioncomment_serializer.data
         }, status=status.HTTP_200_OK)
-    
+
+
+ #사용자가 이미 인증 정보를 가지고 있는 경우 기존 객체를 업데이트하도록 수정   
 class SchoolVerificationView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
         user = request.user
-        serializer = SchoolVerificationSerializer(data=request.data)
+        serializer = SchoolVerificationSerializer(data=request.data, context={'user': user})
 
         if serializer.is_valid():
-            serializer.save(user=user)
-            return Response({"detail": "학교 인증 사진이 제출되었습니다."}, status=status.HTTP_201_CREATED)
+            try:
+                school_verification, created = SchoolVerification.objects.get_or_create(user=user)
+                school_verification.verification_photo = serializer.validated_data['verification_photo']
+                school_verification.status = 'pending'
+                school_verification.save()
+                
+                return Response({"detail": "학교 인증 사진이 제출되었습니다."}, status=status.HTTP_201_CREATED)
+            except Exception as e:
+                print(f"Save error: {e}")  # 디버깅용
+                return Response({"error": "저장하는 도중 오류가 발생했습니다."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        print(f"Validation errors: {serializer.errors}")  # 디버깅용
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
     
 class ExecutiveVerificationView(APIView):
     permission_classes = [IsAuthenticated]
