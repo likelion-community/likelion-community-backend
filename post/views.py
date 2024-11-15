@@ -27,6 +27,9 @@ def send_notification(notification):
     )
 
 class BaseBoardViewSet(viewsets.ModelViewSet):
+    def perform_create(self, serializer):
+        serializer.save(writer=self.request.user)
+
     def handle_like(self, request, post):
         user = request.user
         liked = not user in post.like.all()
