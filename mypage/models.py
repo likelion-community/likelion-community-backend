@@ -10,7 +10,7 @@ class SchoolVerification(models.Model):
     ]
     
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='school_verification')
-    verification_photo = models.ImageField(upload_to='school_verifications/', blank=True, null=True)
+    verification_photo = models.ImageField(upload_to='school_verifications/')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     submission_date = models.DateTimeField(auto_now_add=True)  # 제출 날짜
     review_date = models.DateTimeField(null=True, blank=True)  # 관리자가 검토한 날짜

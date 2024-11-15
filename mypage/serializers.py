@@ -16,10 +16,16 @@ class ProfileImageSerializer(serializers.ModelSerializer):
         fields = ['profile_image']
 
 class SchoolVerificationSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = SchoolVerification
-        fields = ['verification_photo']
+        fields = ['user', 'verification_photo']
+
+    def create(self, validated_data):
+        user = self.context['user']
+        return SchoolVerification.objects.create(user=user, **validated_data)
+
 
 class ExecutiveVerificationSerializer(serializers.ModelSerializer):
 
