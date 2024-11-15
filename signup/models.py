@@ -25,6 +25,11 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(username, email, name, password, **extra_fields)
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    TRACK_CHOICES = [
+        ('backend', '백엔드'),
+        ('frontend', '프론트엔드'),
+        ('planning_design', '기획/디자인'),
+    ]
     username = models.CharField(max_length=50, unique=True)
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=100, blank=True, null=True)
@@ -33,6 +38,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     verification_photo = models.ImageField(upload_to='verification_photos/', blank=True, null=True)
     profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
     membership_term = models.PositiveSmallIntegerField(choices=[(i, f"{i}기") for i in range(1, 13)], blank=True, null=True)
+    track = models.CharField(max_length=20, choices=TRACK_CHOICES, blank=True, null=True, default='backend')
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_profile_complete = models.BooleanField(default=False)
