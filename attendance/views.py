@@ -68,26 +68,25 @@ class AttendanceDetailView(RetrieveAPIView):
     serializer_class = AttendanceSerializer
 
     def get_queryset(self):
-        # 현재 로그인한 사용자의 학교 그룹과 일치하는 출석 데이터를 필터링
+        # 로그인한 사용자의 school_name에 맞는 출석 데이터만 반환
         return Attendance.objects.filter(created_by__school_name=self.request.user.school_name)
 
     def retrieve(self, request, *args, **kwargs):
-        # 필터링된 출석 객체를 가져옴
         attendance = self.get_object()
 
-        # 해당 출석에 대해 현재 사용자의 학교 그룹과 일치하는 출석 상태만 가져옴
+        # 출석 상태를 로그인한 사용자의 학교 그룹과 일치하는 상태로 필터링
         attendance_statuses = AttendanceStatus.objects.filter(
-            attendance=attendance, 
+            attendance=attendance,
             user__school_name=request.user.school_name
         )
 
-        # 출석 데이터와 출석 상태 데이터를 합쳐서 반환
         attendance_data = {
             "attendance": self.get_serializer(attendance).data,
             "attendance_statuses": AttendanceStatusSerializer(attendance_statuses, many=True).data
         }
 
         return Response(attendance_data)
+
 
 
 
