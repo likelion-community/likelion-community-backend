@@ -6,8 +6,8 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from signup.models import CustomUser
 from .serializers import *
-from post.models import MainBoard, SchoolBoard, QuestionBoard
-from post.serializers import MainBoardSerializer, SchoolBoardSerializer, QuestionBoardSerializer
+from post.models import *
+from post.serializers import *
 from django.core.mail import send_mail
 from django.utils.crypto import get_random_string
 from django.contrib.auth.hashers import make_password
@@ -139,9 +139,9 @@ class MyPostView(APIView):
         questionpost_serializer = QuestionBoardSerializer(questionpost, many=True)
 
         return Response({
-            "mainscrap": mainpost_serializer.data,
-            "schoolscrap": schoolpost_serializer.data,
-            "questionscrap": questionpost_serializer.data
+            "mainpost": mainpost_serializer.data,
+            "schoolpost": schoolpost_serializer.data,
+            "questionpost": questionpost_serializer.data
         }, status=status.HTTP_200_OK)
     
 class MyCommentView(APIView):
@@ -150,18 +150,18 @@ class MyCommentView(APIView):
     def get(self, request, *args, **kwargs):
         user = request.user
 
-        maincomment = MainBoard.objects.filter(writer=user)
-        schoolcomment = SchoolBoard.objects.filter(writer=user)
-        questioncomment = QuestionBoard.objects.filter(writer=user)
+        maincomment = MainComment.objects.filter(writer=user)
+        schoolcomment = SchoolComment.objects.filter(writer=user)
+        questioncomment = QuestionComment.objects.filter(writer=user)
 
-        maincomment_serializer = MainBoardSerializer(maincomment, many=True)
-        schoolcomment_serializer = SchoolBoardSerializer(schoolcomment, many=True)
-        questioncomment_serializer = QuestionBoardSerializer(questioncomment, many=True)
+        maincomment_serializer = MainCommentSerializer(maincomment, many=True)
+        schoolcomment_serializer = SchoolCommentSerializer(schoolcomment, many=True)
+        questioncomment_serializer = QuestionCommentSerializer(questioncomment, many=True)
 
         return Response({
-            "mainscrap": maincomment_serializer.data,
-            "schoolscrap": schoolcomment_serializer.data,
-            "questionscrap": questioncomment_serializer.data
+            "maincomment": maincomment_serializer.data,
+            "schoolcomment": schoolcomment_serializer.data,
+            "questioncomment": questioncomment_serializer.data
         }, status=status.HTTP_200_OK)
 
 
