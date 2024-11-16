@@ -1,6 +1,9 @@
 # urls.py
 from django.urls import path
-from .views import AttendanceMainView, AttendanceSetView, AttendanceDetailView, AttendanceCheckView, CreatorProfileView, CreatorInfoView, UserTrackAttendanceView
+from .views import AttendanceMainView, AttendanceSetView, AttendanceDetailView, AttendanceCheckView, CreatorProfileView, CreatorInfoView, UserTrackAttendanceView, AttendanceStatusUpdateView
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 app_name = 'attendance'
 
@@ -12,4 +15,6 @@ urlpatterns = [
     path('profile/<int:user_id>/', CreatorProfileView.as_view(), name='profile'),
     path('creator-info/', CreatorInfoView.as_view(), name='creator-info'),
     path('myattendance/', UserTrackAttendanceView.as_view(), name='myattendance'),
-]
+    path('status/<int:status_id>/update/', AttendanceStatusUpdateView.as_view(), name='attendance_status_update'),
+
+]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
