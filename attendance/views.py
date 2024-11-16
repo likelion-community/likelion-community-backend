@@ -83,9 +83,11 @@ class AttendanceDetailView(RetrieveAPIView):
         attendance = self.get_object()
 
         # 출석 상태를 로그인한 사용자의 학교 그룹과 일치하는 상태로 필터링
+        # 운영자(staff)를 제외
         attendance_statuses = AttendanceStatus.objects.filter(
             attendance=attendance,
-            user__school_name=request.user.school_name
+            user__school_name=request.user.school_name,
+            user__is_staff=False  # 운영자를 제외
         )
 
         attendance_data = {
@@ -102,40 +104,69 @@ class AttendanceCheckView(APIView):
     permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup]
 
     def post(self, request, *args, **kwargs):
-        attendance_id = kwargs.get('id')
-        input_code = request.data.get('auth_code')
+        attendance_id = kwargs.get('id')  # URL에서 attendance_id 가져오기
+        input_code = request.data.get('auth_code')  # 요청에서 auth_code 가져오기
+
+        # 입력된 auth_code가 None이거나 정수가 아니면 에러 반환
+        if input_code is None or not isinstance(input_code, int):
+            return Response(
+                {'error': '출석 코드는 정수 값이어야 합니다.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         try:
             attendance = Attendance.objects.get(id=attendance_id)
+
+            # 이미 출석 상태가 존재하는지 확인
+            if AttendanceStatus.objects.filter(attendance=attendance, user=request.user).exists():
+                return Response(
+                    {'error': '출석 코드는 한 번만 입력할 수 있습니다.'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
             current_time = timezone.now()
 
             # 세션 시작 시간을 기준으로 시간 차이 계산
-            session_start = timezone.make_aware(timezone.datetime.combine(attendance.date, attendance.time))
+            session_start = timezone.make_aware(
+                timezone.datetime.combine(attendance.date, attendance.time)
+            )
             time_difference = (current_time - session_start).total_seconds() / 60  # 분 단위로 계산
 
-            # 출석 코드 일치 여부 확인
+            # 출석 코드 일치 여부 확인 (정수 비교)
             if attendance.auth_code != input_code:
-                return Response({'error': '출석코드가 일치하지 않아요'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    {'error': '출석코드가 일치하지 않아요'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
             # 출석 상태 결정
             if time_difference <= attendance.late_threshold:
                 status_type = '출석'  # 정상 출석
             elif time_difference <= attendance.absent_threshold:
-                status_type = '지각'     # 지각
+                status_type = '지각'  # 지각
             else:
-                status_type = '결석'   # 결석
+                status_type = '결석'  # 결석
 
-            # AttendanceStatus 생성
+            # AttendanceStatus 생성 (한 번만 생성됨)
             AttendanceStatus.objects.create(
                 attendance=attendance,
                 user=request.user,
                 status=status_type,
                 date=current_time.date()
             )
-            return Response({'message': f"{current_time.date()} 출석 상태: {status_type}"}, status=status.HTTP_200_OK)
-            
+
+            return Response(
+                {'message': f"{current_time.date()} 출석 상태: {status_type}"},
+                status=status.HTTP_200_OK
+            )
+
         except Attendance.DoesNotExist:
-            return Response({'error': '해당 출석 정보가 존재하지 않습니다.'}, status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                {'error': '해당 출석 정보가 존재하지 않습니다.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        
 
 class AttendanceStatusUpdateView(APIView):
     permission_classes = [IsAuthenticated, IsStaffOrReadOnly, IsSchoolVerifiedAndSameGroup]
@@ -191,7 +222,7 @@ class UserTrackAttendanceView(APIView):
         all_attendances = Attendance.objects.filter(
             track__in=[user.track, '전체트랙'],
             created_by__school_name=user.school_name
-        )
+        ).order_by('-date')
 
         # 출석 코드 입력이 없는 경우 결석으로 기록
         for attendance in all_attendances:
@@ -207,8 +238,8 @@ class UserTrackAttendanceView(APIView):
 
         attendance_serializer = AttendanceSerializer(all_attendances, many=True)
 
-        # 사용자의 출석 상태 데이터 필터링
-        user_attendance = AttendanceStatus.objects.filter(user=user)
+        # 사용자의 출석 상태 데이터 필터링 (운영자 제외)
+        user_attendance = AttendanceStatus.objects.filter(user=user, user__is_staff=False).order_by('-date')
         status_serializer = AttendanceStatusSerializer(user_attendance, many=True)
         attendance_count = user_attendance.values('status').annotate(count=Count('status'))
         status_count = {
@@ -226,7 +257,6 @@ class UserTrackAttendanceView(APIView):
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
-
 
 
 
