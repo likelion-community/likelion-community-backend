@@ -9,8 +9,38 @@ from channels.db import database_sync_to_async
 User = get_user_model()
 
 class ChatConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        try:
+            # URL 경로에서 room_name 가져오기
+            self.room_name = self.scope['url_route']['kwargs']['room_name']
+            self.room_group_name = f"chat_{self.room_name}"
+
+            # 그룹에 WebSocket 채널 추가
+            await self.channel_layer.group_add(
+                self.room_group_name,
+                self.channel_name
+            )
+
+            await self.accept()  # 연결 수락
+            print(f"WebSocket 연결 성공: {self.room_name}")
+        except Exception as e:
+            print(f"Error in connect method: {e}")
+            await self.close()
+
+    async def disconnect(self, close_code):
+        try:
+            print(f"WebSocket 연결 종료: {close_code}")
+            # 그룹에서 WebSocket 채널 제거
+            await self.channel_layer.group_discard(
+                self.room_group_name,
+                self.channel_name
+            )
+        except Exception as e:
+            print(f"Error in disconnect method: {e}")
+
     async def receive(self, text_data):
         try:
+            # 여기서 self.room_name을 안전하게 사용할 수 있음
             data = json.loads(text_data)
             message = data.get("message", "").strip()
             username = data.get("username")
