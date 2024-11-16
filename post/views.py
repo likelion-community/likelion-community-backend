@@ -84,27 +84,27 @@ class BaseBoardViewSet(viewsets.ModelViewSet):
 
 class MainBoardViewSet(BaseBoardViewSet):
     permission_classes = [IsAuthenticated]
-    queryset = MainBoard.objects.all()
+    queryset = MainBoard.objects.all().order_by('-time')
     serializer_class = MainBoardSerializer
 
 class SchoolBoardViewSet(BaseBoardViewSet):
     permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup]
-    queryset = SchoolBoard.objects.all()
+    queryset = SchoolBoard.objects.all().order_by('-time')
     serializer_class = SchoolBoardSerializer
 
 class QuestionBoardViewSet(BaseBoardViewSet):
     permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup]
-    queryset = QuestionBoard.objects.all()
+    queryset = QuestionBoard.objects.all().order_by('-time')
     serializer_class = QuestionBoardSerializer
 
 class MainNoticeBoardViewSet(BaseBoardViewSet):
     permission_classes = [IsAuthenticated, IsAdminorReadOnly]
-    queryset = MainNoticeBoard.objects.all()
+    queryset = MainNoticeBoard.objects.all().order_by('-time')
     serializer_class = MainNoticeBoardSerializer
 
 class SchoolNoticeBoardViewSet(BaseBoardViewSet):
     permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup, IsStaffOrReadOnly]
-    queryset = SchoolNoticeBoard.objects.all()
+    queryset = SchoolNoticeBoard.objects.all().order_by('-time')
     serializer_class = SchoolNoticeBoardSerializer
 
 class CommentViewSet(viewsets.ModelViewSet):
