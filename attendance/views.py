@@ -210,7 +210,34 @@ class AttendanceCheckView(APIView):
         except Attendance.DoesNotExist:
             return Response({'error': '해당 출석 정보가 존재하지 않습니다.'}, status=status.HTTP_404_NOT_FOUND)
 
+class AttendanceStatusUpdateView(APIView):
+    permission_classes = [IsAuthenticated, IsStaffOrReadOnly, IsSchoolVerifiedAndSameGroup]
 
+    def patch(self, request, *args, **kwargs):
+        status_id = kwargs.get('status_id')
+        
+        try:
+            # AttendanceStatus 객체를 가져옴
+            attendance_status = AttendanceStatus.objects.get(id=status_id)
+
+            # 운영자인지 확인
+            if not request.user.is_staff:
+                raise PermissionDenied("운영자만 출석 상태를 수정할 수 있습니다.")
+
+            # 같은 학교 그룹인지 확인
+            if attendance_status.attendance.created_by.school_name != request.user.school_name:
+                raise PermissionDenied("같은 학교 그룹의 출석 상태만 수정할 수 있습니다.")
+
+            # 요청 데이터로 상태 업데이트
+            serializer = AttendanceStatusSerializer(attendance_status, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        except AttendanceStatus.DoesNotExist:
+            return Response({'error': '출석 상태를 찾을 수 없습니다.'}, status=status.HTTP_404_NOT_FOUND)
+        
 
 class CreatorProfileView(APIView):
     permission_classes = [IsAuthenticated]
