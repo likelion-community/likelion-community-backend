@@ -18,7 +18,10 @@ class AttendanceMainView(viewsets.ReadOnlyModelViewSet):
     serializer_class = AttendanceSerializer
 
     def get_queryset(self):
-        return Attendance.objects.filter(created_by__school_name=self.request.user.school_name)
+        # 최신 글이 가장 위로 오도록 정렬
+        return Attendance.objects.filter(
+            created_by__school_name=self.request.user.school_name
+        ).order_by('-date', '-id')  # date와 id 기준 최신 정렬
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
