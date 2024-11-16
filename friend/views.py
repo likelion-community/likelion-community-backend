@@ -64,7 +64,7 @@ class ChatRoomDetailView(views.APIView):
     def post(self, request, pk):
         """특정 채팅방에 메시지 전송 (텍스트 또는 사진 포함 가능)"""
         chatroom = get_object_or_404(ChatRoom, pk=pk, participants=request.user)
-        serializer = MessageSerializer(data={**request.data, "image": request.FILES.get("image")})
+        serializer = MessageSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(chatroom=chatroom, sender=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -105,4 +105,3 @@ class StartChatView(views.APIView):
             'chatroom_name': chatroom.name,
             'created': created
         }, status=status.HTTP_200_OK)
-
