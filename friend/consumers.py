@@ -7,25 +7,6 @@ from channels.db import database_sync_to_async
 User = get_user_model()
 
 class ChatConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
-        self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
-        self.room_group_name = f"chat_{self.room_name}"
-
-        # 그룹에 참가
-        await self.channel_layer.group_add(
-            self.room_group_name,
-            self.channel_name
-        )
-
-        await self.accept()
-
-    async def disconnect(self, close_code):
-        # 그룹에서 나가기
-        await self.channel_layer.group_discard(
-            self.room_group_name,
-            self.channel_name
-        )
-
     async def receive(self, text_data):
         data = json.loads(text_data)
         message = data.get("message", "").strip()
@@ -58,25 +39,29 @@ class ChatConsumer(AsyncWebsocketConsumer):
             print("Failed to save the message.")
             return
 
-        # 그룹에 메시지 전송 (nickname을 사용하여 화면에 표시)
+        # 그룹에 메시지 전송 (sender ID 포함)
         await self.channel_layer.group_send(
             self.room_group_name,
             {
                 "type": "chat_message",
                 "message": message,
-                "username": nickname,  # nickname으로 전송하여 표시
+                "username": nickname,  # 화면에 표시할 닉네임
+                "sender": sender.id    # 사용자 ID 포함
             }
         )
 
     async def chat_message(self, event):
         message = event["message"]
         username = event["username"]
+        sender_id = event["sender"]  # 전송자의 ID
 
         # 클라이언트에 메시지 전송
         await self.send(text_data=json.dumps({
             "message": message,
-            "username": username
+            "username": username,
+            "sender": sender_id  # sender ID를 추가
         }))
+
 
     @database_sync_to_async
     def get_chatroom(self, room_name):
