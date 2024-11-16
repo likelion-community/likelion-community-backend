@@ -26,4 +26,6 @@ urlpatterns = [
     path('latest-main-notice/', views.latest_main_notice, name='latest-main-notice'),
     path('latest-school-notice/', views.latest_school_notice, name='latest-school-notice'),
     path('latest-main-board/', views.latest_main_board, name='latest-main-board'),
+    path('latest-school-board/', views.latest_school_board, name='latest-school-board'),
+    path('latest-question-board/', views.latest_question_board, name='latest-question-board'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

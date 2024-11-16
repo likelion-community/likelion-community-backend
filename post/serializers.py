@@ -80,6 +80,7 @@ class SchoolNoticeBoardSerializer(serializers.ModelSerializer):
 
 # 댓글
 class MainCommentSerializer(serializers.ModelSerializer):
+    board = MainBoardSerializer(read_only=True)
     writer = CustomUserSerializer(read_only=True)
 
     class Meta:
@@ -87,6 +88,7 @@ class MainCommentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class SchoolCommentSerializer(serializers.ModelSerializer):
+    board = SchoolBoardSerializer(read_only=True)
     writer = CustomUserSerializer(read_only=True)
 
     class Meta:
@@ -94,6 +96,7 @@ class SchoolCommentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class QuestionCommentSerializer(serializers.ModelSerializer):
+    board = QuestionBoardSerializer(read_only=True)
     writer = CustomUserSerializer(read_only=True)
 
     class Meta:
@@ -101,6 +104,7 @@ class QuestionCommentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class MainNoticeCommentSerializer(serializers.ModelSerializer):
+    board = MainNoticeBoardSerializer(read_only=True)
     writer = CustomUserSerializer(read_only=True)
 
     class Meta:
@@ -108,6 +112,7 @@ class MainNoticeCommentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class SchoolNoticeCommentSerializer(serializers.ModelSerializer):
+    board = SchoolNoticeBoardSerializer(read_only=True)
     writer = CustomUserSerializer(read_only=True)
 
     class Meta:

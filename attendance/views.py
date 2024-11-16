@@ -289,6 +289,9 @@ class CreatorProfileView(APIView):
 class UserTrackAttendanceView(APIView):
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        return Attendance.objects.filter(created_by__school_name=self.request.user.school_name)
+
     def get(self, request, *args, **kwargs):
         user = request.user
         current_time = timezone.now()
@@ -297,7 +300,7 @@ class UserTrackAttendanceView(APIView):
         all_attendances = Attendance.objects.filter(
             track__in=[user.track, '전체트랙'],
             created_by__school_name=user.school_name
-        )
+        ).order_by('-date')
 
         # 출석 코드 입력이 없는 경우 결석으로 기록
         for attendance in all_attendances:
@@ -314,7 +317,7 @@ class UserTrackAttendanceView(APIView):
         attendance_serializer = AttendanceSerializer(all_attendances, many=True)
 
         # 사용자의 출석 상태 데이터 필터링
-        user_attendance = AttendanceStatus.objects.filter(user=user)
+        user_attendance = AttendanceStatus.objects.filter(user=user).order_by('-date')
         status_serializer = AttendanceStatusSerializer(user_attendance, many=True)
         attendance_count = user_attendance.values('status').annotate(count=Count('status'))
         status_count = {
