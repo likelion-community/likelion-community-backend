@@ -84,27 +84,27 @@ class BaseBoardViewSet(viewsets.ModelViewSet):
 
 class MainBoardViewSet(BaseBoardViewSet):
     permission_classes = [IsAuthenticated]
-    queryset = MainBoard.objects.all()
+    queryset = MainBoard.objects.all().order_by('-time')
     serializer_class = MainBoardSerializer
 
 class SchoolBoardViewSet(BaseBoardViewSet):
     permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup]
-    queryset = SchoolBoard.objects.all()
+    queryset = SchoolBoard.objects.all().order_by('-time')
     serializer_class = SchoolBoardSerializer
 
 class QuestionBoardViewSet(BaseBoardViewSet):
     permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup]
-    queryset = QuestionBoard.objects.all()
+    queryset = QuestionBoard.objects.all().order_by('-time')
     serializer_class = QuestionBoardSerializer
 
 class MainNoticeBoardViewSet(BaseBoardViewSet):
     permission_classes = [IsAuthenticated, IsAdminorReadOnly]
-    queryset = MainNoticeBoard.objects.all()
+    queryset = MainNoticeBoard.objects.all().order_by('-time')
     serializer_class = MainNoticeBoardSerializer
 
 class SchoolNoticeBoardViewSet(BaseBoardViewSet):
     permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup, IsStaffOrReadOnly]
-    queryset = SchoolNoticeBoard.objects.all()
+    queryset = SchoolNoticeBoard.objects.all().order_by('-time')
     serializer_class = SchoolNoticeBoardSerializer
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -231,3 +231,22 @@ def latest_main_board(request):
     # 시리얼라이즈 모든 최신 게시물
     serializer = MainBoardSerializer(latest_posts, many=True)
     return Response(serializer.data)
+
+# 학교 커뮤니티 최근 게시물 3개 반환
+@api_view(['GET'])
+def latest_school_board(request):
+    latest_posts = SchoolBoard.objects.order_by('-time')[:3]
+    if latest_posts.exists():
+        serializer = SchoolBoardSerializer(latest_posts, many=True)
+        return Response(serializer.data)
+    else:
+        return Response({'detail': 'No notices available.'}, status=404)
+
+@api_view(['GET'])
+def latest_question_board(request):
+    latest_posts = QuestionBoard.objects.order_by('-time')[:3]
+    if latest_posts.exists():
+        serializer = QuestionBoardSerializer(latest_posts, many=True)
+        return Response(serializer.data)
+    else:
+        return Response({'detail': 'No notices available.'}, status=404)
