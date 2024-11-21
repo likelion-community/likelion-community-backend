@@ -80,15 +80,16 @@ class SchoolNoticeBoardSerializer(serializers.ModelSerializer):
 
 # 댓글
 class MainCommentSerializer(serializers.ModelSerializer):
-    board = MainBoardSerializer(read_only=True)
+    board = serializers.PrimaryKeyRelatedField(queryset=MainBoard.objects.all())  
     writer = CustomUserSerializer(read_only=True)
 
     class Meta:
         model = MainComment
         fields = '__all__'
 
+
 class SchoolCommentSerializer(serializers.ModelSerializer):
-    board = SchoolBoardSerializer(read_only=True)
+    board = serializers.PrimaryKeyRelatedField(queryset=SchoolBoard.objects.all())
     writer = CustomUserSerializer(read_only=True)
 
     class Meta:
@@ -96,23 +97,25 @@ class SchoolCommentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class QuestionCommentSerializer(serializers.ModelSerializer):
-    board = QuestionBoardSerializer(read_only=True)
+    board = serializers.PrimaryKeyRelatedField(queryset=QuestionBoard.objects.all())
     writer = CustomUserSerializer(read_only=True)
 
     class Meta:
         model = QuestionComment
         fields = '__all__'
 
+
 class MainNoticeCommentSerializer(serializers.ModelSerializer):
-    board = MainNoticeBoardSerializer(read_only=True)
+    board = serializers.PrimaryKeyRelatedField(queryset=MainNoticeBoard.objects.all())  
     writer = CustomUserSerializer(read_only=True)
 
     class Meta:
         model = MainNoticeComment
         fields = '__all__'
 
+
 class SchoolNoticeCommentSerializer(serializers.ModelSerializer):
-    board = SchoolNoticeBoardSerializer(read_only=True)
+    board = serializers.PrimaryKeyRelatedField(queryset=SchoolNoticeBoard.objects.all()) 
     writer = CustomUserSerializer(read_only=True)
 
     class Meta:
