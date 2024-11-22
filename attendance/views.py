@@ -150,9 +150,15 @@ class AttendanceDetailView(RetrieveAPIView):
                 "membership_term": user.membership_term,
             })
 
+        # 정렬 로직: 상태 우선 순위와 이름
+        status_priority = {"출석": 1, "지각": 2, "결석": 3}
+        user_data.sort(
+            key=lambda x: (status_priority.get(x["attendance_status"], 4), x["name"])
+        )
+
         attendance_data = {
             "attendance": self.get_serializer(attendance).data,
-            "users": user_data,  # 필터링된 사용자 목록 및 상태
+            "users": user_data,  
         }
 
         return Response(attendance_data, status=status.HTTP_200_OK)
