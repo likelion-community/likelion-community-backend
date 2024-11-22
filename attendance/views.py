@@ -96,29 +96,27 @@ class AttendanceDetailView(RetrieveAPIView):
         # 각 사용자에 대해 출석 상태 결합
         user_data = []
         for user in users:
-            status = AttendanceStatus.objects.filter(
+            user_status = AttendanceStatus.objects.filter(  # 변수 이름 변경
                 attendance=attendance,
                 user=user
-            ).first()  # 특정 출석에 대한 상태 가져오기
+            ).first()
 
             user_data.append({
                 "id": user.id,
                 "name": user.name,
                 "nickname": user.nickname,
                 "email": user.email,
-                "attendance_status": status.status if status else "결석",  # 상태가 없으면 "결석"
-                "attendance_date": status.date if status else None,       # 상태 날짜 없으면 None
+                "attendance_status": user_status.status if user_status else "결석",  # 상태가 없으면 "결석"
+                "attendance_date": user_status.date if user_status else None,      # 상태 날짜 없으면 None
             })
 
-        # 출석 데이터와 사용자 데이터 결합
         attendance_data = {
             "attendance": self.get_serializer(attendance).data,
             "users": user_data,  # 사용자 목록 및 상태
         }
 
         return Response(attendance_data, status=status.HTTP_200_OK)
-
-
+    
 
 
 class AttendanceCheckView(APIView):
