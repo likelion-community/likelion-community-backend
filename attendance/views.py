@@ -11,6 +11,7 @@ from rest_framework.views import APIView
 from django.utils import timezone
 from signup.serializers import CustomUserSerializer
 from django.db.models import Count
+from django.db import transaction
 
 
 class AttendanceMainView(viewsets.ReadOnlyModelViewSet):
@@ -21,7 +22,7 @@ class AttendanceMainView(viewsets.ReadOnlyModelViewSet):
         # 최신 글이 가장 위로 오도록 정렬
         return Attendance.objects.filter(
             created_by__school_name=self.request.user.school_name
-        ).order_by('-date', '-id')  # date와 id 기준 최신 정렬
+        ).order_by('-date', '-time', '-id')  # date, time, id 기준 내림차순 정렬
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
@@ -79,14 +80,21 @@ class AttendanceDetailView(RetrieveAPIView):
     serializer_class = AttendanceSerializer
 
     def get_queryset(self):
-        # 로그인한 사용자의 school_name에 맞는 출석 데이터만 반환
         return Attendance.objects.filter(created_by__school_name=self.request.user.school_name)
 
     def retrieve(self, request, *args, **kwargs):
         attendance = self.get_object()
 
-        # 출석 상태를 로그인한 사용자의 학교 그룹과 일치하는 상태로 필터링
-        # 운영자(staff)를 제외
+        # 운영자(staff)를 제외한 같은 학교의 회원 목록 가져오기
+        users = CustomUser.objects.filter(
+            school_name=request.user.school_name,
+            is_staff=False  # 운영자를 제외
+        )
+
+        # 회원 목록 시리얼라이저
+        user_serializer = CustomUserSerializer(users, many=True)
+
+        # 출석 상태 데이터 필터링
         attendance_statuses = AttendanceStatus.objects.filter(
             attendance=attendance,
             user__school_name=request.user.school_name,
@@ -95,7 +103,8 @@ class AttendanceDetailView(RetrieveAPIView):
 
         attendance_data = {
             "attendance": self.get_serializer(attendance).data,
-            "attendance_statuses": AttendanceStatusSerializer(attendance_statuses, many=True).data
+            "attendance_statuses": AttendanceStatusSerializer(attendance_statuses, many=True).data,
+            "users": user_serializer.data  # 회원 목록 추가
         }
 
         return Response(attendance_data)
@@ -107,56 +116,50 @@ class AttendanceCheckView(APIView):
     permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup]
 
     def post(self, request, *args, **kwargs):
-        attendance_id = kwargs.get('id')  # URL에서 attendance_id 가져오기
-        input_code = request.data.get('auth_code')  # 요청에서 auth_code 가져오기
+        attendance_id = kwargs.get('id')
+        input_code = request.data.get('auth_code')
 
-        # 입력된 auth_code가 None이거나 정수가 아니면 에러 반환
         if input_code is None or not isinstance(input_code, int):
-            return Response(
-                {'error': '출석 코드는 정수 값이어야 합니다.'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({'error': '출석 코드는 정수 값이어야 합니다.'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             attendance = Attendance.objects.get(id=attendance_id)
 
-            # 이미 출석 상태가 존재하는지 확인
-            if AttendanceStatus.objects.filter(attendance=attendance, user=request.user).exists():
-                return Response(
-                    {'error': '출석 코드는 한 번만 입력할 수 있습니다.'},
-                    status=status.HTTP_400_BAD_REQUEST
+            with transaction.atomic():  # 트랜잭션 시작
+                # 이미 출석 상태가 존재하는지 확인
+                if AttendanceStatus.objects.filter(attendance=attendance, user=request.user).exists():
+                    return Response(
+                        {'error': '출석 코드는 한 번만 입력할 수 있습니다.'},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+
+                current_time = timezone.now()
+
+                # 세션 시작 시간을 기준으로 시간 차이 계산
+                session_start = timezone.make_aware(
+                    timezone.datetime.combine(attendance.date, attendance.time)
                 )
+                time_difference = (current_time - session_start).total_seconds() / 60  # 분 단위로 계산
 
-            current_time = timezone.now()
+                # 출석 코드 일치 여부 확인
+                if attendance.auth_code != input_code:
+                    return Response({'error': '출석코드가 일치하지 않아요'}, status=status.HTTP_400_BAD_REQUEST)
 
-            # 세션 시작 시간을 기준으로 시간 차이 계산
-            session_start = timezone.make_aware(
-                timezone.datetime.combine(attendance.date, attendance.time)
-            )
-            time_difference = (current_time - session_start).total_seconds() / 60  # 분 단위로 계산
+                # 출석 상태 결정
+                if time_difference <= attendance.late_threshold:
+                    status_type = '출석'  # 정상 출석
+                elif time_difference <= attendance.absent_threshold:
+                    status_type = '지각'  # 지각
+                else:
+                    status_type = '결석'  # 결석
 
-            # 출석 코드 일치 여부 확인 (정수 비교)
-            if attendance.auth_code != input_code:
-                return Response(
-                    {'error': '출석코드가 일치하지 않아요'},
-                    status=status.HTTP_400_BAD_REQUEST
+                # AttendanceStatus 생성 (한 번만 생성됨)
+                AttendanceStatus.objects.create(
+                    attendance=attendance,
+                    user=request.user,
+                    status=status_type,
+                    date=current_time.date()
                 )
-
-            # 출석 상태 결정
-            if time_difference <= attendance.late_threshold:
-                status_type = '출석'  # 정상 출석
-            elif time_difference <= attendance.absent_threshold:
-                status_type = '지각'  # 지각
-            else:
-                status_type = '결석'  # 결석
-
-            # AttendanceStatus 생성 (한 번만 생성됨)
-            AttendanceStatus.objects.create(
-                attendance=attendance,
-                user=request.user,
-                status=status_type,
-                date=current_time.date()
-            )
 
             return Response(
                 {'message': f"{current_time.date()} 출석 상태: {status_type}"},
@@ -164,10 +167,7 @@ class AttendanceCheckView(APIView):
             )
 
         except Attendance.DoesNotExist:
-            return Response(
-                {'error': '해당 출석 정보가 존재하지 않습니다.'},
-                status=status.HTTP_404_NOT_FOUND
-            )
+            return Response({'error': '해당 출석 정보가 존재하지 않습니다.'}, status=status.HTTP_404_NOT_FOUND)
 
         
 
