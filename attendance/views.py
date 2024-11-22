@@ -54,27 +54,36 @@ class AttendanceSetView(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         if not self.request.user.is_staff:
-            raise PermissionDenied("출석 등록은 staff만 할 수 있습니다.")
+            raise PermissionDenied("출석 등록은 운영자만 할 수 있습니다.")
 
-        # 출석글 생성
+        # 출석글 저장
         attendance = serializer.save(created_by=self.request.user)
 
-        # 해당 출석글에 포함된 회원의 출석 상태를 "결석"으로 자동 생성
-        related_users = CustomUser.objects.filter(
-            school_name=self.request.user.school_name,
-            is_staff=False  # 운영자는 제외
-        )
+        # 해당 출석글의 트랙에 따른 회원 조회
+        track = attendance.track
+        if track == "전체트랙":
+            users = CustomUser.objects.filter(
+                school_name=self.request.user.school_name,
+                is_staff=False  # 운영자 제외
+            )
+        else:
+            users = CustomUser.objects.filter(
+                school_name=self.request.user.school_name,
+                track=track,
+                is_staff=False
+            )
 
-        # 일괄적으로 AttendanceStatus 생성
-        AttendanceStatus.objects.bulk_create([
+        # 관련된 회원들에 대해 AttendanceStatus를 '결석'으로 생성
+        attendance_status_list = [
             AttendanceStatus(
                 attendance=attendance,
                 user=user,
-                status="결석",  # 기본 상태를 결석으로 설정
+                status="결석",  # 기본 상태: 결석
                 date=attendance.date
-            )
-            for user in related_users
-        ])
+            ) for user in users
+        ]
+        AttendanceStatus.objects.bulk_create(attendance_status_list)
+
 
 
 
