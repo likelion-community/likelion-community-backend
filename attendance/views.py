@@ -160,6 +160,8 @@ class AttendanceCheckView(APIView):
     def post(self, request, *args, **kwargs):
         attendance_id = kwargs.get('id')
         input_code = request.data.get('auth_code')
+        if not input_code:
+                raise ValueError("출석 코드가 제공되지 않았습니다.")
 
         try:
             attendance = Attendance.objects.get(id=attendance_id)
@@ -191,9 +193,12 @@ class AttendanceCheckView(APIView):
                     'date': current_time.date(),
                 }
             )
-            print("AttendanceStatus Created:", created)
+
             return Response(
-                {'message': f"{current_time.date()} 출석 상태: {status_type}"},
+                {
+                    'message': f"{current_time.date()} 출석 상태: {status_type}",
+                    'date': current_time.date().isoformat()  # date를 ISO 형식 문자열로 변환
+                },
                 status=status.HTTP_200_OK
             )
         except Attendance.DoesNotExist:
@@ -213,27 +218,28 @@ class AttendanceStatusUpdateView(APIView):
         print(f"Request Data - status_id: {status_id}, status: {new_status}")  # 디버깅용 로그
 
         try:
-            # `status_id`로 AttendanceStatus 객체 가져오기
-            attendance_status = AttendanceStatus.objects.get(id=status_id)
-            print(f"Found AttendanceStatus with id: {attendance_status.id}")  # 디버깅용 로그
+            with transaction.atomic():
+                # `status_id`로 AttendanceStatus 객체 가져오기
+                attendance_status = AttendanceStatus.objects.get(id=status_id)
+                print(f"Found AttendanceStatus with id: {attendance_status.id}")  # 디버깅용 로그
 
-            # 운영자 권한 확인
-            if not request.user.is_staff:
-                raise PermissionDenied("운영자만 출석 상태를 수정할 수 있습니다.")
+                # 운영자 권한 확인
+                if not request.user.is_staff:
+                    raise PermissionDenied("운영자만 출석 상태를 수정할 수 있습니다.")
 
-            # 같은 학교 그룹인지 확인
-            if attendance_status.attendance.created_by.school_name != request.user.school_name:
-                raise PermissionDenied("같은 학교 그룹의 출석 상태만 수정할 수 있습니다.")
+                # 같은 학교 그룹인지 확인
+                if attendance_status.attendance.created_by.school_name != request.user.school_name:
+                    raise PermissionDenied("같은 학교 그룹의 출석 상태만 수정할 수 있습니다.")
 
-            # 상태 업데이트
-            attendance_status.status = new_status
-            attendance_status.date = timezone.now().date()
-            attendance_status.save()
+                # 상태 업데이트
+                attendance_status.status = new_status
+                attendance_status.date = timezone.now().date()
+                attendance_status.save()
 
-            # 업데이트된 데이터 반환
-            serializer = AttendanceStatusSerializer(attendance_status)
-            print(f"Updated AttendanceStatus: {attendance_status.status}")  # 디버깅용 로그
-            return Response(serializer.data, status=status.HTTP_200_OK)
+                # 업데이트된 데이터 반환
+                serializer = AttendanceStatusSerializer(attendance_status)
+                print(f"Updated AttendanceStatus: {attendance_status.status}")  # 디버깅용 로그
+                return Response(serializer.data, status=status.HTTP_200_OK)
 
         except AttendanceStatus.DoesNotExist:
             return Response({'error': 'AttendanceStatus not found'}, status=status.HTTP_404_NOT_FOUND)
