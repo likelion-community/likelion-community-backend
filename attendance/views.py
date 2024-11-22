@@ -168,14 +168,16 @@ class AttendanceCheckView(APIView):
                     'date': current_time.date(),
                 }
             )
-
+            print("AttendanceStatus Created:", created)
             return Response(
                 {'message': f"{current_time.date()} 출석 상태: {status_type}"},
                 status=status.HTTP_200_OK
             )
         except Attendance.DoesNotExist:
             return Response({'error': '해당 출석 정보가 존재하지 않습니다.'}, status=status.HTTP_404_NOT_FOUND)
-
+        except Exception as e:
+            print("Error in AttendanceCheckView:", e)
+            return Response({'error': '서버 오류가 발생했습니다.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 
 class AttendanceStatusUpdateView(APIView):
@@ -236,15 +238,19 @@ class UserTrackAttendanceView(APIView):
 
         # 출석 코드 입력이 없는 경우 결석으로 기록
         for attendance in all_attendances:
-            session_start = timezone.make_aware(timezone.datetime.combine(attendance.date, attendance.time))
+            session_start = timezone.make_aware(
+                timezone.datetime.combine(attendance.date, attendance.time)
+            )
             if current_time > session_start and not AttendanceStatus.objects.filter(attendance=attendance, user=user).exists():
-                # 사용자의 출석 상태가 없으면 결석으로 기록
-                AttendanceStatus.objects.create(
-                    attendance=attendance,
-                    user=user,
-                    status='결석',
-                    date=current_time.date()
-                )
+                # 출석 시간이 지난 후에만 '결석' 상태를 생성
+                absent_time = session_start + timezone.timedelta(minutes=attendance.absent_threshold)
+                if current_time > absent_time:
+                    AttendanceStatus.objects.create(
+                        attendance=attendance,
+                        user=user,
+                        status='결석',
+                        date=current_time.date()
+                    )
 
         attendance_serializer = AttendanceSerializer(all_attendances, many=True)
 
@@ -296,20 +302,26 @@ class AttendanceCheckView(APIView):
             elif time_difference <= attendance.absent_threshold:
                 status_type = '지각'     # 지각
             else:
-                status_type = '결석'   # 결석
+                return Response({'error': '출석 시간이 지났습니다. 결석 처리되었습니다.'}, status=status.HTTP_400_BAD_REQUEST) # 결석
 
-            # AttendanceStatus 생성
-            AttendanceStatus.objects.create(
+            # AttendanceStatus 업데이트 또는 생성
+            attendance_status, created = AttendanceStatus.objects.update_or_create(
                 attendance=attendance,
                 user=request.user,
-                status=status_type,
-                date=current_time.date()
+                defaults={
+                    'status': status_type,
+                    'date': current_time.date(),
+                }
             )
-            return Response({'message': f"{current_time.date()} 출석 상태: {status_type}"}, status=status.HTTP_200_OK)
-            
+            return Response(
+                {'message': f"{current_time.date()} 출석 상태: {status_type}"},
+                status=status.HTTP_200_OK
+            )
         except Attendance.DoesNotExist:
             return Response({'error': '해당 출석 정보가 존재하지 않습니다.'}, status=status.HTTP_404_NOT_FOUND)
-
+        except Exception as e:
+            print("Error in AttendanceCheckView:", e)
+            return Response({'error': '서버 오류가 발생했습니다.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class CreatorProfileView(APIView):
