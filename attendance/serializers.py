@@ -23,12 +23,12 @@ class AttendanceSerializer(serializers.ModelSerializer):
             'late_threshold', 'absent_threshold', 'place'
         ]
 
-
 class AttendanceStatusSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)  # status_id로 사용
     user_name = serializers.CharField(source='user.name', read_only=True)  # 사용자 이름
     membership_term = serializers.IntegerField(source='user.membership_term', read_only=True)  # 사용자 기수
     user_track = serializers.CharField(source='user.track', read_only=True)  # 사용자 트랙
+    date = serializers.DateField(format="%Y-%m-%d")  # ISO 형식 적용
 
     class Meta:
         model = AttendanceStatus
@@ -36,7 +36,6 @@ class AttendanceStatusSerializer(serializers.ModelSerializer):
             'id', 'attendance', 'user', 'user_name', 'membership_term', 
             'user_track', 'status', 'date'
         ]
-
 
 
 class CreatorProfileSerializer(serializers.ModelSerializer):
