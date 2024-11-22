@@ -87,23 +87,26 @@ class AttendanceStatus(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        # WebSocket 알림
-        channel_layer = get_channel_layer()
-        async_to_sync(channel_layer.group_send)(
-            f'attendance_{self.attendance.id}',  # 그룹명
-            {
-                'type': 'attendance_status_update',
-                'status': self.status,
-                'user': {
-                    'id': self.user.id,
-                    'name': self.user.name,
+        try:
+            # WebSocket 알림
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                f'attendance_{self.attendance.id}',  # 그룹명
+                {
+                    'type': 'attendance_status_update',
                     'status': self.status,
-                    'school_name': self.school_name
-                },
-                'attendance': {
-                    'id': self.attendance.id,
-                    'title': self.attendance.title,
-                    'date': self.attendance.date
+                    'user': {
+                        'id': self.user.id,
+                        'name': self.user.name,
+                        'status': self.status,
+                        'school_name': self.school_name
+                    },
+                    'attendance': {
+                        'id': self.attendance.id,
+                        'title': self.attendance.title,
+                        'date': self.attendance.date.isoformat()
+                    }
                 }
-            }
-        )
+            )
+        except Exception as e:
+            print(f"WebSocket 메시지 전송 실패: {e}")
