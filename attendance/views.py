@@ -193,7 +193,7 @@ class AttendanceCheckView(APIView):
                 user=request.user,
                 defaults={
                     'status': status_type,
-                    'date': current_time.date().isoformat(),  # 날짜 객체
+                    'date': current_time.date(), 
                 }
             )
 
@@ -201,7 +201,7 @@ class AttendanceCheckView(APIView):
             return Response(
                 {
                     'message': f"{current_time.date()} 출석 상태: {status_type}",
-                    'date': current_time.date().isoformat(),  # 문자열로 변환
+                    'date': current_time.date().isoformat(),
                     'status': status_type,
                 },
                 status=status.HTTP_200_OK
