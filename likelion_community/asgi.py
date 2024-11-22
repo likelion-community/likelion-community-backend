@@ -12,12 +12,15 @@ django_asgi_app = get_asgi_application()
 # 라우팅 모듈은 Django 초기화 후에 로드
 import friend.routing
 import home.routing
+import attendance.routing  
 
 application = ProtocolTypeRouter({
     "http": django_asgi_app,  # HTTP 요청 처리
     "websocket": AuthMiddlewareStack(
         URLRouter(
-            friend.routing.websocket_urlpatterns + home.routing.websocket_urlpatterns
+            friend.routing.websocket_urlpatterns +
+            home.routing.websocket_urlpatterns +
+            attendance.routing.websocket_urlpatterns 
         )
     ),
 })
