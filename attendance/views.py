@@ -315,54 +315,6 @@ class UserTrackAttendanceView(APIView):
 
 
 
-
-class AttendanceCheckView(APIView):
-    permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup]
-
-    def post(self, request, *args, **kwargs):
-        attendance_id = kwargs.get('id')
-        input_code = request.data.get('auth_code')
-
-        try:
-            attendance = Attendance.objects.get(id=attendance_id)
-            current_time = timezone.now()
-
-            # 세션 시작 시간을 기준으로 시간 차이 계산
-            session_start = timezone.make_aware(timezone.datetime.combine(attendance.date, attendance.time))
-            time_difference = (current_time - session_start).total_seconds() / 60  # 분 단위로 계산
-
-            # 출석 코드 일치 여부 확인
-            if attendance.auth_code != input_code:
-                return Response({'error': '출석코드가 일치하지 않아요'}, status=status.HTTP_400_BAD_REQUEST)
-
-            # 출석 상태 결정
-            if time_difference <= attendance.late_threshold:
-                status_type = '출석'  # 정상 출석
-            elif time_difference <= attendance.absent_threshold:
-                status_type = '지각'     # 지각
-            else:
-                return Response({'error': '출석 시간이 지났습니다. 결석 처리되었습니다.'}, status=status.HTTP_400_BAD_REQUEST) # 결석
-
-            # AttendanceStatus 업데이트 또는 생성
-            attendance_status, created = AttendanceStatus.objects.update_or_create(
-                attendance=attendance,
-                user=request.user,
-                defaults={
-                    'status': status_type,
-                    'date': current_time.date(),
-                }
-            )
-            return Response(
-                {'message': f"{current_time.date()} 출석 상태: {status_type}"},
-                status=status.HTTP_200_OK
-            )
-        except Attendance.DoesNotExist:
-            return Response({'error': '해당 출석 정보가 존재하지 않습니다.'}, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            print("Error in AttendanceCheckView:", e)
-            return Response({'error': '서버 오류가 발생했습니다.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
 class CreatorProfileView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request, *args, **kwargs):
