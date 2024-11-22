@@ -87,16 +87,26 @@ class AttendanceDetailView(RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         attendance = self.get_object()
 
-        # 운영자(staff)를 제외한 같은 학교의 회원 목록 가져오기
-        users = CustomUser.objects.filter(
-            school_name=request.user.school_name,
-            is_staff=False  # 운영자를 제외
-        )
+        # 글의 트랙 정보 가져오기
+        track = attendance.track
+
+        # 트랙에 따라 필터링된 사용자 가져오기
+        if track == "전체트랙":
+            users = CustomUser.objects.filter(
+                school_name=request.user.school_name,
+                is_staff=False  # 운영자를 제외
+            )
+        else:
+            users = CustomUser.objects.filter(
+                school_name=request.user.school_name,
+                track=track,  # 글의 트랙과 동일한 트랙의 사용자
+                is_staff=False  # 운영자를 제외
+            )
 
         # 각 사용자에 대해 출석 상태 결합
         user_data = []
         for user in users:
-            user_status = AttendanceStatus.objects.filter(  # 변수 이름 변경
+            user_status = AttendanceStatus.objects.filter(
                 attendance=attendance,
                 user=user
             ).first()
@@ -107,12 +117,14 @@ class AttendanceDetailView(RetrieveAPIView):
                 "nickname": user.nickname,
                 "email": user.email,
                 "attendance_status": user_status.status if user_status else "결석",  # 상태가 없으면 "결석"
-                "attendance_date": user_status.date if user_status else None,      # 상태 날짜 없으면 None
+                "attendance_date": user_status.date if user_status else None,       # 상태 날짜 없으면 None
+                "track": user.track, 
+                "membership_term": user.membership_term,
             })
 
         attendance_data = {
             "attendance": self.get_serializer(attendance).data,
-            "users": user_data,  # 사용자 목록 및 상태
+            "users": user_data,  # 필터링된 사용자 목록 및 상태
         }
 
         return Response(attendance_data, status=status.HTTP_200_OK)
