@@ -161,7 +161,7 @@ class AttendanceCheckView(APIView):
         attendance_id = kwargs.get('id')
         input_code = request.data.get('auth_code')
         if not input_code:
-                raise ValueError("출석 코드가 제공되지 않았습니다.")
+            raise ValueError("출석 코드가 제공되지 않았습니다.")
 
         try:
             attendance = Attendance.objects.get(id=attendance_id)
@@ -190,23 +190,26 @@ class AttendanceCheckView(APIView):
                 user=request.user,
                 defaults={
                     'status': status_type,
-                    'date': current_time.date(),
+                    'date': current_time.date(),  # 날짜 객체
                 }
             )
 
+            # 반환 데이터에서 date를 ISO 형식 문자열로 변환
             return Response(
                 {
                     'message': f"{current_time.date()} 출석 상태: {status_type}",
-                    'date': current_time.date().isoformat()  # date를 ISO 형식 문자열로 변환
+                    'date': current_time.date().isoformat(),  # 문자열로 변환
+                    'status': status_type,
                 },
                 status=status.HTTP_200_OK
             )
         except Attendance.DoesNotExist:
             return Response({'error': '해당 출석 정보가 존재하지 않습니다.'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            print("Error in AttendanceCheckView:", e)
+            print(f"Error in AttendanceCheckView: {e}")
             return Response({'error': '서버 오류가 발생했습니다.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
+
+
 
 class AttendanceStatusUpdateView(APIView):
     permission_classes = [IsAuthenticated, IsStaffOrReadOnly, IsSchoolVerifiedAndSameGroup]
