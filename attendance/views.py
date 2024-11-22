@@ -80,8 +80,10 @@ class AttendanceDetailView(RetrieveAPIView):
     serializer_class = AttendanceSerializer
 
     def get_queryset(self):
-        return Attendance.objects.filter(created_by__school_name=self.request.user.school_name)
-
+        # 로그인한 사용자의 school_name에 맞는 출석 데이터만 반환
+        return Attendance.objects.filter(
+            created_by__school_name=self.request.user.school_name
+        )
     def retrieve(self, request, *args, **kwargs):
         attendance = self.get_object()
 
@@ -91,23 +93,30 @@ class AttendanceDetailView(RetrieveAPIView):
             is_staff=False  # 운영자를 제외
         )
 
-        # 회원 목록 시리얼라이저
-        user_serializer = CustomUserSerializer(users, many=True)
+        # 각 사용자에 대해 출석 상태 결합
+        user_data = []
+        for user in users:
+            status = AttendanceStatus.objects.filter(
+                attendance=attendance,
+                user=user
+            ).first()  # 특정 출석에 대한 상태 가져오기
 
-        # 출석 상태 데이터 필터링
-        attendance_statuses = AttendanceStatus.objects.filter(
-            attendance=attendance,
-            user__school_name=request.user.school_name,
-            user__is_staff=False  # 운영자를 제외
-        )
+            user_data.append({
+                "id": user.id,
+                "name": user.name,
+                "nickname": user.nickname,
+                "email": user.email,
+                "attendance_status": status.status if status else "결석",  # 상태가 없으면 "결석"
+                "attendance_date": status.date if status else None,       # 상태 날짜 없으면 None
+            })
 
+        # 출석 데이터와 사용자 데이터 결합
         attendance_data = {
             "attendance": self.get_serializer(attendance).data,
-            "attendance_statuses": AttendanceStatusSerializer(attendance_statuses, many=True).data,
-            "users": user_serializer.data  # 회원 목록 추가
+            "users": user_data,  # 사용자 목록 및 상태
         }
 
-        return Response(attendance_data)
+        return Response(attendance_data, status=status.HTTP_200_OK)
 
 
 
