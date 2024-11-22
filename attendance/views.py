@@ -117,7 +117,8 @@ class AttendanceDetailView(RetrieveAPIView):
                 "nickname": user.nickname,
                 "email": user.email,
                 "attendance_status": user_status.status if user_status else "결석",  # 상태가 없으면 "결석"
-                "attendance_date": user_status.date if user_status else None,       # 상태 날짜 없으면 None
+                "status_id": user_status.id if user_status else None,  # status_id 추가
+                "attendance_date": user_status.date if user_status else None,  # 상태 날짜 없으면 None
                 "track": user.track, 
                 "membership_term": user.membership_term,
             })
