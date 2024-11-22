@@ -108,22 +108,25 @@ class AttendanceDetailView(RetrieveAPIView):
         return Attendance.objects.filter(
             created_by__school_name=self.request.user.school_name
         )
+
     def retrieve(self, request, *args, **kwargs):
         attendance = self.get_object()
 
         # 글의 트랙 정보 가져오기
         track = attendance.track
 
-        # 트랙에 따라 필터링된 사용자 가져오기
+        # 트랙과 같은 기수 조건으로 사용자 필터링
         if track == "전체트랙":
             users = CustomUser.objects.filter(
                 school_name=request.user.school_name,
+                membership_term=request.user.membership_term,  # 같은 기수
                 is_staff=False  # 운영자를 제외
             )
         else:
             users = CustomUser.objects.filter(
                 school_name=request.user.school_name,
                 track=track,  # 글의 트랙과 동일한 트랙의 사용자
+                membership_term=request.user.membership_term,  # 같은 기수
                 is_staff=False  # 운영자를 제외
             )
 
@@ -153,7 +156,7 @@ class AttendanceDetailView(RetrieveAPIView):
         }
 
         return Response(attendance_data, status=status.HTTP_200_OK)
-    
+
 
 
 class AttendanceCheckView(APIView):
