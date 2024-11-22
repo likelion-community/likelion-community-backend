@@ -157,21 +157,23 @@ class PopularPostViewSet(APIView):
         top_posts = []
         
         # 현재 시간으로부터 24시간 전
-        time_threshold = timezone.now() - timezone.timedelta(hours=24)
+        # time_threshold = timezone.now() - timezone.timedelta(hours=24)
         
         # MainBoard 각 카테고리별로 24시간 내 작성된 게시물 중 like가 가장 많은 게시물 가져오기
         for board_type, _ in MainBoard.BOARD_CHOICES:
-            post = (MainBoard.objects.filter(board_title=board_type, time__gte=time_threshold)
+            #post = (MainBoard.objects.filter(board_title=board_type, time__gte=time_threshold)
+            post = (MainBoard.objects.filter(board_title=board_type)
                     .annotate(likes_count=Count('like'), scraps_count=Count('scrap'))
                     .order_by('-likes_count', '-time')
                     .first())
-            
+                
             if post:
                 top_posts.append(post)
         
         # MainNoticeBoard에서 24시간 내 작성된 게시물 중 like가 가장 많은 게시물 가져오기
         for board_type, _ in MainNoticeBoard.BOARD_CHOICES:
-            notice_post = (MainNoticeBoard.objects.filter(board_title=board_type, time__gte=time_threshold)
+            #notice_post = (MainNoticeBoard.objects.filter(board_title=board_type, time__gte=time_threshold)
+            notice_post = (MainNoticeBoard.objects.filter(board_title=board_type)
                            .annotate(likes_count=Count('like'), scraps_count=Count('scrap'))
                            .order_by('-likes_count', '-time')
                            .first())
