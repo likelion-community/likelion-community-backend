@@ -62,35 +62,48 @@ class AttendanceStatus(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES)
     date = models.DateField()
 
+    class Meta:
+        unique_together = ('attendance', 'user')  # 동일 attendance와 user 조합 중복 방지
+
     def __str__(self):
         return f"{self.user.name} - {self.status} on {self.date}"
 
     @property
     def school_name(self):
-        return self.user.school_name  # CustomUser의 school_name 참조
+        return self.user.school_name
 
     @property
     def is_school_verified(self):
-        return self.user.is_school_verified  # CustomUser의 is_school_verified 참조
+        return self.user.is_school_verified
 
     @property
     def membership_term(self):
-        return self.user.membership_term  # CustomUser의 membership_term 참조
+        return self.user.membership_term
 
     @property
     def user_track(self):
-        return self.user.track  # CustomUser의 track 참조
+        return self.user.track
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        # 출석 상태 변경 시 WebSocket을 통해 전송
+        # WebSocket 알림
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(
             f'attendance_{self.attendance.id}',  # 그룹명
             {
                 'type': 'attendance_status_update',
                 'status': self.status,
-                'user': {'id': self.user.id, 'name': self.user.name, 'school_name': self.school_name}  # 전송할 데이터
+                'user': {
+                    'id': self.user.id,
+                    'name': self.user.name,
+                    'status': self.status,
+                    'school_name': self.school_name
+                },
+                'attendance': {
+                    'id': self.attendance.id,
+                    'title': self.attendance.title,
+                    'date': self.attendance.date
+                }
             }
         )
