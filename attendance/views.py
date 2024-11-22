@@ -190,7 +190,7 @@ class AttendanceCheckView(APIView):
                 user=request.user,
                 defaults={
                     'status': status_type,
-                    'date': current_time.date(),  # 날짜 객체
+                    'date': current_time.date().isoformat(),  # 날짜 객체
                 }
             )
 
