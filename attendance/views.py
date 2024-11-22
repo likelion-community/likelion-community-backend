@@ -12,6 +12,8 @@ from django.utils import timezone
 from signup.serializers import CustomUserSerializer
 from django.db.models import Count
 from django.db import transaction
+from datetime import datetime
+from django.utils.timezone import make_aware, get_default_timezone
 
 
 class AttendanceMainView(viewsets.ReadOnlyModelViewSet):
@@ -167,8 +169,9 @@ class AttendanceCheckView(APIView):
             attendance = Attendance.objects.get(id=attendance_id)
             current_time = timezone.now()
 
-            session_start = timezone.make_aware(
-                timezone.datetime.combine(attendance.date, attendance.time)
+            session_start = make_aware(
+                datetime.combine(attendance.date, attendance.time),
+                timezone=get_default_timezone()  # 서버의 기본 타임존
             )
             time_difference = (current_time - session_start).total_seconds() / 60
 
@@ -280,8 +283,9 @@ class UserTrackAttendanceView(APIView):
 
         # 출석 코드 입력이 없는 경우 결석으로 기록
         for attendance in all_attendances:
-            session_start = timezone.make_aware(
-                timezone.datetime.combine(attendance.date, attendance.time)
+            session_start = make_aware(
+                datetime.combine(attendance.date, attendance.time),
+                timezone=get_default_timezone()  # 서버의 기본 타임존
             )
             if current_time > session_start and not AttendanceStatus.objects.filter(attendance=attendance, user=user).exists():
                 # 출석 시간이 지난 후에만 '결석' 상태를 생성
