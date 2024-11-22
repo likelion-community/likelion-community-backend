@@ -54,27 +54,36 @@ class AttendanceSetView(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         if not self.request.user.is_staff:
-            raise PermissionDenied("출석 등록은 staff만 할 수 있습니다.")
+            raise PermissionDenied("출석 등록은 운영자만 할 수 있습니다.")
 
-        # 출석글 생성
+        # 출석글 저장
         attendance = serializer.save(created_by=self.request.user)
 
-        # 해당 출석글에 포함된 회원의 출석 상태를 "결석"으로 자동 생성
-        related_users = CustomUser.objects.filter(
-            school_name=self.request.user.school_name,
-            is_staff=False  # 운영자는 제외
-        )
+        # 해당 출석글의 트랙에 따른 회원 조회
+        track = attendance.track
+        if track == "전체트랙":
+            users = CustomUser.objects.filter(
+                school_name=self.request.user.school_name,
+                is_staff=False  # 운영자 제외
+            )
+        else:
+            users = CustomUser.objects.filter(
+                school_name=self.request.user.school_name,
+                track=track,
+                is_staff=False
+            )
 
-        # 일괄적으로 AttendanceStatus 생성
-        AttendanceStatus.objects.bulk_create([
+        # 관련된 회원들에 대해 AttendanceStatus를 '결석'으로 생성
+        attendance_status_list = [
             AttendanceStatus(
                 attendance=attendance,
                 user=user,
-                status="결석",  # 기본 상태를 결석으로 설정
+                status="결석",  # 기본 상태: 결석
                 date=attendance.date
-            )
-            for user in related_users
-        ])
+            ) for user in users
+        ]
+        AttendanceStatus.objects.bulk_create(attendance_status_list)
+
 
 
 
@@ -198,60 +207,39 @@ class AttendanceStatusUpdateView(APIView):
     permission_classes = [IsAuthenticated, IsStaffOrReadOnly, IsSchoolVerifiedAndSameGroup]
 
     def patch(self, request, *args, **kwargs):
-        status_id = kwargs.get('status_id')  # 기존 status_id
-        user_id = request.data.get('user_id')  # 사용자 ID
-        attendance_id = request.data.get('attendance_id')  # 출석 ID
+        status_id = kwargs.get('status_id')  # 항상 존재하는 status_id
         new_status = request.data.get('status')  # 변경할 출석 상태
 
+        print(f"Request Data - status_id: {status_id}, status: {new_status}")  # 디버깅용 로그
+
         try:
-            # status_id가 있는 경우: 기존 AttendanceStatus 업데이트
-            if status_id:
-                attendance_status = AttendanceStatus.objects.get(id=status_id)
+            # `status_id`로 AttendanceStatus 객체 가져오기
+            attendance_status = AttendanceStatus.objects.get(id=status_id)
+            print(f"Found AttendanceStatus with id: {attendance_status.id}")  # 디버깅용 로그
 
-                # 운영자 권한 확인
-                if not request.user.is_staff:
-                    raise PermissionDenied("운영자만 출석 상태를 수정할 수 있습니다.")
+            # 운영자 권한 확인
+            if not request.user.is_staff:
+                raise PermissionDenied("운영자만 출석 상태를 수정할 수 있습니다.")
 
-                # 같은 학교 그룹인지 확인
-                if attendance_status.attendance.created_by.school_name != request.user.school_name:
-                    raise PermissionDenied("같은 학교 그룹의 출석 상태만 수정할 수 있습니다.")
+            # 같은 학교 그룹인지 확인
+            if attendance_status.attendance.created_by.school_name != request.user.school_name:
+                raise PermissionDenied("같은 학교 그룹의 출석 상태만 수정할 수 있습니다.")
 
-            else:
-                # status_id가 없는 경우: 새로운 AttendanceStatus 생성
-                attendance = Attendance.objects.get(id=attendance_id)
-                user = CustomUser.objects.get(id=user_id)
+            # 상태 업데이트
+            attendance_status.status = new_status
+            attendance_status.date = timezone.now().date()
+            attendance_status.save()
 
-                # 운영자 권한 확인
-                if not request.user.is_staff:
-                    raise PermissionDenied("운영자만 출석 상태를 수정할 수 있습니다.")
-
-                # 같은 학교 그룹인지 확인
-                if attendance.created_by.school_name != request.user.school_name:
-                    raise PermissionDenied("같은 학교 그룹의 출석 상태만 수정할 수 있습니다.")
-
-                # AttendanceStatus 생성 또는 업데이트
-                attendance_status, created = AttendanceStatus.objects.get_or_create(
-                    attendance=attendance,
-                    user=user,
-                    defaults={'status': new_status, 'date': timezone.now().date()}
-                )
-                if not created:
-                    attendance_status.status = new_status
-                    attendance_status.date = timezone.now().date()
-                    attendance_status.save()
-
-            # Serializer를 이용해 응답 데이터 반환
+            # 업데이트된 데이터 반환
             serializer = AttendanceStatusSerializer(attendance_status)
+            print(f"Updated AttendanceStatus: {attendance_status.status}")  # 디버깅용 로그
             return Response(serializer.data, status=status.HTTP_200_OK)
 
-        except Attendance.DoesNotExist:
-            return Response({'error': '해당 출석 정보가 존재하지 않습니다.'}, status=status.HTTP_404_NOT_FOUND)
-        except CustomUser.DoesNotExist:
-            return Response({'error': '해당 사용자가 존재하지 않습니다.'}, status=status.HTTP_404_NOT_FOUND)
         except AttendanceStatus.DoesNotExist:
-            return Response({'error': '출석 상태를 찾을 수 없습니다.'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'AttendanceStatus not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({'error': f'서버 오류가 발생했습니다: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            print(f"Error: {str(e)}")
+            return Response({'error': f'Error: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class CreatorProfileView(APIView):
