@@ -14,27 +14,82 @@ from django.contrib.auth.hashers import make_password
 from django.conf import settings
 from .serializers import UserSerializer
 
+from django.shortcuts import get_object_or_404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+from django.urls import reverse
+from rest_framework.parsers import MultiPartParser, FormParser
+
+class UploadVerificationPhotoView(APIView):
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]  # 파일 업로드를 위한 파서 설정
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        photo_type = request.data.get("photo_type")  # school 또는 executive
+        photo = request.FILES.get("photo")  # 업로드된 파일 데이터
+
+        if not photo_type or photo_type not in ["school", "executive"]:
+            return Response({"error": "photo_type은 'school' 또는 'executive'여야 합니다."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            verification, created = Verification.objects.get_or_create(user=user)
+
+            if photo_type == "school":
+                verification.school_verification_photo = photo
+            elif photo_type == "executive":
+                verification.executive_verification_photo = photo
+
+            verification.save()
+
+            return Response({
+                "message": f"{photo_type} 인증 사진이 업로드되었습니다.",
+                "photo_url": verification.school_verification_photo.url if photo_type == "school" else verification.executive_verification_photo.url
+            }, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": f"업로드 중 오류가 발생했습니다: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+from rest_framework.reverse import reverse_lazy  # Lazy URL resolving for DRF
+
 class MyPageOverviewView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        user = request.user  # 현재 인증된 사용자 객체 가져오기
-        user_serializer = UserSerializer(user)  # 사용자 정보를 직렬화
+        user = request.user
+        user_serializer = UserSerializer(user)
 
-        return Response({
-            "user_info": user_serializer.data,  # 사용자 정보 추가
-            "profile_image_update": request.build_absolute_uri(reverse('mypage:profileimage')),
-            "my_scraps": request.build_absolute_uri(reverse('mypage:myscraps')),
-            "my_posts": request.build_absolute_uri(reverse('mypage:myposts')),
-            "my_comments": request.build_absolute_uri(reverse('mypage:mycomments')),
-            "school_verification": request.build_absolute_uri(reverse('mypage:schoolverification')),
-            "executive_verification": request.build_absolute_uri(reverse('mypage:executiveverification')),
-            "find_id": request.build_absolute_uri(reverse('mypage:findid')),
-            "find_password": request.build_absolute_uri(reverse('mypage:findpassword')),
-            "verify_id": request.build_absolute_uri(reverse('mypage:verifyid')),
-            "verify_password": request.build_absolute_uri(reverse('mypage:verifypassword')),
-            "reset_password": request.build_absolute_uri(reverse('mypage:resetpassword'))
-        }, status=status.HTTP_200_OK)
+        # Verification 정보 가져오기
+        try:
+            verification = Verification.objects.get(user=user)
+        except Verification.DoesNotExist:
+            verification = None
+
+        # 데이터 구조 정리 및 URL 반환
+        response_data = {
+            "user_info": user_serializer.data,
+            "verification_status": {
+                "school_status": verification.school_status if verification else "none",
+                "executive_status": verification.executive_status if verification else "none",
+            },
+            "details": {
+                "school_name": user.school_name if verification and verification.school_status == "approved" else None,
+                "track": verification.track if verification and verification.school_status == "approved" else None,
+            },
+            "actions": {
+                "update_profile_image": request.build_absolute_uri(reverse_lazy('mypage:profileimage')),
+                "view_scraps": request.build_absolute_uri(reverse_lazy('mypage:myscraps')),
+                "view_posts": request.build_absolute_uri(reverse_lazy('mypage:myposts')),
+                "view_comments": request.build_absolute_uri(reverse_lazy('mypage:mycomments')),
+                "verification_status": request.build_absolute_uri(reverse_lazy('mypage:verification')),
+            },
+            "is_staff": user.is_staff, 
+        }
+
+        return Response(response_data, status=status.HTTP_200_OK)
+
 
 
 class ProfileImageUpdateView(APIView):
@@ -108,31 +163,59 @@ class MyCommentView(APIView):
             "schoolcomment": schoolcomment_serializer.data,
             "questioncomment": questioncomment_serializer.data
         }, status=status.HTTP_200_OK)
-    
-class SchoolVerificationView(APIView):
+
+
+ #사용자가 이미 인증 정보를 가지고 있는 경우 기존 객체를 업데이트하도록 수정   
+class VerificationStatusView(APIView):
     permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]  # 파일 업로드 지원
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        
+        try:
+            verification = Verification.objects.get(user=user)
+            serializer = VerificationSerializer(verification)
+            return Response({
+                "user_info": UserSerializer(user).data,
+                "verification_status": serializer.data
+            }, status=status.HTTP_200_OK)
+        except Verification.DoesNotExist:
+            return Response({
+                "user_info": UserSerializer(user).data,
+                "verification_status": "none"
+            }, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
         user = request.user
-        serializer = SchoolVerificationSerializer(data=request.data)
+        serializer = VerificationSerializer(data=request.data, context={'user': user})
 
         if serializer.is_valid():
-            serializer.save(user=user)
-            return Response({"detail": "학교 인증 사진이 제출되었습니다."}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-class ExecutiveVerificationView(APIView):
-    permission_classes = [IsAuthenticated]
-    
-    def post(self, request, *args, **kwargs):
-        user = request.user
-        serializer = ExecutiveVerificationSerializer(data=request.data)
+            try:
+                # 기존 인증 요청이 있는 경우 업데이트, 없는 경우 생성
+                verification, created = Verification.objects.get_or_create(user=user)
 
-        if serializer.is_valid():
-            serializer.save(user=user)
-            return Response({"detail": "운영진 인증 사진이 제출되었습니다."}, status=status.HTTP_201_CREATED)
+                # 요청 데이터로 모든 필드 업데이트
+                for field, value in serializer.validated_data.items():
+                    setattr(verification, field, value)
+
+                # 파일 업로드 처리
+                if "school_verification_photo" in request.FILES:
+                    verification.school_verification_photo = request.FILES["school_verification_photo"]
+                if "executive_verification_photo" in request.FILES:
+                    verification.executive_verification_photo = request.FILES["executive_verification_photo"]
+
+                verification.save()
+
+                return Response({
+                    "detail": "인증 요청이 성공적으로 제출되었습니다.",
+                    "verification_status": VerificationSerializer(verification).data
+                }, status=status.HTTP_201_CREATED)
+            except Exception as e:
+                return Response({"error": f"인증 요청 중 오류가 발생했습니다: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
 class FindIDEmailView(APIView):
     def post (self, request, *args, **kwargs):
             email = request.data.get('email')

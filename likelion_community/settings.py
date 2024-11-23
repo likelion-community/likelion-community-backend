@@ -77,6 +77,7 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
 
 # URL Configuration
 ROOT_URLCONF = 'likelion_community.urls'
@@ -228,6 +229,7 @@ CHANNEL_LAYERS = {
                 ("3.39.168.41", 6379),  # 외부 접근용
                 ("redis.everion.store", 6379),
             ],
+            "group_expiry": 3600,
         },
     },
 }

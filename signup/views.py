@@ -90,7 +90,7 @@ class CustomLoginAPIView(APIView):
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
-
+                request.session.save()
                 return JsonResponse({'message': '로그인 성공'}, status=status.HTTP_200_OK)
 
         return Response({'error': '아이디 또는 비밀번호가 잘못되었습니다.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -188,6 +188,7 @@ class CompleteProfileAPIView(APIView):
         if user.is_profile_complete:
             user.backend = 'social_core.backends.kakao.KakaoOAuth2'
             login(request, user)
+            request.session.save()
             return redirect("https://localhost:5173/main")
 
         # 세션에 저장된 닉네임을 가져와 쿼리 파라미터로 전달
@@ -215,6 +216,7 @@ class CompleteProfileAPIView(APIView):
         if user.is_profile_complete:
             user.backend = 'social_core.backends.kakao.KakaoOAuth2'
             login(request, user)
+            request.session.save()
             return redirect("https://localhost:5173/main")
 
         # 이미지가 업로드되지 않은 경우 오류 메시지 반환
@@ -236,7 +238,7 @@ class CompleteProfileAPIView(APIView):
             
             user.backend = 'social_core.backends.kakao.KakaoOAuth2'
             login(request, user)
-
+            request.session.save()
             request.session.pop('partial_pipeline_user', None)
             request.session.pop('photo_verified', None)
             return Response({'is_valid': True, 'message': "프로필이 성공적으로 완성되었습니다."}, status=status.HTTP_200_OK)
