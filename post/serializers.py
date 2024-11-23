@@ -31,7 +31,7 @@ class SchoolBoardSerializer(serializers.ModelSerializer):
     scraps_count = serializers.IntegerField(read_only=True)
     writer = CustomUserSerializer(read_only=True)
     school_name = serializers.CharField(read_only=True)
-    
+
     class Meta:
         model = SchoolBoard
         fields = '__all__'
@@ -39,11 +39,13 @@ class SchoolBoardSerializer(serializers.ModelSerializer):
     def get_comments_count(self, obj):
         return obj.comments_count()
 
+
 class QuestionBoardSerializer(serializers.ModelSerializer):
     comments_count = serializers.SerializerMethodField(read_only=True)
     likes_count = serializers.IntegerField(read_only=True)
     scraps_count = serializers.IntegerField(read_only=True)
     writer = CustomUserSerializer(read_only=True)
+    school_name = serializers.SerializerMethodField()  # school_name 추가
 
     class Meta:
         model = QuestionBoard
@@ -51,6 +53,10 @@ class QuestionBoardSerializer(serializers.ModelSerializer):
 
     def get_comments_count(self, obj):
         return obj.comments_count()
+
+    def get_school_name(self, obj):
+        return obj.writer.school_name 
+    
     
 class MainNoticeBoardSerializer(serializers.ModelSerializer):
     comments_count = serializers.SerializerMethodField(read_only=True)
@@ -70,7 +76,8 @@ class SchoolNoticeBoardSerializer(serializers.ModelSerializer):
     likes_count = serializers.IntegerField(read_only=True)
     scraps_count = serializers.IntegerField(read_only=True)
     writer = CustomUserSerializer(read_only=True)
-
+    school_name = serializers.CharField(read_only=True) 
+    
     class Meta:
         model = SchoolNoticeBoard
         fields = '__all__'
