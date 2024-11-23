@@ -75,6 +75,7 @@ class SchoolBoard(models.Model):      # 학교 게시판 게시물
     board_title = models.CharField(max_length=15, choices=BOARD_CHOICES)
     title = models.CharField(max_length=50)
     writer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    school_name = models.CharField(max_length=100, blank=True, null=True) 
     anonymous = models.BooleanField(null=True, default=True)
     body = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
@@ -90,16 +91,17 @@ class SchoolBoard(models.Model):      # 학교 게시판 게시물
     def scraps_count(self):
         return self.scrap.count()
     
-class SchoolNoticeBoard(models.Model):      # 학교 공지사항 게시물
+class SchoolNoticeBoard(models.Model):  # 학교 공지사항 게시물
     BOARD_CHOICES = [
-        ('공지사항', '공지사항')
+        ('공지사항', '공지사항'),
     ]
 
     id = models.AutoField(primary_key=True)
     board_title = models.CharField(max_length=15, choices=BOARD_CHOICES)
     title = models.CharField(max_length=50)
     writer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    anonymous = models.BooleanField(blank=True, default=True)  # True이면 익명, False이면 닉네임
+    school_name = models.CharField(max_length=100, blank=True, null=True)  # 학교 이름 필드 추가
+    anonymous = models.BooleanField(blank=True, default=True)
     body = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
     like = models.ManyToManyField(CustomUser, related_name='schoolnotice_like', blank=True)
@@ -107,12 +109,13 @@ class SchoolNoticeBoard(models.Model):      # 학교 공지사항 게시물
 
     def comments_count(self):
         return self.comments.count()
-    
+
     def likes_count(self):
         return self.like.count()
-    
+
     def scraps_count(self):
         return self.scrap.count()
+
     
 class QuestionBoard(models.Model):    # 질문 게시판 게시물
     BOARD_CHOICES = [
