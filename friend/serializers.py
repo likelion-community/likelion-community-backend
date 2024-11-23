@@ -17,7 +17,7 @@ class MessageSerializer(serializers.ModelSerializer):
         fields = ['id', 'chatroom', 'sender', 'content', 'image', 'timestamp']
 
 class ChatRoomSerializer(serializers.ModelSerializer):
-    participants = serializers.SlugRelatedField(slug_field='username', queryset=User.objects.all(), many=True)
+    participants = UserSerializer(many=True)  
     messages = MessageSerializer(many=True, read_only=True)
 
     class Meta:
