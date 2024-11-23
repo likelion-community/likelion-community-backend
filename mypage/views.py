@@ -13,7 +13,7 @@ from django.utils.crypto import get_random_string
 from django.contrib.auth.hashers import make_password
 from django.conf import settings
 from .serializers import UserSerializer
-
+from rest_framework.reverse import reverse_lazy 
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -52,8 +52,6 @@ class UploadVerificationPhotoView(APIView):
             return Response({"error": f"업로드 중 오류가 발생했습니다: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-from rest_framework.reverse import reverse_lazy  # Lazy URL resolving for DRF
-
 class MyPageOverviewView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -83,7 +81,8 @@ class MyPageOverviewView(APIView):
                 "view_scraps": request.build_absolute_uri(reverse_lazy('mypage:myscraps')),
                 "view_posts": request.build_absolute_uri(reverse_lazy('mypage:myposts')),
                 "view_comments": request.build_absolute_uri(reverse_lazy('mypage:mycomments')),
-                "verification_status": request.build_absolute_uri(reverse_lazy('mypage:verification')),
+                # URL 이름 수정
+                "verification_status": request.build_absolute_uri(reverse_lazy('mypage:verification_status')),
             },
             "is_staff": user.is_staff, 
         }
