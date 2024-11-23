@@ -52,6 +52,7 @@ class UploadVerificationPhotoView(APIView):
             return Response({"error": f"업로드 중 오류가 발생했습니다: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+
 class MyPageOverviewView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -64,6 +65,14 @@ class MyPageOverviewView(APIView):
             verification = Verification.objects.get(user=user)
         except Verification.DoesNotExist:
             verification = None
+
+        # Verification에 연결된 사진 목록 가져오기
+        verification_photos = (
+            VerificationPhoto.objects.filter(verifications=verification)
+            if verification
+            else []
+        )
+        photo_serializer = VerificationPhotoSerializer(verification_photos, many=True)
 
         # 데이터 구조 정리 및 URL 반환
         response_data = {
@@ -81,10 +90,11 @@ class MyPageOverviewView(APIView):
                 "view_scraps": request.build_absolute_uri(reverse_lazy('mypage:myscraps')),
                 "view_posts": request.build_absolute_uri(reverse_lazy('mypage:myposts')),
                 "view_comments": request.build_absolute_uri(reverse_lazy('mypage:mycomments')),
-                # URL 이름 수정
                 "verification_status": request.build_absolute_uri(reverse_lazy('mypage:verification_status')),
+                "upload_verification_photos": request.build_absolute_uri(reverse_lazy('mypage:upload_verification_photos')),
             },
-            "is_staff": user.is_staff, 
+            "verification_photos": photo_serializer.data,
+            "is_staff": user.is_staff,
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
