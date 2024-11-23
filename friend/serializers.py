@@ -17,9 +17,20 @@ class MessageSerializer(serializers.ModelSerializer):
         fields = ['id', 'chatroom', 'sender', 'content', 'image', 'timestamp']
 
 class ChatRoomSerializer(serializers.ModelSerializer):
-    participants = UserSerializer(many=True)  
-    messages = MessageSerializer(many=True, read_only=True)
+    participants = UserSerializer(many=True)
+    latest_message = serializers.SerializerMethodField()  # 최신 메시지만 반환
 
     class Meta:
         model = ChatRoom
-        fields = ['id', 'name', 'participants', 'messages']
+        fields = ['id', 'name', 'participants', 'latest_message']
+
+    def get_latest_message(self, obj):
+        latest_message = obj.messages.order_by('-timestamp').first()
+        if latest_message:
+            return {
+                "id": latest_message.id,
+                "content": latest_message.content,
+                "timestamp": latest_message.timestamp,
+                "sender": latest_message.sender.nickname if latest_message.sender else None,
+            }
+        return None
