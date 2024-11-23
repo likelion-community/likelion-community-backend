@@ -100,16 +100,25 @@ class SchoolBoardViewSet(BaseBoardViewSet):
         serializer.save(writer=self.request.user, school_name=self.request.user.school_name)
 
 
-
 class QuestionBoardViewSet(BaseBoardViewSet):
     permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup]
-    queryset = QuestionBoard.objects.all().order_by('-time')
     serializer_class = QuestionBoardSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        # 사용자의 school_name과 일치하는 게시글만 반환
+        return QuestionBoard.objects.filter(writer__school_name=user.school_name).order_by('-time')
+
+    def perform_create(self, serializer):
+        # 작성자의 school_name을 게시글에 저장
+        serializer.save(writer=self.request.user)
+
 
 class MainNoticeBoardViewSet(BaseBoardViewSet):
     permission_classes = [IsAuthenticated, IsAdminorReadOnly]
     queryset = MainNoticeBoard.objects.all().order_by('-time')
     serializer_class = MainNoticeBoardSerializer
+
 
 class SchoolNoticeBoardViewSet(BaseBoardViewSet):
     permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup, IsStaffOrReadOnly]
