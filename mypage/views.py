@@ -19,39 +19,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-from django.urls import reverse
+from .models import VerificationPhoto, Verification
 from rest_framework.parsers import MultiPartParser, FormParser
-
-class UploadVerificationPhotoView(APIView):
-    permission_classes = [IsAuthenticated]
-    parser_classes = [MultiPartParser, FormParser]  # 파일 업로드를 위한 파서 설정
-
-    def post(self, request, *args, **kwargs):
-        user = request.user
-        photo_type = request.data.get("photo_type")  # school 또는 executive
-        photo = request.FILES.get("photo")  # 업로드된 파일 데이터
-
-        if not photo_type or photo_type not in ["school", "executive"]:
-            return Response({"error": "photo_type은 'school' 또는 'executive'여야 합니다."}, status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            verification, created = Verification.objects.get_or_create(user=user)
-
-            if photo_type == "school":
-                verification.school_verification_photo = photo
-            elif photo_type == "executive":
-                verification.executive_verification_photo = photo
-
-            verification.save()
-
-            return Response({
-                "message": f"{photo_type} 인증 사진이 업로드되었습니다.",
-                "photo_url": verification.school_verification_photo.url if photo_type == "school" else verification.executive_verification_photo.url
-            }, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({"error": f"업로드 중 오류가 발생했습니다: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
 
 class MyPageOverviewView(APIView):
     permission_classes = [IsAuthenticated]
@@ -252,6 +221,37 @@ class VerificationStatusView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
+class UpdateVerificationPhotosView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        files = request.FILES.getlist('photos')
+
+        if not files:
+            return Response({"error": "수정할 사진을 업로드해주세요."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            verification = Verification.objects.get(user=user)
+
+            # 기존 사진 삭제
+            verification.verification_photos.clear()
+
+            # 새로운 사진 추가
+            for file in files:
+                photo = VerificationPhoto.objects.create(photo=file)
+                verification.verification_photos.add(photo)
+
+            # 상태 초기화
+            verification.reset_status()
+            verification.save()
+
+            return Response({
+                "message": "사진이 성공적으로 수정되었습니다.",
+                "verification": VerificationSerializer(verification).data
+            }, status=status.HTTP_200_OK)
+        except Verification.DoesNotExist:
+            return Response({"error": "Verification 객체를 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)
 
 
 class FindIDEmailView(APIView):
