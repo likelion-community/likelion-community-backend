@@ -1,6 +1,13 @@
 from django.db import models
 from signup.models import CustomUser
 
+class VerificationPhoto(models.Model):
+    photo = models.ImageField(upload_to='verification_photos/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Photo {self.id}"
+    
 class Verification(models.Model):
     STATUS_CHOICES = [
         ('pending', '대기'),
@@ -15,8 +22,7 @@ class Verification(models.Model):
     ]
 
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='verification')
-    school_verification_photo = models.ImageField(upload_to='school_verifications/', blank=True, null=True)
-    executive_verification_photo = models.ImageField(upload_to='executive_verifications/', blank=True, null=True)
+    verification_photos = models.ManyToManyField(VerificationPhoto, related_name="verifications")
     school_status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     executive_status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     track = models.CharField(max_length=10, choices=TRACK_CHOICES, blank=True, null=True)
