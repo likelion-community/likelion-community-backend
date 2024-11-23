@@ -90,12 +90,12 @@ class MainBoardViewSet(BaseBoardViewSet):
 class SchoolBoardViewSet(BaseBoardViewSet):
     permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup]
     serializer_class = SchoolBoardSerializer
+    queryset = SchoolBoard.objects.all() 
 
     def get_queryset(self):
         user = self.request.user
-        # 사용자의 school_name과 일치하는 게시글만 반환
         return SchoolBoard.objects.filter(school_name=user.school_name).order_by('-time')
-    
+
     def perform_create(self, serializer):
         serializer.save(writer=self.request.user, school_name=self.request.user.school_name)
 

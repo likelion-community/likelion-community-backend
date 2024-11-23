@@ -6,17 +6,19 @@ from .views import *
 from . import views
 
 router = DefaultRouter()
-router.register(r'mainboard', MainBoardViewSet)
-router.register(r'schoolboard', SchoolBoardViewSet)
-router.register(r'questionboard', QuestionBoardViewSet)
-router.register(r'mainnoticeboard', MainNoticeBoardViewSet)
-router.register(r'schoolnoticeboard', SchoolNoticeBoardViewSet)
 
-router.register(r'maincomment', MainCommentViewSet)
-router.register(r'schoolcomment', SchoolCommentViewSet)
-router.register(r'questioncomment', QuestionCommentViewSet)
-router.register(r'mainnoticecomment', MainNoticeCommentViewSet)
-router.register(r'schoolnoticecomment', SchoolNoticeCommentViewSet)
+# `basename` 추가
+router.register(r'mainboard', MainBoardViewSet, basename='mainboard')
+router.register(r'schoolboard', SchoolBoardViewSet, basename='schoolboard')
+router.register(r'questionboard', QuestionBoardViewSet, basename='questionboard')
+router.register(r'mainnoticeboard', MainNoticeBoardViewSet, basename='mainnoticeboard')
+router.register(r'schoolnoticeboard', SchoolNoticeBoardViewSet, basename='schoolnoticeboard')
+
+router.register(r'maincomment', MainCommentViewSet, basename='maincomment')
+router.register(r'schoolcomment', SchoolCommentViewSet, basename='schoolcomment')
+router.register(r'questioncomment', QuestionCommentViewSet, basename='questioncomment')
+router.register(r'mainnoticecomment', MainNoticeCommentViewSet, basename='mainnoticecomment')
+router.register(r'schoolnoticecomment', SchoolNoticeCommentViewSet, basename='schoolnoticecomment')
 
 app_name = 'post'
 
@@ -28,4 +30,4 @@ urlpatterns = [
     path('latest-main-board/', views.latest_main_board, name='latest-main-board'),
     path('latest-school-board/', views.latest_school_board, name='latest-school-board'),
     path('latest-question-board/', views.latest_question_board, name='latest-question-board'),
-] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
