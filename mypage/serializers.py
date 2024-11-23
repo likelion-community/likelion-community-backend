@@ -15,15 +15,20 @@ class ProfileImageSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ['profile_image']
 
+class VerificationPhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VerificationPhoto
+        fields = ['id', 'photo', 'uploaded_at']
+
 class VerificationSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
+    verification_photos = VerificationPhotoSerializer(many=True, read_only=True)
 
     class Meta:
         model = Verification
         fields = [
             'user',
-            'school_verification_photo',
-            'executive_verification_photo',
+            'verification_photos',
             'school_status',
             'executive_status',
             'track',
