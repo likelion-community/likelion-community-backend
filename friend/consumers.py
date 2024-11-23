@@ -40,7 +40,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         try:
-            # 여기서 self.room_name을 안전하게 사용할 수 있음
             data = json.loads(text_data)
             message = data.get("message", "").strip()
             username = data.get("username")
@@ -101,6 +100,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         except Exception as e:
             print(f"Error in receive method: {e}")
 
+
     async def chat_message(self, event):
         try:
             message = event["message"]
@@ -112,10 +112,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "message": message,
                 "username": username,
                 "sender": sender_id,
-                "image_url": image_url  # 클라이언트로 전송
+                "image_url": image_url  # 이미지 URL을 클라이언트로 전송
             }))
         except Exception as e:
             print(f"Error in chat_message: {e}")
+
 
     @database_sync_to_async
     def get_chatroom(self, room_name):
