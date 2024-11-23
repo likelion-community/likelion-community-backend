@@ -30,7 +30,8 @@ class SchoolBoardSerializer(serializers.ModelSerializer):
     likes_count = serializers.IntegerField(read_only=True)
     scraps_count = serializers.IntegerField(read_only=True)
     writer = CustomUserSerializer(read_only=True)
-
+    school_name = serializers.CharField(read_only=True)
+    
     class Meta:
         model = SchoolBoard
         fields = '__all__'
