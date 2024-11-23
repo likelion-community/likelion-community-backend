@@ -95,7 +95,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     "message": message,
                     "username": nickname,
                     "sender": sender.id,
-                    "image": image_data,  # Base64 이미지 데이터 전송
+                    "image_url": saved_message.image.url if saved_message.image else None,  # 저장된 이미지 URL
                 }
             )
         except Exception as e:
@@ -106,14 +106,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
             message = event["message"]
             username = event["username"]
             sender_id = event["sender"]
-            image = event.get("image")  # Base64 이미지 데이터
+            image_url = event.get("image_url")  # 저장된 이미지 URL
 
-            # 클라이언트에 메시지 전송
             await self.send(text_data=json.dumps({
                 "message": message,
                 "username": username,
                 "sender": sender_id,
-                "image": image  # Base64 이미지 포함
+                "image_url": image_url  # 클라이언트로 전송
             }))
         except Exception as e:
             print(f"Error in chat_message: {e}")
