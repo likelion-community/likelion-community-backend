@@ -33,6 +33,9 @@ class Verification(models.Model):
         return f"인증 - {self.user.username} - 학교: {self.school_status}, 운영진: {self.executive_status}"
 
     def save(self, *args, **kwargs):
+         # 학교 인증: 'pending'이 아니면 True
+        self.user.is_school_verified = self.school_status != 'pending'
+        
         # executive_status에 따라 CustomUser의 is_staff 값 업데이트
         if self.executive_status == 'approved':
             self.user.is_staff = True
@@ -44,3 +47,8 @@ class Verification(models.Model):
         
         # Verification 저장
         super().save(*args, **kwargs)
+
+        def reset_status(self):
+            #학교 및 직위 상태를 초기화
+            self.school_status = 'pending'
+            self.executive_status = 'pending'

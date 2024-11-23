@@ -18,5 +18,6 @@ urlpatterns = [
     path('verifypassword/', VerifyPasswordView.as_view(), name='verifypassword'),
     path('resetpassword/', ResetPasswordView.as_view(), name='resetpassword'),
     path('verification/photos/', UploadVerificationPhotosView.as_view(), name='upload_verification_photos'),
+    path('verification/update_photos/', UpdateVerificationPhotosView.as_view(), name='update_verification_photos'),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
