@@ -32,11 +32,22 @@ class LoginHomeAPIView(APIView):
     permission_classes = [AllowAny]  # 누구나 접근 가능하게 설정
 
     def get(self, request):
+        if request.user.is_authenticated:
+            return Response({
+                'message': '로그인 상태입니다.',
+                'is_authenticated': True,
+                'username': request.user.username,
+                'email': request.user.email,
+                'redirect_url': '/main',  # 로그인된 상태면 메인으로 이동 가능
+            }, status=status.HTTP_200_OK)
+
         return Response({
             'message': '로그인 유형을 선택하세요.',
+            'is_authenticated': False,
             'kakao_login_url': '/signup/login/kakao/',
-            'custom_login_url': '/signup/login/custom/'
+            'custom_login_url': '/signup/login/custom/',
         }, status=status.HTTP_200_OK)
+
 
 from django.utils.decorators import method_decorator
 
