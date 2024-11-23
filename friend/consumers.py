@@ -72,9 +72,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 try:
                     format, imgstr = image_data.split(";base64,")
                     ext = format.split("/")[-1]
-                    if ext not in ["png", "jpg", "jpeg", "gif"]:
-                        print("Invalid image format.")
+                    if ext not in ["png", "jpg", "jpeg", "gif", "webp", "ico"]:
+                        print(f"Unsupported image format: {ext}")
                         return
+
                     image_file = ContentFile(base64.b64decode(imgstr), name=f"chat_{sender.id}_{chatroom.id}.{ext}")
                 except Exception as e:
                     print(f"Error decoding image data: {e}")
