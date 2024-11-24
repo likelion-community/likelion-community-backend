@@ -291,7 +291,7 @@ class UserTrackAttendanceView(APIView):
         all_attendances = Attendance.objects.filter(
             track__in=[user.track, '전체트랙'],
             created_by__school_name=user.school_name
-        ).order_by('-date')
+        ).order_by('-date', '-time')
 
         # 출석 코드 입력이 없는 경우 결석으로 기록
         for attendance in all_attendances:
@@ -340,5 +340,3 @@ class CreatorProfileView(APIView):
 
         except CustomUser.DoesNotExist:
             return Response({'message': '사용자를 찾을 수 없습니다.'}, status=status.HTTP_404_NOT_FOUND)
-        
-        
