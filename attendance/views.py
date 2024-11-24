@@ -189,11 +189,11 @@ class AttendanceCheckView(APIView):
                 return Response({'error': '출석코드가 일치하지 않아요'}, status=status.HTTP_400_BAD_REQUEST)
 
             # 출석 상태 결정
-            if time_difference <= attendance.late_threshold:
+            if time_difference <= attendance.late_threshold:  # 출석 기준 시간 내
                 status_type = '출석'
-            elif time_difference <= attendance.absent_threshold:
+            elif attendance.late_threshold < time_difference <= (attendance.late_threshold + attendance.absent_threshold):  # 지각 기준 시간
                 status_type = '지각'
-            else:
+            else:  # 결석 기준 시간
                 status_type = '결석'
 
             # AttendanceStatus 업데이트 또는 생성
@@ -280,74 +280,6 @@ class CreatorProfileView(APIView):
 class UserTrackAttendanceView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, *args, **kwargs):
-        user = request.user
-        current_time = timezone.now()
-
-        # 사용자 트랙과 '전체' 트랙을 포함한 출석 데이터 필터링
-        all_attendances = Attendance.objects.filter(
-            track__in=[user.track, '전체트랙'],
-            created_by__school_name=user.school_name
-        ).order_by('-date')
-
-        # 출석 코드 입력이 없는 경우 결석으로 기록
-        for attendance in all_attendances:
-            session_start = make_aware(
-                datetime.combine(attendance.date, attendance.time),
-                timezone=get_default_timezone()  # 서버의 기본 타임존
-            )
-            if current_time > session_start and not AttendanceStatus.objects.filter(attendance=attendance, user=user).exists():
-                # 출석 시간이 지난 후에만 '결석' 상태를 생성
-                absent_time = session_start + timezone.timedelta(minutes=attendance.absent_threshold)
-                if current_time > absent_time:
-                    AttendanceStatus.objects.create(
-                        attendance=attendance,
-                        user=user,
-                        status='결석',
-                        date=current_time.date()
-                    )
-
-        attendance_serializer = AttendanceSerializer(all_attendances, many=True)
-
-        # 사용자의 출석 상태 데이터 필터링 (운영자 제외)
-        user_attendance = AttendanceStatus.objects.filter(user=user, user__is_staff=False).order_by('-date')
-        status_serializer = AttendanceStatusSerializer(user_attendance, many=True)
-        attendance_count = user_attendance.values('status').annotate(count=Count('status'))
-        status_count = {
-            '출석': 0,
-            '지각': 0,
-            '결석': 0
-        }
-        for entry in attendance_count:
-            status_count[entry['status']] = entry['count']
-
-        response_data = {
-            "all_attendances": attendance_serializer.data,
-            "user_attendance": status_serializer.data,
-            "status_count": status_count
-        }
-
-        return Response(response_data, status=status.HTTP_200_OK)
-
-
-
-class CreatorProfileView(APIView):
-    permission_classes = [IsAuthenticated]
-    def get(self, request, *args, **kwargs):
-        user_id = kwargs.get('user_id')
-
-        try:
-            user = CustomUser.objects.get(id=user_id)
-            serializer = CreatorProfileSerializer(user)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-
-        except CustomUser.DoesNotExist:
-            return Response({'message': '사용자를 찾을 수 없습니다.'}, status=status.HTTP_404_NOT_FOUND)
-        
-        
-class UserTrackAttendanceView(APIView):
-    permission_classes = [IsAuthenticated]
-
     def get_queryset(self):
         return Attendance.objects.filter(created_by__school_name=self.request.user.school_name)
 
@@ -376,7 +308,7 @@ class UserTrackAttendanceView(APIView):
         attendance_serializer = AttendanceSerializer(all_attendances, many=True)
 
         # 사용자의 출석 상태 데이터 필터링
-        user_attendance = AttendanceStatus.objects.filter(user=user).order_by('-date')
+        user_attendance = AttendanceStatus.objects.filter(user=user, user__is_staff=False).order_by('-date')
         status_serializer = AttendanceStatusSerializer(user_attendance, many=True)
         attendance_count = user_attendance.values('status').annotate(count=Count('status'))
         status_count = {
@@ -394,3 +326,19 @@ class UserTrackAttendanceView(APIView):
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
+
+
+class CreatorProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+        user_id = kwargs.get('user_id')
+
+        try:
+            user = CustomUser.objects.get(id=user_id)
+            serializer = CreatorProfileSerializer(user)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except CustomUser.DoesNotExist:
+            return Response({'message': '사용자를 찾을 수 없습니다.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        
