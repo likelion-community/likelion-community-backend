@@ -2,6 +2,7 @@ from rest_framework import generics, status, views
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
+from django.db.models import Max
 from .models import ChatRoom, Message
 from .serializers import ChatRoomSerializer, MessageSerializer, UserSerializer
 from django.contrib.auth import get_user_model
@@ -28,8 +29,11 @@ class ChatRoomListView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        chat_rooms = ChatRoom.objects.filter(participants=user)
+        chat_rooms = ChatRoom.objects.filter(participants=user).annotate(
+            latest_message_timestamp=Max('messages__timestamp')
+        ).order_by('-latest_message_timestamp')  # 최신 메시지 순으로 정렬
         return chat_rooms
+
 
 class ChatRoomDetailView(views.APIView):
     permission_classes = [IsAuthenticated]

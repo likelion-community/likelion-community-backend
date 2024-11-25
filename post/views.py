@@ -89,23 +89,51 @@ class MainBoardViewSet(BaseBoardViewSet):
 
 class SchoolBoardViewSet(BaseBoardViewSet):
     permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup]
-    queryset = SchoolBoard.objects.all().order_by('-time')
     serializer_class = SchoolBoardSerializer
+    queryset = SchoolBoard.objects.all() 
+
+    def get_queryset(self):
+        user = self.request.user
+        return SchoolBoard.objects.filter(school_name=user.school_name).order_by('-time')
+
+    def perform_create(self, serializer):
+        serializer.save(writer=self.request.user, school_name=self.request.user.school_name)
+
 
 class QuestionBoardViewSet(BaseBoardViewSet):
     permission_classes = [IsAuthenticated]
     queryset = QuestionBoard.objects.all().order_by('-time')
     serializer_class = QuestionBoardSerializer
 
+    def get_queryset(self):
+        user = self.request.user
+        # 사용자의 school_name과 일치하는 게시글만 반환
+        return QuestionBoard.objects.filter(writer__school_name=user.school_name).order_by('-time')
+
+    def perform_create(self, serializer):
+        # 작성자의 school_name을 게시글에 저장
+        serializer.save(writer=self.request.user)
+
+
 class MainNoticeBoardViewSet(BaseBoardViewSet):
     permission_classes = [IsAuthenticated, IsAdminorReadOnly]
     queryset = MainNoticeBoard.objects.all().order_by('-time')
     serializer_class = MainNoticeBoardSerializer
 
+
 class SchoolNoticeBoardViewSet(BaseBoardViewSet):
     permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup, IsStaffOrReadOnly]
-    queryset = SchoolNoticeBoard.objects.all().order_by('-time')
     serializer_class = SchoolNoticeBoardSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        # 사용자의 school_name과 일치하는 게시글만 반환
+        return SchoolNoticeBoard.objects.filter(school_name=user.school_name).order_by('-time')
+
+    def perform_create(self, serializer):
+        # 게시글 생성 시 작성자의 school_name을 저장
+        serializer.save(writer=self.request.user, school_name=self.request.user.school_name)
+
 
 class CommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
@@ -204,13 +232,16 @@ def latest_main_notice(request):
     
 @api_view(['GET'])
 def latest_school_notice(request):
+    user = request.user
     try:
-        latest_notice = SchoolNoticeBoard.objects.latest('time')
+        # 사용자의 school_name과 일치하는 가장 최신 공지사항 반환
+        latest_notice = SchoolNoticeBoard.objects.filter(school_name=user.school_name).latest('time')
         serializer = SchoolNoticeBoardSerializer(latest_notice)
         return Response(serializer.data)
     except SchoolNoticeBoard.DoesNotExist:
         return Response({'detail': 'No notices available.'}, status=404)
-    
+
+
 # 메인 커뮤니티 가장 최근 글 반환
 @api_view(['GET'])
 def latest_main_board(request):
@@ -237,12 +268,14 @@ def latest_main_board(request):
 # 학교 커뮤니티 최근 게시물 3개 반환
 @api_view(['GET'])
 def latest_school_board(request):
-    latest_posts = SchoolBoard.objects.order_by('-time')[:3]
+    user = request.user
+    latest_posts = SchoolBoard.objects.filter(school_name=user.school_name).order_by('-time')[:3]
     if latest_posts.exists():
         serializer = SchoolBoardSerializer(latest_posts, many=True)
         return Response(serializer.data)
     else:
         return Response({'detail': 'No notices available.'}, status=404)
+
 
 @api_view(['GET'])
 def latest_question_board(request):

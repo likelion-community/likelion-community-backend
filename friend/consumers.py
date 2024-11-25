@@ -40,7 +40,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         try:
-            # 여기서 self.room_name을 안전하게 사용할 수 있음
             data = json.loads(text_data)
             message = data.get("message", "").strip()
             username = data.get("username")
@@ -73,9 +72,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 try:
                     format, imgstr = image_data.split(";base64,")
                     ext = format.split("/")[-1]
-                    if ext not in ["png", "jpg", "jpeg", "gif"]:
-                        print("Invalid image format.")
+                    if ext not in ["png", "jpg", "jpeg", "gif", "webp", "ico"]:
+                        print(f"Unsupported image format: {ext}")
                         return
+
                     image_file = ContentFile(base64.b64decode(imgstr), name=f"chat_{sender.id}_{chatroom.id}.{ext}")
                 except Exception as e:
                     print(f"Error decoding image data: {e}")
@@ -95,28 +95,29 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     "message": message,
                     "username": nickname,
                     "sender": sender.id,
-                    "image": image_data,  # Base64 이미지 데이터 전송
+                    "image_url": saved_message.image.url if saved_message.image else None,  # 저장된 이미지 URL
                 }
             )
         except Exception as e:
             print(f"Error in receive method: {e}")
+
 
     async def chat_message(self, event):
         try:
             message = event["message"]
             username = event["username"]
             sender_id = event["sender"]
-            image = event.get("image")  # Base64 이미지 데이터
+            image_url = event.get("image_url")  # 저장된 이미지 URL
 
-            # 클라이언트에 메시지 전송
             await self.send(text_data=json.dumps({
                 "message": message,
                 "username": username,
                 "sender": sender_id,
-                "image": image  # Base64 이미지 포함
+                "image_url": image_url  # 이미지 URL을 클라이언트로 전송
             }))
         except Exception as e:
             print(f"Error in chat_message: {e}")
+
 
     @database_sync_to_async
     def get_chatroom(self, room_name):

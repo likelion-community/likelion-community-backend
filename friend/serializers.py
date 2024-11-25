@@ -16,9 +16,11 @@ class MessageSerializer(serializers.ModelSerializer):
         model = Message
         fields = ['id', 'chatroom', 'sender', 'content', 'image', 'timestamp']
 
+
+
 class ChatRoomSerializer(serializers.ModelSerializer):
     participants = UserSerializer(many=True)
-    latest_message = serializers.SerializerMethodField()  # 최신 메시지만 반환
+    latest_message = serializers.SerializerMethodField() 
 
     class Meta:
         model = ChatRoom
@@ -30,7 +32,10 @@ class ChatRoomSerializer(serializers.ModelSerializer):
             return {
                 "id": latest_message.id,
                 "content": latest_message.content,
+                "image": latest_message.image.url if latest_message.image else None,
+                "is_image": bool(latest_message.image),  
                 "timestamp": latest_message.timestamp,
                 "sender": latest_message.sender.nickname if latest_message.sender else None,
             }
         return None
+

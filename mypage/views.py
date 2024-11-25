@@ -13,46 +13,14 @@ from django.utils.crypto import get_random_string
 from django.contrib.auth.hashers import make_password
 from django.conf import settings
 from .serializers import UserSerializer
-
+from rest_framework.reverse import reverse_lazy 
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-from django.urls import reverse
+from .models import VerificationPhoto, Verification
 from rest_framework.parsers import MultiPartParser, FormParser
-
-class UploadVerificationPhotoView(APIView):
-    permission_classes = [IsAuthenticated]
-    parser_classes = [MultiPartParser, FormParser]  # 파일 업로드를 위한 파서 설정
-
-    def post(self, request, *args, **kwargs):
-        user = request.user
-        photo_type = request.data.get("photo_type")  # school 또는 executive
-        photo = request.FILES.get("photo")  # 업로드된 파일 데이터
-
-        if not photo_type or photo_type not in ["school", "executive"]:
-            return Response({"error": "photo_type은 'school' 또는 'executive'여야 합니다."}, status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            verification, created = Verification.objects.get_or_create(user=user)
-
-            if photo_type == "school":
-                verification.school_verification_photo = photo
-            elif photo_type == "executive":
-                verification.executive_verification_photo = photo
-
-            verification.save()
-
-            return Response({
-                "message": f"{photo_type} 인증 사진이 업로드되었습니다.",
-                "photo_url": verification.school_verification_photo.url if photo_type == "school" else verification.executive_verification_photo.url
-            }, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({"error": f"업로드 중 오류가 발생했습니다: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-from rest_framework.reverse import reverse_lazy  # Lazy URL resolving for DRF
 
 class MyPageOverviewView(APIView):
     permission_classes = [IsAuthenticated]
@@ -66,6 +34,14 @@ class MyPageOverviewView(APIView):
             verification = Verification.objects.get(user=user)
         except Verification.DoesNotExist:
             verification = None
+
+        # Verification에 연결된 사진 목록 가져오기
+        verification_photos = (
+            VerificationPhoto.objects.filter(verifications=verification)
+            if verification
+            else []
+        )
+        photo_serializer = VerificationPhotoSerializer(verification_photos, many=True)
 
         # 데이터 구조 정리 및 URL 반환
         response_data = {
@@ -83,9 +59,11 @@ class MyPageOverviewView(APIView):
                 "view_scraps": request.build_absolute_uri(reverse_lazy('mypage:myscraps')),
                 "view_posts": request.build_absolute_uri(reverse_lazy('mypage:myposts')),
                 "view_comments": request.build_absolute_uri(reverse_lazy('mypage:mycomments')),
-                "verification_status": request.build_absolute_uri(reverse_lazy('mypage:verification')),
+                "verification_status": request.build_absolute_uri(reverse_lazy('mypage:verification_status')),
+                "upload_verification_photos": request.build_absolute_uri(reverse_lazy('mypage:upload_verification_photos')),
             },
-            "is_staff": user.is_staff, 
+            "verification_photos": photo_serializer.data,
+            "is_staff": user.is_staff,
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
@@ -165,14 +143,50 @@ class MyCommentView(APIView):
         }, status=status.HTTP_200_OK)
 
 
- #사용자가 이미 인증 정보를 가지고 있는 경우 기존 객체를 업데이트하도록 수정   
-class VerificationStatusView(APIView):
+class UploadVerificationPhotosView(APIView):
+    """
+    사용자가 사진을 업로드하고 Verification 객체와 연결
+    """
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser]  # 파일 업로드 지원
 
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        files = request.FILES.getlist('photos')  # 여러 파일 가져오기
+
+        if not files:
+            return Response({"error": "사진을 업로드해주세요."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Verification 객체 가져오기 또는 생성
+            verification, created = Verification.objects.get_or_create(user=user)
+
+            # 업로드된 파일 저장
+            for file in files:
+                photo = VerificationPhoto.objects.create(photo=file)
+                verification.verification_photos.add(photo)
+
+            verification.save()
+
+            return Response({
+                "message": "사진이 성공적으로 업로드되었습니다.",
+                "verification": VerificationSerializer(verification).data
+            }, status=status.HTTP_201_CREATED)
+
+        except Exception as e:
+            return Response({"error": f"업로드 중 오류가 발생했습니다: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+ #사용자가 이미 인증 정보를 가지고 있는 경우 기존 객체를 업데이트하도록 수정   
+class VerificationStatusView(APIView):
+    #Verification 상태를 확인하고 필요시 필드를 업데이트
+
+    permission_classes = [IsAuthenticated]
+
     def get(self, request, *args, **kwargs):
         user = request.user
-        
+
         try:
             verification = Verification.objects.get(user=user)
             serializer = VerificationSerializer(verification)
@@ -186,35 +200,59 @@ class VerificationStatusView(APIView):
                 "verification_status": "none"
             }, status=status.HTTP_200_OK)
 
+    def patch(self, request, *args, **kwargs):
+        #Verification 상태나 다른 필드를 업데이트
+        user = request.user
+
+        try:
+            # Verification 객체 가져오기
+            verification = Verification.objects.get(user=user)
+        except Verification.DoesNotExist:
+            return Response({"error": "Verification 객체가 존재하지 않습니다."}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = VerificationSerializer(verification, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({
+                "detail": "Verification 정보가 성공적으로 업데이트되었습니다.",
+                "verification_status": serializer.data
+            }, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class UpdateVerificationPhotosView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request, *args, **kwargs):
         user = request.user
-        serializer = VerificationSerializer(data=request.data, context={'user': user})
+        files = request.FILES.getlist('photos')
 
-        if serializer.is_valid():
-            try:
-                # 기존 인증 요청이 있는 경우 업데이트, 없는 경우 생성
-                verification, created = Verification.objects.get_or_create(user=user)
+        if not files:
+            return Response({"error": "수정할 사진을 업로드해주세요."}, status=status.HTTP_400_BAD_REQUEST)
 
-                # 요청 데이터로 모든 필드 업데이트
-                for field, value in serializer.validated_data.items():
-                    setattr(verification, field, value)
+        try:
+            verification = Verification.objects.get(user=user)
 
-                # 파일 업로드 처리
-                if "school_verification_photo" in request.FILES:
-                    verification.school_verification_photo = request.FILES["school_verification_photo"]
-                if "executive_verification_photo" in request.FILES:
-                    verification.executive_verification_photo = request.FILES["executive_verification_photo"]
+            # 기존 사진 삭제
+            verification.verification_photos.clear()
 
-                verification.save()
+            # 새로운 사진 추가
+            for file in files:
+                photo = VerificationPhoto.objects.create(photo=file)
+                verification.verification_photos.add(photo)
 
-                return Response({
-                    "detail": "인증 요청이 성공적으로 제출되었습니다.",
-                    "verification_status": VerificationSerializer(verification).data
-                }, status=status.HTTP_201_CREATED)
-            except Exception as e:
-                return Response({"error": f"인증 요청 중 오류가 발생했습니다: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            # 상태 초기화
+            verification.reset_status()
+            verification.save()
+
+            return Response({
+                "message": "사진이 성공적으로 수정되었습니다.",
+                "verification": VerificationSerializer(verification).data
+            }, status=status.HTTP_200_OK)
+        except Verification.DoesNotExist:
+            return Response({"error": "Verification 객체를 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)
+
 
 class FindIDEmailView(APIView):
     def post (self, request, *args, **kwargs):
