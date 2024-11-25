@@ -88,82 +88,45 @@ class SchoolNoticeBoardSerializer(serializers.ModelSerializer):
 
 # 댓글
 class MainCommentSerializer(serializers.ModelSerializer):
-    board = serializers.SerializerMethodField()  # 게시글 정보를 포함
-    writer = CustomUserSerializer(read_only=True)
+    writer = CustomUserSerializer(read_only=True)  # 작성자 정보 포함
 
     class Meta:
         model = MainComment
-        fields = '__all__'
-
-    def get_board(self, obj):
-        return {
-            "board_title": obj.board.board_title,  # 게시판 이름
-            "title": obj.board.title,             # 게시글 제목
-            "body": obj.board.body,               # 게시글 내용
-        }
+        fields = ['id', 'content', 'writer', 'anonymous', 'time', 'board'] 
 
 
 
 class SchoolCommentSerializer(serializers.ModelSerializer):
-    board = serializers.SerializerMethodField()  # 게시글 정보를 포함
     writer = CustomUserSerializer(read_only=True)
 
     class Meta:
         model = SchoolComment
-        fields = '__all__'
+        fields = ['id', 'content', 'writer', 'anonymous', 'time', 'board']
 
-    def get_board(self, obj):
-        return {
-            "board_title": obj.board.board_title,  # 게시판 이름
-            "title": obj.board.title,             # 게시글 제목
-            "body": obj.board.body,               # 게시글 내용
-        }
-
+        
 
 class QuestionCommentSerializer(serializers.ModelSerializer):
-    board = serializers.SerializerMethodField()  # 게시글 정보를 포함
     writer = CustomUserSerializer(read_only=True)
 
     class Meta:
         model = QuestionComment
-        fields = '__all__'
-
-    def get_board(self, obj):
-        return {
-            "track": obj.board.track,  # 게시판 이름 (QuestionBoard에서는 `track` 사용)
-            "title": obj.board.title, # 게시글 제목
-            "body": obj.board.body,   # 게시글 내용
-        }
+        fields = ['id', 'content', 'writer', 'anonymous', 'time', 'board']
 
 
 
 class MainNoticeCommentSerializer(serializers.ModelSerializer):
-    board = serializers.SerializerMethodField()  # 게시글 정보를 포함
     writer = CustomUserSerializer(read_only=True)
 
     class Meta:
         model = MainNoticeComment
-        fields = '__all__'
+        fields = ['id', 'content', 'writer', 'anonymous', 'time', 'board']
 
-    def get_board(self, obj):
-        return {
-            "board_title": obj.board.board_title,  # 게시판 이름
-            "title": obj.board.title,             # 게시글 제목
-            "body": obj.board.body,               # 게시글 내용
-        }
 
 
 class SchoolNoticeCommentSerializer(serializers.ModelSerializer):
-    board = serializers.SerializerMethodField()  # 게시글 정보를 포함
     writer = CustomUserSerializer(read_only=True)
 
     class Meta:
         model = SchoolNoticeComment
-        fields = '__all__'
+        fields = ['id', 'content', 'writer', 'anonymous', 'time', 'board']
 
-    def get_board(self, obj):
-        return {
-            "board_title": obj.board.board_title,  # 게시판 이름
-            "title": obj.board.title,             # 게시글 제목
-            "body": obj.board.body,               # 게시글 내용
-        }

@@ -1,4 +1,4 @@
-# admin.py
+# signup/admin.py
 from django.contrib import admin
 from .models import CustomUser
 from django.contrib.sessions.models import Session
