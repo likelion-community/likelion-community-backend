@@ -162,7 +162,6 @@ class LeaveChatRoomView(views.APIView):
             return Response({"error": "이미 채팅방에서 나갔거나 참가자가 아닙니다."}, status=status.HTTP_400_BAD_REQUEST)
 
         # 나간 사용자를 exited_users에 추가
-        chatroom.participants.remove(request.user)
         chatroom.exited_users.add(request.user)
 
         return Response({"message": "채팅방을 나갔습니다."}, status=status.HTTP_200_OK)
