@@ -40,15 +40,38 @@ class ChatRoomDetailView(views.APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, pk):
-        chatroom = get_object_or_404(ChatRoom, pk=pk, participants=request.user)
+        chatroom = get_object_or_404(ChatRoom, pk=pk)
 
-        # 참여자 정보 직렬화
-        participants = UserSerializer(chatroom.participants, many=True).data
+        # 사용자가 채팅방에서 나갔는지 확인
+        if request.user in chatroom.exited_users.all():
+            return Response({"error": "채팅방에 접근할 수 없습니다."}, status=status.HTTP_403_FORBIDDEN)
+
+        # 참여자 정보 가져오기
+        participants = chatroom.participants.all()
+
+        # 나간 사용자 필터링
+        serialized_participants = []
+        for participant in participants:
+            is_exited = participant in chatroom.exited_users.all()
+            serialized_participants.append({
+                "id": participant.id,
+                "username": None if is_exited else participant.username,
+                "nickname": "알 수 없음" if is_exited else participant.nickname,
+                "profile_image": None if is_exited else (participant.profile_image.url if participant.profile_image else None)
+            })
 
         # 상대방 정보
-        other_participant = chatroom.participants.exclude(id=request.user.id).first()
+        other_participant = participants.exclude(id=request.user.id).first()
         if not other_participant:
             return Response({"error": "상대방을 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)
+
+        is_other_exited = other_participant in chatroom.exited_users.all()
+        other_participant_info = {
+            "id": other_participant.id,
+            "username": None if is_other_exited else other_participant.username,
+            "nickname": "알 수 없음" if is_other_exited else other_participant.nickname,
+            "profile_image": None if is_other_exited else (other_participant.profile_image.url if other_participant.profile_image else None),
+        }
 
         # 메시지 직렬화
         messages = chatroom.messages.all().order_by('timestamp')
@@ -56,19 +79,19 @@ class ChatRoomDetailView(views.APIView):
 
         return Response({
             "messages": message_serializer.data,
-            "other_participant": {
-                "id": other_participant.id,
-                "username": other_participant.username,
-                "nickname": other_participant.nickname,
-                "profile_image": other_participant.profile_image.url if other_participant.profile_image else None,
-            },
+            "other_participant": other_participant_info,
             "room_name": chatroom.name,
-            "participants": participants  # 직렬화된 participants 반환
+            "participants": serialized_participants,  # 나간 사용자는 필터링된 데이터 반환
         })
 
     def post(self, request, pk):
         """특정 채팅방에 메시지 전송 (텍스트 또는 사진 포함 가능)"""
-        chatroom = get_object_or_404(ChatRoom, pk=pk, participants=request.user)
+        chatroom = get_object_or_404(ChatRoom, pk=pk)
+
+        # 나간 사용자는 메시지를 보낼 수 없음
+        if request.user in chatroom.exited_users.all():
+            return Response({"error": "채팅방에 메시지를 보낼 수 없습니다."}, status=status.HTTP_403_FORBIDDEN)
+
         serializer = MessageSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(chatroom=chatroom, sender=request.user)
@@ -138,7 +161,7 @@ class LeaveChatRoomView(views.APIView):
         if not chatroom.participants.filter(id=request.user.id).exists():
             return Response({"error": "이미 채팅방에서 나갔거나 참가자가 아닙니다."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # 현재 사용자 채팅방에서 제거
-        chatroom.participants.remove(request.user)
+        # 나간 사용자를 exited_users에 추가
+        chatroom.exited_users.add(request.user)
 
         return Response({"message": "채팅방을 나갔습니다."}, status=status.HTTP_200_OK)
