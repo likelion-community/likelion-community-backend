@@ -226,32 +226,45 @@ class UpdateVerificationPhotosView(APIView):
 
     def post(self, request, *args, **kwargs):
         user = request.user
-        files = request.FILES.getlist('photos')
+        files = request.FILES.getlist('photos')  # 여러 파일 가져오기
 
         if not files:
             return Response({"error": "수정할 사진을 업로드해주세요."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
+            # Verification 객체 가져오기
             verification = Verification.objects.get(user=user)
+            print("Verification 객체 가져오기 성공")  # 디버깅 로그 추가
 
             # 기존 사진 삭제
             verification.verification_photos.clear()
+            print("기존 사진 삭제 완료")  # 디버깅 로그 추가
 
             # 새로운 사진 추가
             for file in files:
+                print(f"업로드된 파일: {file}")  # 업로드된 파일 확인
                 photo = VerificationPhoto.objects.create(photo=file)
                 verification.verification_photos.add(photo)
+            print("새로운 사진 추가 완료")  # 디버깅 로그 추가
 
             # 상태 초기화
             verification.reset_status()
             verification.save()
+            print("Verification 상태 초기화 및 저장 완료")  # 디버깅 로그 추가
 
             return Response({
                 "message": "사진이 성공적으로 수정되었습니다.",
                 "verification": VerificationSerializer(verification).data
             }, status=status.HTTP_200_OK)
+
         except Verification.DoesNotExist:
+            print("Verification 객체가 존재하지 않음")  # 디버깅 로그 추가
             return Response({"error": "Verification 객체를 찾을 수 없습니다."}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as e:
+            import traceback
+            print("업로드 중 예외 발생:", traceback.format_exc())  # 전체 예외 출력
+            return Response({"error": f"업로드 중 오류가 발생했습니다: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class FindIDEmailView(APIView):
