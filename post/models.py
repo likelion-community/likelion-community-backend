@@ -119,6 +119,7 @@ class SchoolNoticeBoard(models.Model):  # 학교 공지사항 게시물
     
 class QuestionBoard(models.Model):    # 질문 게시판 게시물
     BOARD_CHOICES = [
+        ('공통','공통'),
         ('기획/디자인', '기획/디자인'),
         ('프론트엔드', '프론트엔드'),
         ('백엔드', '백엔드')
