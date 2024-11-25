@@ -48,7 +48,12 @@ class Verification(models.Model):
         # Verification 저장
         super().save(*args, **kwargs)
 
-        def reset_status(self):
-            #학교 및 직위 상태를 초기화
-            self.school_status = 'pending'
-            self.executive_status = 'pending'
+    def reset_status(self):
+        #학교 및 직위 상태를 초기화
+        self.school_status = 'pending'
+        self.executive_status = 'pending'
+        self.track = None 
+        # CustomUser 모델 업데이트
+        self.user.is_school_verified = False
+        self.user.is_staff = False
+        self.user.save()
