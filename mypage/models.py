@@ -53,4 +53,6 @@ class Verification(models.Model):
         self.school_status = 'pending'
         self.executive_status = 'pending'
         self.track = None 
-        self.save()
+        # CustomUser 모델 업데이트
+        self.user.is_school_verified = False
+        self.user.save()
