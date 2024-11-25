@@ -128,6 +128,7 @@ class QuestionBoard(models.Model):    # 질문 게시판 게시물
     track = models.CharField(max_length=15, choices=BOARD_CHOICES)
     title = models.CharField(max_length=50)
     writer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    school_name = models.CharField(max_length=100, blank=True, null=True) 
     anonymous = models.BooleanField(null=True, default=True)
     body = models.TextField()
     time = models.DateTimeField(auto_now_add=True)

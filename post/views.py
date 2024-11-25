@@ -111,8 +111,9 @@ class QuestionBoardViewSet(BaseBoardViewSet):
         return QuestionBoard.objects.filter(writer__school_name=user.school_name).order_by('-time')
 
     def perform_create(self, serializer):
-        # 작성자의 school_name을 게시글에 저장
-        serializer.save(writer=self.request.user)
+        user = self.request.user
+        serializer.save(writer=user, school_name=user.school_name)
+
 
 
 class MainNoticeBoardViewSet(BaseBoardViewSet):
