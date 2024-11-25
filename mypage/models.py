@@ -52,4 +52,5 @@ class Verification(models.Model):
         #학교 및 직위 상태를 초기화
         self.school_status = 'pending'
         self.executive_status = 'pending'
+        self.track = None 
         self.save()
