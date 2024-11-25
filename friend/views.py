@@ -133,7 +133,6 @@ def leave_chatroom(chatroom, user):
     chatroom.exited_users.add(user)
 
 
-
 class LeaveChatRoomView(views.APIView):
     permission_classes = [IsAuthenticated]
 
@@ -144,7 +143,15 @@ class LeaveChatRoomView(views.APIView):
         if not chatroom.participants.filter(id=request.user.id).exists():
             return Response({"error": "이미 채팅방에서 나갔거나 참가자가 아닙니다."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # 나가기 처리
-        leave_chatroom(chatroom, request.user)
+        # 다른 사용자들에게 알림 메시지 전송
+        Message.objects.create(
+            chatroom=chatroom,
+            sender=None,  # 시스템 메시지로 표시
+            content=f"{request.user.nickname}님이 채팅방을 나갔습니다.",
+            timestamp=now(),
+        )
+
+        # 현재 사용자 채팅방에서 제거
+        chatroom.participants.remove(request.user)
 
         return Response({"message": "채팅방을 나갔습니다."}, status=status.HTTP_200_OK)
