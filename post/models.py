@@ -161,18 +161,33 @@ class BaseComment(models.Model):
         if not self.anonymous:
             return None
 
-        # 게시물 내에서 동일한 작성자 익명 번호가 있으면 반환
-        existing_comment = self.__class__.objects.filter(board=self.board, writer=self.writer, anonymous=True).first()
+        # 자식 클래스에서 board 필드를 동적으로 참조
+        board = getattr(self, 'board', None)
+        if not board:
+            raise ValueError("board field is missing in the derived comment class.")
+
+        # 게시물 내에서 동일 작성자의 익명 번호가 있으면 반환
+        existing_comment = self.__class__.objects.filter(board=board, writer=self.writer, anonymous=True).first()
         if existing_comment:
             return existing_comment.anonymous_number
 
         # 새 익명 번호 생성
-        max_anonymous_number = self.__class__.objects.filter(board=self.board, anonymous=True).aggregate(Max('anonymous_number'))['anonymous_number__max'] or 0
+        max_anonymous_number = self.__class__.objects.filter(board=board, anonymous=True).aggregate(Max('anonymous_number'))['anonymous_number__max'] or 0
         return max_anonymous_number + 1
+
+    def save(self, *args, **kwargs):
+        """익명 번호 자동 생성"""
+        if self.anonymous and not self.anonymous_number:
+            self.anonymous_number = self.assign_anonymous_number()
+        super().save(*args, **kwargs)
 
     def is_author(self):
         """댓글 작성자가 게시물 작성자인지 확인"""
-        return self.writer == self.board.writer
+        board = getattr(self, 'board', None)
+        if not board:
+            raise ValueError("board field is missing in the derived comment class.")
+        return self.writer == board.writer
+
     
 
 class MainComment(BaseComment):   # 전체 게시판 댓글

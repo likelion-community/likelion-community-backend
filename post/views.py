@@ -141,11 +141,6 @@ class BaseCommentViewSet(viewsets.ModelViewSet):
         writer = self.request.user
         comment = serializer.save(writer=writer)
 
-        # 익명 번호 부여
-        if comment.anonymous:
-            comment.anonymous_number = self.assign_anonymous_number(comment.board, writer)
-            comment.save()
-
         # 게시물 작성자가 아닌 경우 알림 전송
         if comment.writer != comment.board.writer:
             notification = Notification.objects.create(
@@ -155,21 +150,13 @@ class BaseCommentViewSet(viewsets.ModelViewSet):
             )
             send_notification(notification)
 
-    def assign_anonymous_number(self, board, writer):
-        """게시물 내 익명 번호 생성"""
-        existing_comment = self.queryset.filter(board=board, writer=writer, anonymous=True).first()
-        if existing_comment:
-            return existing_comment.anonymous_number  # 이미 존재하면 해당 번호 반환
-
-        max_number = self.queryset.filter(board=board, anonymous=True).aggregate(Max('anonymous_number'))['anonymous_number__max'] or 0
-        return max_number + 1  # 새로운 번호 생성
-
     def get_queryset(self):
         """특정 게시물의 댓글만 반환"""
         board_id = self.request.query_params.get('board_id')
         if board_id:
             return self.queryset.filter(board_id=board_id)
         return self.queryset
+
     
 
 class MainCommentViewSet(BaseCommentViewSet):
