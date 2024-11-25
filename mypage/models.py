@@ -55,4 +55,5 @@ class Verification(models.Model):
         self.track = None 
         # CustomUser 모델 업데이트
         self.user.is_school_verified = False
+        self.user.is_staff = False
         self.user.save()
