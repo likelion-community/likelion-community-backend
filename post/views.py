@@ -90,7 +90,7 @@ class MainBoardViewSet(BaseBoardViewSet):
 class SchoolBoardViewSet(BaseBoardViewSet):
     permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup]
     serializer_class = SchoolBoardSerializer
-    queryset = SchoolBoard.objects.all() 
+    queryset = SchoolBoard.objects.all().order_by('-time')
 
     def get_queryset(self):
         user = self.request.user
@@ -101,7 +101,7 @@ class SchoolBoardViewSet(BaseBoardViewSet):
 
 
 class QuestionBoardViewSet(BaseBoardViewSet):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsSchoolVerifiedAndSameGroup]
     queryset = QuestionBoard.objects.all().order_by('-time')
     serializer_class = QuestionBoardSerializer
 
