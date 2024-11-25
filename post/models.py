@@ -1,5 +1,6 @@
 from django.db import models
 from signup.models import CustomUser
+from django.db.models import Max
 
 # 게시물 이미지 모델
 class PostImage(models.Model):
@@ -145,38 +146,48 @@ class QuestionBoard(models.Model):    # 질문 게시판 게시물
         return self.scrap.count()
 
 # 댓글
-class MainComment(models.Model):    # 전체 게시판 댓글
+class BaseComment(models.Model):
     content = models.TextField()
     writer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    # writer가 탈퇴했을 경우 예외처리 추가해야 함
     anonymous = models.BooleanField(null=True, default=True)
+    anonymous_number = models.PositiveIntegerField(null=True, blank=True)  # 익명 번호
     time = models.DateTimeField(auto_now_add=True)
-    board = models.ForeignKey(MainBoard, related_name='comments', null=False, blank=False, on_delete=models.CASCADE)
 
-class MainNoticeComment(models.Model):    # 이벤트/공지게시판 댓글
-    content = models.TextField()
-    writer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    anonymous = models.BooleanField(null=True, default=True)
-    time = models.DateTimeField(auto_now_add=True)
-    board = models.ForeignKey(MainNoticeBoard, related_name='comments', null=False, blank=False, on_delete=models.CASCADE)
+    class Meta:
+        abstract = True  # 추상 클래스, 데이터베이스에 테이블로 생성되지 않음
 
-class SchoolNoticeComment(models.Model):    # 공지사항 댓글
-    content = models.TextField()
-    writer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    anonymous = models.BooleanField(null=True, default=True)
-    time = models.DateTimeField(auto_now_add=True)
-    board = models.ForeignKey(SchoolNoticeBoard, related_name='comments', null=False, blank=False, on_delete=models.CASCADE)
+    def assign_anonymous_number(self):
+        """게시물 내에서 익명 번호를 자동으로 부여"""
+        if not self.anonymous:
+            return None
 
-class SchoolComment(models.Model):    # 학교 게시판 댓글
-    content = models.TextField()
-    writer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    anonymous = models.BooleanField(null=True, default=True)
-    time = models.DateTimeField(auto_now_add=True)
-    board = models.ForeignKey(SchoolBoard, related_name='comments', null=False, blank=False, on_delete=models.CASCADE)
+        # 게시물 내에서 동일한 작성자 익명 번호가 있으면 반환
+        existing_comment = self.__class__.objects.filter(board=self.board, writer=self.writer, anonymous=True).first()
+        if existing_comment:
+            return existing_comment.anonymous_number
 
-class QuestionComment(models.Model):    # 질문 게시판 댓글
-    content = models.TextField()
-    writer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    anonymous = models.BooleanField(null=True, default=True)
-    time = models.DateTimeField(auto_now_add=True)
-    board = models.ForeignKey(QuestionBoard, related_name='comments', null=False, blank=False, on_delete=models.CASCADE)
+        # 새 익명 번호 생성
+        max_anonymous_number = self.__class__.objects.filter(board=self.board, anonymous=True).aggregate(Max('anonymous_number'))['anonymous_number__max'] or 0
+        return max_anonymous_number + 1
+
+    def is_author(self):
+        """댓글 작성자가 게시물 작성자인지 확인"""
+        return self.writer == self.board.writer
+    
+
+class MainComment(BaseComment):   # 전체 게시판 댓글
+    board = models.ForeignKey('MainBoard', related_name='comments', on_delete=models.CASCADE)
+
+
+class MainNoticeComment(BaseComment):   # 이벤트/공지게시판 댓글
+    board = models.ForeignKey('MainNoticeBoard', related_name='comments', on_delete=models.CASCADE)
+
+class SchoolComment(BaseComment):    # 학교 게시판 댓글
+    board = models.ForeignKey('SchoolBoard', related_name='comments', on_delete=models.CASCADE)
+
+class SchoolNoticeComment(BaseComment): # 학교 공지사항 댓글
+    board = models.ForeignKey('SchoolNoticeBoard', related_name='comments', on_delete=models.CASCADE)
+
+class QuestionComment(BaseComment): # 학교 질문 게시판 댓글
+    board = models.ForeignKey('QuestionBoard', related_name='comments', on_delete=models.CASCADE)
+

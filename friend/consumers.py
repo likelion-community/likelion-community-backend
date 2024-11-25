@@ -29,12 +29,26 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         try:
-            print(f"WebSocket 연결 종료: {close_code}")
+            # 상대방에게 나감 알림
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    "type": "chat_message",
+                    "event": "user_left",  # 이벤트 타입
+                    "message": None,
+                    "username": None,
+                    "sender": None,
+                    "image_url": None,
+                }
+            )
+
             # 그룹에서 WebSocket 채널 제거
             await self.channel_layer.group_discard(
                 self.room_group_name,
                 self.channel_name
             )
+
+            print(f"WebSocket 연결 종료: {close_code}")
         except Exception as e:
             print(f"Error in disconnect method: {e}")
 
@@ -92,10 +106,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 self.room_group_name,
                 {
                     "type": "chat_message",
+                    "event": "new_message",  # 이벤트 타입
                     "message": message,
                     "username": nickname,
                     "sender": sender.id,
-                    "image_url": saved_message.image.url if saved_message.image else None,  # 저장된 이미지 URL
+                    "image_url": saved_message.image.url if saved_message.image else None,
                 }
             )
         except Exception as e:
@@ -104,17 +119,26 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def chat_message(self, event):
         try:
-            message = event["message"]
-            username = event["username"]
-            sender_id = event["sender"]
+            message = event.get("message")
+            username = event.get("username")
+            sender_id = event.get("sender")
             image_url = event.get("image_url")  # 저장된 이미지 URL
+            event_type = event.get("event")  # 이벤트 타입
 
-            await self.send(text_data=json.dumps({
-                "message": message,
-                "username": username,
-                "sender": sender_id,
-                "image_url": image_url  # 이미지 URL을 클라이언트로 전송
-            }))
+            # 이벤트 타입에 따라 다른 메시지를 클라이언트로 전송
+            if event_type == "user_left":
+                await self.send(text_data=json.dumps({
+                    "event": "user_left",
+                    "message": "상대방이 채팅방을 나갔습니다. 더 이상 채팅을 할 수 없습니다.",
+                }))
+            elif event_type == "new_message":
+                await self.send(text_data=json.dumps({
+                    "event": "new_message",
+                    "message": message,
+                    "username": username,
+                    "sender": sender_id,
+                    "image_url": image_url,
+                }))
         except Exception as e:
             print(f"Error in chat_message: {e}")
 
