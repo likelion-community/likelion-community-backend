@@ -7,6 +7,14 @@ class ChatRoom(models.Model):
         'signup.CustomUser',  # 문자열로 지정
         related_name='chatrooms'
     )
+    exited_users = models.ManyToManyField(
+        'signup.CustomUser',  # 나간 사용자
+        related_name='exited_chatrooms',
+        blank=True
+    )
+
+    def __str__(self):
+        return f"ChatRoom({self.name})"
 
 class Message(models.Model):
     chatroom = models.ForeignKey(

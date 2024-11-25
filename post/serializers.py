@@ -87,46 +87,34 @@ class SchoolNoticeBoardSerializer(serializers.ModelSerializer):
 
 
 # 댓글
-class MainCommentSerializer(serializers.ModelSerializer):
-    writer = CustomUserSerializer(read_only=True)  # 작성자 정보 포함
+class BaseCommentSerializer(serializers.ModelSerializer):
+    anonymous_number = serializers.IntegerField(read_only=True)  # 익명 번호
+    is_author = serializers.SerializerMethodField()  # 작성자인지 여부
 
     class Meta:
+        model = MainComment  # 상속하는 클래스에서 변경
+        fields = ['id', 'content', 'writer', 'anonymous', 'anonymous_number', 'is_author', 'time', 'board']
+
+    def get_is_author(self, obj):
+        return obj.writer == obj.board.writer  # 댓글 작성자가 게시물 작성자인지 확인
+
+
+class MainCommentSerializer(BaseCommentSerializer):
+    class Meta(BaseCommentSerializer.Meta):
         model = MainComment
-        fields = ['id', 'content', 'writer', 'anonymous', 'time', 'board'] 
 
-
-
-class SchoolCommentSerializer(serializers.ModelSerializer):
-    writer = CustomUserSerializer(read_only=True)
-
-    class Meta:
+class SchoolCommentSerializer(BaseCommentSerializer):
+    class Meta(BaseCommentSerializer.Meta):
         model = SchoolComment
-        fields = ['id', 'content', 'writer', 'anonymous', 'time', 'board']
 
-        
-
-class QuestionCommentSerializer(serializers.ModelSerializer):
-    writer = CustomUserSerializer(read_only=True)
-
-    class Meta:
+class QuestionCommentSerializer(BaseCommentSerializer):
+    class Meta(BaseCommentSerializer.Meta):
         model = QuestionComment
-        fields = ['id', 'content', 'writer', 'anonymous', 'time', 'board']
 
-
-
-class MainNoticeCommentSerializer(serializers.ModelSerializer):
-    writer = CustomUserSerializer(read_only=True)
-
-    class Meta:
+class MainNoticeCommentSerializer(BaseCommentSerializer):
+    class Meta(BaseCommentSerializer.Meta):
         model = MainNoticeComment
-        fields = ['id', 'content', 'writer', 'anonymous', 'time', 'board']
 
-
-
-class SchoolNoticeCommentSerializer(serializers.ModelSerializer):
-    writer = CustomUserSerializer(read_only=True)
-
-    class Meta:
+class SchoolNoticeCommentSerializer(BaseCommentSerializer):
+    class Meta(BaseCommentSerializer.Meta):
         model = SchoolNoticeComment
-        fields = ['id', 'content', 'writer', 'anonymous', 'time', 'board']
-
