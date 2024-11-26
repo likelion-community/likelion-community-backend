@@ -98,23 +98,21 @@ class BaseCommentSerializer(serializers.ModelSerializer):
         fields = ['id', 'content', 'writer', 'anonymous', 'anonymous_number', 'is_author', 'time', 'board']
 
     def __init__(self, *args, **kwargs):
-        """
-        동적으로 queryset 설정.
-        각 서브클래스에서 정의된 모델에 따라 Queryset을 설정합니다.
-        """
         super().__init__(*args, **kwargs)
-        if self.Meta.model == MainComment:
+        # 모델 기반으로 동적 Queryset 설정
+        model = self.Meta.model
+        if model == MainComment:
             self.fields['board'].queryset = MainBoard.objects.all()
-        elif self.Meta.model == SchoolComment:
+        elif model == SchoolComment:
             self.fields['board'].queryset = SchoolBoard.objects.all()
-        elif self.Meta.model == QuestionComment:
+        elif model == QuestionComment:
             self.fields['board'].queryset = QuestionBoard.objects.all()
-        elif self.Meta.model == MainNoticeComment:
+        elif model == MainNoticeComment:
             self.fields['board'].queryset = MainNoticeBoard.objects.all()
-        elif self.Meta.model == SchoolNoticeComment:
+        elif model == SchoolNoticeComment:
             self.fields['board'].queryset = SchoolNoticeBoard.objects.all()
         else:
-            raise ValueError("BaseCommentSerializer: Unknown model specified in Meta")
+            raise ValueError(f"BaseCommentSerializer 초기화 오류: {model} 모델에 대한 Queryset 설정이 누락되었습니다.")
 
     def get_is_author(self, obj):
         return obj.writer == obj.board.writer  # 댓글 작성자가 게시물 작성자인지 확인
