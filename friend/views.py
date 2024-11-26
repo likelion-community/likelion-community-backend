@@ -155,13 +155,23 @@ class LeaveChatRoomView(views.APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, pk):
+        # 인증되지 않은 경우
+        if not request.user.is_authenticated:
+            return Response(
+                {"error": "사용자가 인증되지 않았습니다."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+        # 채팅방 존재 여부 확인
         chatroom = get_object_or_404(ChatRoom, pk=pk)
 
-        # 현재 사용자가 참가자인지 확인
+        # 채팅방 참가자인지 확인
         if not chatroom.participants.filter(id=request.user.id).exists():
-            return Response({"error": "이미 채팅방에서 나갔거나 참가자가 아닙니다."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "채팅방 참가자가 아닙니다."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
-        # 나간 사용자를 exited_users에 추가
+        # 나간 사용자로 추가
         chatroom.exited_users.add(request.user)
-
         return Response({"message": "채팅방을 나갔습니다."}, status=status.HTTP_200_OK)
