@@ -10,8 +10,8 @@ class Notification(models.Model):
     message = models.CharField(max_length=255)
     is_read = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)  # 게시판 타입
-    object_id = models.PositiveIntegerField()  # 게시판 ID
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True, blank=True)  # 게시판 타입
+    object_id = models.PositiveIntegerField(null=True, blank=True)  # 게시판 ID
     related_board = GenericForeignKey('content_type', 'object_id')
 
     def __str__(self):
