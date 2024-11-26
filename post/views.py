@@ -139,43 +139,23 @@ class SchoolNoticeBoardViewSet(BaseBoardViewSet):
 class BaseCommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         writer = self.request.user
-        post_id = self.kwargs.get('post_id')  # URL에서 게시글 ID 가져오기
-        if not post_id:
-            raise serializers.ValidationError("게시글 ID가 필요합니다.")
+        comment = serializer.save(writer=writer)
 
-        # 게시글 모델 동적으로 가져오기
-        board_models = {
-            MainBoard: MainComment,
-            SchoolBoard: SchoolComment,
-            QuestionBoard: QuestionComment,
-            MainNoticeBoard: MainNoticeComment,
-            SchoolNoticeBoard: SchoolNoticeComment
-        }
-
-        board = None
-        comment_model = None
-        for board_model, comment_model_candidate in board_models.items():
-            try:
-                board = board_model.objects.get(pk=post_id)
-                comment_model = comment_model_candidate
-                break
-            except board_model.DoesNotExist:
-                continue
-
-        if not board or not comment_model:
-            raise serializers.ValidationError("유효하지 않은 게시글 ID입니다.")
-
-        # 댓글 저장
-        serializer.save(writer=writer, board=board)
-
-        # 알림 전송
-        if writer != board.writer:
+        # 게시물 작성자가 아닌 경우 알림 전송
+        if comment.writer != comment.board.writer:
             notification = Notification.objects.create(
-                user=board.writer,
-                message=f"'{board.title}' 게시글에 댓글이 달렸습니다.",
-                related_board=board
+                user=comment.board.writer,
+                message=f"'{comment.board.title}' 게시글에 댓글이 달렸습니다.",
+                related_board=comment.board
             )
             send_notification(notification)
+
+    def get_queryset(self):
+        """특정 게시물의 댓글만 반환"""
+        board_id = self.request.query_params.get('board_id')
+        if board_id:
+            return self.queryset.filter(board_id=board_id)
+        return self.queryset
 
     
 
