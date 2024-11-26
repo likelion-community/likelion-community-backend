@@ -139,18 +139,20 @@ class SchoolNoticeBoardViewSet(BaseBoardViewSet):
 class BaseCommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         writer = self.request.user
-        post_id = self.kwargs.get('post_id')  # 게시글 ID를 URL 경로에서 가져옴
-        if not post_id:
-            raise serializers.ValidationError("게시글 ID를 URL 경로에서 제공해야 합니다.")
 
-        # 게시글 모델과 게시판 정보 가져오기
+        # 요청에서 게시글 ID 가져오기
+        post_id = self.request.data.get('post_id')
+        if not post_id:
+            raise serializers.ValidationError("게시글 ID가 필요합니다.")
+
+        # 게시글 모델 동적으로 가져오기
         board_model = self.queryset.model._meta.get_field('board').related_model
         try:
             post = board_model.objects.get(pk=post_id)
         except board_model.DoesNotExist:
             raise serializers.ValidationError("유효하지 않은 게시글 ID입니다.")
 
-        # 댓글 저장: 게시판 자동 설정
+        # 댓글 저장
         serializer.save(writer=writer, board=post)
 
         # 알림 전송
