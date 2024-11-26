@@ -1,17 +1,18 @@
 # home/models.py
 from django.db import models
 from signup.models import CustomUser
-from post.models import MainBoard, SchoolBoard, MainNoticeBoard, SchoolNoticeBoard
+from post.models import *
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 
 class Notification(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='notifications')
     message = models.CharField(max_length=255)
-    is_read = models.BooleanField(default=False)  # 읽음 상태
+    is_read = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
-    related_board = models.ForeignKey(MainBoard, null=True, blank=True, on_delete=models.CASCADE)
-    related_main_notice_board = models.ForeignKey(MainNoticeBoard, null=True, blank=True, on_delete=models.CASCADE)
-    related_school_board = models.ForeignKey(SchoolBoard, null=True, blank=True, on_delete=models.CASCADE)
-    related_school_notice_board = models.ForeignKey(SchoolNoticeBoard, null=True, blank=True, on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)  # 게시판 타입
+    object_id = models.PositiveIntegerField()  # 게시판 ID
+    related_board = GenericForeignKey('content_type', 'object_id')
 
     def __str__(self):
         return f"Notification for {self.user.username}: {self.message}"

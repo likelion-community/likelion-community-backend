@@ -2,8 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from datetime import timedelta
-from django.utils import timezone
+from django.contrib.contenttypes.models import ContentType
 from rest_framework.decorators import action, api_view
 from .models import *
 from .serializers import *
@@ -22,7 +21,12 @@ def send_notification(notification):
         f'notifications_{notification.user.id}',
         {
             'type': 'send_notification',
-            'message': NotificationSerializer(notification).data
+            'message': {
+                'message': notification.message,
+                'timestamp': str(notification.timestamp),
+                'content_type': notification.content_type.model,  # 게시판 타입 (예: mainboard, schoolboard 등)
+                'object_id': notification.object_id,  # 게시판 ID
+            }
         }
     )
 
@@ -141,12 +145,13 @@ class BaseCommentViewSet(viewsets.ModelViewSet):
         writer = self.request.user
         comment = serializer.save(writer=writer)
 
-        # 게시물 작성자가 아닌 경우 알림 전송
+        # 알림 생성 로직
         if comment.writer != comment.board.writer:
             notification = Notification.objects.create(
                 user=comment.board.writer,
                 message=f"'{comment.board.title}' 게시글에 댓글이 달렸습니다.",
-                related_board=comment.board
+                content_type=ContentType.objects.get_for_model(comment.board),
+                object_id=comment.board.id
             )
             send_notification(notification)
 
