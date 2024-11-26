@@ -23,5 +23,14 @@ class NotificationConsumer(AsyncWebsocketConsumer):
 
     async def send_notification(self, event):
         message = event['message']
+
+        # 알림 데이터를 확장하여 클라이언트로 전송
+        notification_data = {
+            'message': message['message'],
+            'timestamp': message['timestamp'],
+            'content_type': message.get('content_type'),  # 게시판 타입
+            'object_id': message.get('object_id'),  # 게시판 ID
+        }
+
         # 클라이언트에게 메시지 전송
-        await self.send(text_data=json.dumps(message))
+        await self.send(text_data=json.dumps(notification_data))
