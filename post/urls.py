@@ -24,6 +24,14 @@ app_name = 'post'
 
 urlpatterns = [
     path('', include(router.urls)),
+
+    # 댓글 작성 시 게시글 ID를 URL 경로로 포함
+    path('schoolcomment/<int:post_id>/', SchoolCommentViewSet.as_view({'post': 'create'}), name='schoolcomment-create'),
+    path('maincomment/<int:post_id>/', MainCommentViewSet.as_view({'post': 'create'}), name='maincomment-create'),
+    path('questioncomment/<int:post_id>/', QuestionCommentViewSet.as_view({'post': 'create'}), name='questioncomment-create'),
+    path('mainnoticecomment/<int:post_id>/', MainNoticeCommentViewSet.as_view({'post': 'create'}), name='mainnoticecomment-create'),
+    path('schoolnoticecomment/<int:post_id>/', SchoolNoticeCommentViewSet.as_view({'post': 'create'}), name='schoolnoticecomment-create'),
+
     path('popularposts/', PopularPostViewSet.as_view(), name='popularposts'),
     path('latest-main-notice/', views.latest_main_notice, name='latest-main-notice'),
     path('latest-school-notice/', views.latest_school_notice, name='latest-school-notice'),
