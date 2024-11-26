@@ -23,8 +23,10 @@ class IsSchoolVerifiedAndSameGroup(permissions.BasePermission):
         return True
 
     def has_object_permission(self, request, view, obj):
-        # 같은 학교 그룹인지 확인 (운영진과 일반 사용자 모두 적용)
-        return request.user.school_name == obj.school_name
+        # 같은 학교 그룹인지 확인
+        if hasattr(obj, 'board') and hasattr(obj.board, 'school_name'):
+            return request.user.school_name == obj.board.school_name
+        return False
     
     
 class IsAdminorReadOnly(permissions.BasePermission):

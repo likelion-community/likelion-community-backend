@@ -109,18 +109,27 @@ class MainCommentSerializer(BaseCommentSerializer):
 
 class SchoolCommentSerializer(BaseCommentSerializer):
     board = serializers.PrimaryKeyRelatedField(queryset=SchoolBoard.objects.all())  # SchoolBoard와 연결
+    school_name = serializers.SerializerMethodField()  # school_name 추가
 
     class Meta(BaseCommentSerializer.Meta):
         model = SchoolComment
-        fields = BaseCommentSerializer.Meta.fields
+        fields = BaseCommentSerializer.Meta.fields + ['school_name'] 
+
+    def get_school_name(self, obj):
+        return obj.board.school_name  # board에서 school_name을 가져옴
+
 
 
 class QuestionCommentSerializer(BaseCommentSerializer):
     board = serializers.PrimaryKeyRelatedField(queryset=QuestionBoard.objects.all())  # QuestionBoard와 연결
+    school_name = serializers.SerializerMethodField() 
 
     class Meta(BaseCommentSerializer.Meta):
         model = QuestionComment
-        fields = BaseCommentSerializer.Meta.fields
+        fields = BaseCommentSerializer.Meta.fields + ['school_name']
+
+    def get_school_name(self, obj):
+        return obj.board.school_name  # board에서 school_name을 가져옴
 
 
 class MainNoticeCommentSerializer(BaseCommentSerializer):
@@ -133,7 +142,11 @@ class MainNoticeCommentSerializer(BaseCommentSerializer):
 
 class SchoolNoticeCommentSerializer(BaseCommentSerializer):
     board = serializers.PrimaryKeyRelatedField(queryset=SchoolNoticeBoard.objects.all())  # SchoolNoticeBoard와 연결
+    school_name = serializers.SerializerMethodField() 
 
     class Meta(BaseCommentSerializer.Meta):
         model = SchoolNoticeComment
-        fields = BaseCommentSerializer.Meta.fields
+        fields = BaseCommentSerializer.Meta.fields + ['school_name']
+
+    def get_school_name(self, obj):
+        return obj.board.school_name  # board에서 school_name을 가져옴
