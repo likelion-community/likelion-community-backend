@@ -139,28 +139,41 @@ class SchoolNoticeBoardViewSet(BaseBoardViewSet):
 class BaseCommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         writer = self.request.user
-
-        # 요청에서 게시글 ID 가져오기
-        post_id = self.request.data.get('post_id')
+        post_id = self.kwargs.get('post_id')  # URL에서 게시글 ID 가져오기
         if not post_id:
             raise serializers.ValidationError("게시글 ID가 필요합니다.")
 
         # 게시글 모델 동적으로 가져오기
-        board_model = self.queryset.model._meta.get_field('board').related_model
-        try:
-            post = board_model.objects.get(pk=post_id)
-        except board_model.DoesNotExist:
+        board_models = {
+            MainBoard: MainComment,
+            SchoolBoard: SchoolComment,
+            QuestionBoard: QuestionComment,
+            MainNoticeBoard: MainNoticeComment,
+            SchoolNoticeBoard: SchoolNoticeComment
+        }
+
+        board = None
+        comment_model = None
+        for board_model, comment_model_candidate in board_models.items():
+            try:
+                board = board_model.objects.get(pk=post_id)
+                comment_model = comment_model_candidate
+                break
+            except board_model.DoesNotExist:
+                continue
+
+        if not board or not comment_model:
             raise serializers.ValidationError("유효하지 않은 게시글 ID입니다.")
 
         # 댓글 저장
-        serializer.save(writer=writer, board=post)
+        serializer.save(writer=writer, board=board)
 
         # 알림 전송
-        if writer != post.writer:
+        if writer != board.writer:
             notification = Notification.objects.create(
-                user=post.writer,
-                message=f"'{post.title}' 게시글에 댓글이 달렸습니다.",
-                related_board=post
+                user=board.writer,
+                message=f"'{board.title}' 게시글에 댓글이 달렸습니다.",
+                related_board=board
             )
             send_notification(notification)
 

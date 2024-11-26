@@ -87,30 +87,16 @@ class SchoolNoticeBoardSerializer(serializers.ModelSerializer):
 
 
 # 댓글
+
 class BaseCommentSerializer(serializers.ModelSerializer):
     anonymous_number = serializers.IntegerField(read_only=True)  # 익명 번호
     is_author = serializers.SerializerMethodField()  # 작성자인지 여부
     writer = CustomUserSerializer(read_only=True)  # 작성자 정보
-    board = serializers.PrimaryKeyRelatedField(queryset=None)  # 게시글 선택
+    board = serializers.PrimaryKeyRelatedField(read_only=True)  # 게시글 필드 읽기 전용
 
     class Meta:
         model = None  # 서브클래스에서 설정 필요
         fields = ['id', 'content', 'writer', 'anonymous', 'anonymous_number', 'is_author', 'time', 'board']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # 댓글의 게시글 Queryset 설정
-        model = self.Meta.model
-        if model == MainComment:
-            self.fields['board'].queryset = MainBoard.objects.all()
-        elif model == SchoolComment:
-            self.fields['board'].queryset = SchoolBoard.objects.all()
-        elif model == QuestionComment:
-            self.fields['board'].queryset = QuestionBoard.objects.all()
-        elif model == MainNoticeComment:
-            self.fields['board'].queryset = MainNoticeBoard.objects.all()
-        elif model == SchoolNoticeComment:
-            self.fields['board'].queryset = SchoolNoticeBoard.objects.all()
 
     def get_is_author(self, obj):
         return obj.writer == obj.board.writer  # 댓글 작성자가 게시물 작성자인지 확인
