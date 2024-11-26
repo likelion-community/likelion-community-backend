@@ -2,7 +2,7 @@ from django.utils.deprecation import MiddlewareMixin
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib.auth import logout
-
+from django.middleware.csrf import CsrfViewMiddleware
 
 class CompleteProfileRequiredMiddleware(MiddlewareMixin):
     def process_request(self, request):
@@ -21,3 +21,16 @@ class CompleteProfileRequiredMiddleware(MiddlewareMixin):
                 return redirect('signup:login_home')
 
         return None
+
+
+class CustomCsrfViewMiddleware(CsrfViewMiddleware):
+    """
+    CSRF 검증 실패 시 추가 디버깅 로그를 출력하는 Custom Middleware
+    """
+    def _reject(self, request, reason):
+        # CSRF 검증 실패 이유를 출력
+        print("CSRF 검증 실패 이유:", reason)
+        print("요청 메서드:", request.method)
+        print("요청 경로:", request.path)
+        print("요청 헤더:", dict(request.headers))
+        return super()._reject(request, reason)
