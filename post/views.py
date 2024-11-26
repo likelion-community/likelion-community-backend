@@ -139,23 +139,29 @@ class SchoolNoticeBoardViewSet(BaseBoardViewSet):
 class BaseCommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         writer = self.request.user
-        comment = serializer.save(writer=writer)
+        board_id = self.request.data.get('board_id')  # 요청에서 board_id 가져오기
+        if not board_id:
+            raise serializers.ValidationError("게시판 ID를 제공해야 합니다.")
 
-        # 게시물 작성자가 아닌 경우 알림 전송
-        if comment.writer != comment.board.writer:
+        # 댓글 작성된 게시판 가져오기
+        board_model = self.queryset.model._meta.get_field('board').related_model
+        try:
+            board = board_model.objects.get(pk=board_id)
+        except board_model.DoesNotExist:
+            raise serializers.ValidationError("유효하지 않은 게시판 ID입니다.")
+
+        # 댓글 저장
+        serializer.save(writer=writer, board=board)
+
+        # 알림 전송
+        if writer != board.writer:
             notification = Notification.objects.create(
-                user=comment.board.writer,
-                message=f"'{comment.board.title}' 게시글에 댓글이 달렸습니다.",
-                related_board=comment.board
+                user=board.writer,
+                message=f"'{board.title}' 게시글에 댓글이 달렸습니다.",
+                related_board=board
             )
             send_notification(notification)
 
-    def get_queryset(self):
-        """특정 게시물의 댓글만 반환"""
-        board_id = self.request.query_params.get('board_id')
-        if board_id:
-            return self.queryset.filter(board_id=board_id)
-        return self.queryset
 
     
 

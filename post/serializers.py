@@ -90,34 +90,11 @@ class SchoolNoticeBoardSerializer(serializers.ModelSerializer):
 class BaseCommentSerializer(serializers.ModelSerializer):
     anonymous_number = serializers.IntegerField(read_only=True)  # 익명 번호
     is_author = serializers.SerializerMethodField()  # 작성자인지 여부
-    board = serializers.PrimaryKeyRelatedField(queryset=None)  # 동적 Queryset 설정
-    writer = CustomUserSerializer(read_only=True)
+    writer = CustomUserSerializer(read_only=True)  # 작성자 정보
 
-    
     class Meta:
         model = None  # 서브클래스에서 설정 필요
-        fields = ['id', 'content', 'writer', 'anonymous', 'anonymous_number', 'is_author', 'time', 'board']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # 동적으로 queryset 설정
-        self.set_board_queryset()
-
-    def set_board_queryset(self):
-        """모델에 따라 board의 queryset을 동적으로 설정"""
-        model = self.Meta.model
-        if model == MainComment:
-            self.fields['board'].queryset = MainBoard.objects.all()
-        elif model == SchoolComment:
-            self.fields['board'].queryset = SchoolBoard.objects.all()
-        elif model == QuestionComment:
-            self.fields['board'].queryset = QuestionBoard.objects.all()
-        elif model == MainNoticeComment:
-            self.fields['board'].queryset = MainNoticeBoard.objects.all()
-        elif model == SchoolNoticeComment:
-            self.fields['board'].queryset = SchoolNoticeBoard.objects.all()
-        else:
-            raise ValueError("Invalid model provided for BaseCommentSerializer")
+        fields = ['id', 'content', 'writer', 'anonymous', 'anonymous_number', 'is_author', 'time']
 
     def get_is_author(self, obj):
         return obj.writer == obj.board.writer  # 댓글 작성자가 게시물 작성자인지 확인
