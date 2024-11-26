@@ -46,20 +46,15 @@ class CompleteProfileRequiredMiddleware(MiddlewareMixin):
     def process_request(self, request):
         print("CompleteProfileRequiredMiddleware: 요청 처리 시작")
         print("요청 사용자:", request.user)
-        print("요청 경로:", request.path)
-
-        if request.user.is_authenticated and request.user.is_superuser:
-            print("관리자는 통과")
-            return None
+        print("요청 세션 키:", request.session.session_key)
 
         if request.user.is_authenticated:
             if request.user.is_profile_complete:
-                print("프로필이 완료된 사용자, 통과")
+                print("프로필 완료된 사용자 통과")
                 return None
+            else:
+                print("프로필 미완료 사용자")
+                return redirect('signup:complete_profile')
 
-            print("프로필 미완료 사용자, 리디렉션")
-            if request.path != reverse('signup:complete_profile'):
-                logout(request)
-                return redirect('signup:login_home')
-
+        print("익명 사용자")
         return None
