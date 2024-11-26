@@ -51,7 +51,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # CORS 미들웨어는 앞에 위치
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',  # 세션 미들웨어
-    'signup.middlewares.CustomCsrfViewMiddleware', # CSRF 미들웨어는 세션 다음, 인증 앞에
+    'django.middleware.csrf.CsrfViewMiddleware',  # CSRF 미들웨어는 세션 다음, 인증 앞에
     'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',  # 인증 미들웨어
     'signup.middlewares.CompleteProfileRequiredMiddleware',
@@ -269,11 +269,6 @@ LOGGING = {
             'handlers': ['console', 'file'],  # 요청 상태를 콘솔과 파일로 기록
             'level': 'DEBUG',
             'propagate': False,
-        },
-        'django.security.csrf': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': True,
         },
     },
 }
