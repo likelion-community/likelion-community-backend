@@ -29,25 +29,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         try:
-            # 상대방에게 나감 알림
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    "type": "chat_message",
-                    "event": "user_left",  # 이벤트 타입
-                    "message": None,
-                    "username": None,
-                    "sender": None,
-                    "image_url": None,
-                }
-            )
-
-            # 그룹에서 WebSocket 채널 제거
+            # WebSocket 연결 종료 시 그룹에서 채널 제거
             await self.channel_layer.group_discard(
                 self.room_group_name,
                 self.channel_name
             )
-
             print(f"WebSocket 연결 종료: {close_code}")
         except Exception as e:
             print(f"Error in disconnect method: {e}")
@@ -116,7 +102,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         except Exception as e:
             print(f"Error in receive method: {e}")
 
-
     async def chat_message(self, event):
         try:
             message = event.get("message")
@@ -126,12 +111,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             event_type = event.get("event")  # 이벤트 타입
 
             # 이벤트 타입에 따라 다른 메시지를 클라이언트로 전송
-            if event_type == "user_left":
-                await self.send(text_data=json.dumps({
-                    "event": "user_left",
-                    "message": "상대방이 채팅방을 나갔습니다. 더 이상 채팅을 할 수 없습니다.",
-                }))
-            elif event_type == "new_message":
+            if event_type == "new_message":
                 await self.send(text_data=json.dumps({
                     "event": "new_message",
                     "message": message,
@@ -141,7 +121,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 }))
         except Exception as e:
             print(f"Error in chat_message: {e}")
-
 
     @database_sync_to_async
     def get_chatroom(self, room_name):
