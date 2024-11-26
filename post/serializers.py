@@ -97,23 +97,24 @@ class BaseCommentSerializer(serializers.ModelSerializer):
         model = None  # 서브클래스에서 설정 필요
         fields = ['id', 'content', 'writer', 'anonymous', 'anonymous_number', 'is_author', 'time', 'board']
 
-    def get_queryset(self):
-        """동적으로 QuerySet을 반환합니다."""
-        if self.Meta.model == MainComment:
-            return MainBoard.objects.all()
-        elif self.Meta.model == SchoolComment:
-            return SchoolBoard.objects.all()
-        elif self.Meta.model == QuestionComment:
-            return QuestionBoard.objects.all()
-        elif self.Meta.model == MainNoticeComment:
-            return MainNoticeBoard.objects.all()
-        elif self.Meta.model == SchoolNoticeComment:
-            return SchoolNoticeBoard.objects.all()
-        raise ValueError(f"Invalid model: {self.Meta.model}")
-
     def __init__(self, *args, **kwargs):
+        """
+        동적으로 queryset 설정.
+        각 서브클래스에서 정의된 모델에 따라 Queryset을 설정합니다.
+        """
         super().__init__(*args, **kwargs)
-        self.fields['board'].queryset = self.get_queryset()
+        if self.Meta.model == MainComment:
+            self.fields['board'].queryset = MainBoard.objects.all()
+        elif self.Meta.model == SchoolComment:
+            self.fields['board'].queryset = SchoolBoard.objects.all()
+        elif self.Meta.model == QuestionComment:
+            self.fields['board'].queryset = QuestionBoard.objects.all()
+        elif self.Meta.model == MainNoticeComment:
+            self.fields['board'].queryset = MainNoticeBoard.objects.all()
+        elif self.Meta.model == SchoolNoticeComment:
+            self.fields['board'].queryset = SchoolNoticeBoard.objects.all()
+        else:
+            raise ValueError("BaseCommentSerializer: Unknown model specified in Meta")
 
     def get_is_author(self, obj):
         return obj.writer == obj.board.writer  # 댓글 작성자가 게시물 작성자인지 확인
