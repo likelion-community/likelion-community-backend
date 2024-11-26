@@ -90,6 +90,7 @@ class SchoolNoticeBoardSerializer(serializers.ModelSerializer):
 class BaseCommentSerializer(serializers.ModelSerializer):
     anonymous_number = serializers.IntegerField(read_only=True)  # 익명 번호
     is_author = serializers.SerializerMethodField()  # 작성자인지 여부
+    writer = CustomUserSerializer(read_only=True)  # 작성자 정보
     board = serializers.PrimaryKeyRelatedField(queryset=None)  # 게시글 선택
 
     class Meta:
