@@ -91,6 +91,7 @@ class BaseCommentSerializer(serializers.ModelSerializer):
     anonymous_number = serializers.IntegerField(read_only=True)  # 익명 번호
     is_author = serializers.SerializerMethodField()  # 작성자인지 여부
     board = serializers.PrimaryKeyRelatedField(queryset=None)  # 동적 Queryset
+    writer = CustomUserSerializer(read_only=True)
 
     class Meta:
         model = None  # 서브클래스에서 설정 필요
