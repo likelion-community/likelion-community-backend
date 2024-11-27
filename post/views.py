@@ -86,6 +86,11 @@ class BaseBoardViewSet(viewsets.ModelViewSet):
         except self.queryset.model.DoesNotExist:
             return Response({'error': 'Post not found'}, status=status.HTTP_404_NOT_FOUND)
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
+    
 class MainBoardViewSet(BaseBoardViewSet):
     permission_classes = [IsAuthenticated]
     queryset = MainBoard.objects.all().order_by('-time')
