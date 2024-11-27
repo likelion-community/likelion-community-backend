@@ -14,7 +14,8 @@ class MainBoardSerializer(serializers.ModelSerializer):
     scraps_count = serializers.IntegerField(read_only=True)
     images = PostImageSerializer(many=True, read_only=True) 
     writer = CustomUserSerializer(read_only=True)
-
+    is_liked = serializers.SerializerMethodField(read_only=True)
+    is_scraped = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = MainBoard
@@ -22,6 +23,14 @@ class MainBoardSerializer(serializers.ModelSerializer):
 
     def get_comments_count(self, obj):
         return obj.comments_count()
+
+    def get_is_liked(self, obj):
+        user = self.context['request'].user
+        return obj.like.filter(id=user.id).exists()
+
+    def get_is_scraped(self, obj):
+        user = self.context['request'].user
+        return obj.scrap.filter(id=user.id).exists()
 
 
 
@@ -31,6 +40,8 @@ class SchoolBoardSerializer(serializers.ModelSerializer):
     scraps_count = serializers.IntegerField(read_only=True)
     writer = CustomUserSerializer(read_only=True)
     school_name = serializers.CharField(read_only=True)
+    is_liked = serializers.SerializerMethodField(read_only=True)
+    is_scraped = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = SchoolBoard
@@ -39,13 +50,24 @@ class SchoolBoardSerializer(serializers.ModelSerializer):
     def get_comments_count(self, obj):
         return obj.comments_count()
 
+    def get_is_liked(self, obj):
+        user = self.context['request'].user
+        return obj.like.filter(id=user.id).exists()
+
+    def get_is_scraped(self, obj):
+        user = self.context['request'].user
+        return obj.scrap.filter(id=user.id).exists()
+
 
 class QuestionBoardSerializer(serializers.ModelSerializer):
     comments_count = serializers.SerializerMethodField(read_only=True)
     likes_count = serializers.IntegerField(read_only=True)
     scraps_count = serializers.IntegerField(read_only=True)
     writer = CustomUserSerializer(read_only=True)
-    school_name = serializers.SerializerMethodField()  # school_name 추가
+    school_name = serializers.SerializerMethodField()  
+    is_liked = serializers.SerializerMethodField(read_only=True)
+    is_scraped = serializers.SerializerMethodField(read_only=True)
+
 
     class Meta:
         model = QuestionBoard
@@ -57,12 +79,23 @@ class QuestionBoardSerializer(serializers.ModelSerializer):
     def get_school_name(self, obj):
         return obj.writer.school_name 
     
+    def get_is_liked(self, obj):
+        user = self.context['request'].user
+        return obj.like.filter(id=user.id).exists()
+
+    def get_is_scraped(self, obj):
+        user = self.context['request'].user
+        return obj.scrap.filter(id=user.id).exists()
+    
     
 class MainNoticeBoardSerializer(serializers.ModelSerializer):
     comments_count = serializers.SerializerMethodField(read_only=True)
     likes_count = serializers.IntegerField(read_only=True)
     scraps_count = serializers.IntegerField(read_only=True)
     writer = CustomUserSerializer(read_only=True)
+    is_liked = serializers.SerializerMethodField(read_only=True)
+    is_scraped = serializers.SerializerMethodField(read_only=True)
+
 
     class Meta:
         model = MainNoticeBoard
@@ -70,6 +103,15 @@ class MainNoticeBoardSerializer(serializers.ModelSerializer):
 
     def get_comments_count(self, obj):
         return obj.comments_count()
+
+    def get_is_liked(self, obj):
+        user = self.context['request'].user
+        return obj.like.filter(id=user.id).exists()
+
+    def get_is_scraped(self, obj):
+        user = self.context['request'].user
+        return obj.scrap.filter(id=user.id).exists()
+    
     
 class SchoolNoticeBoardSerializer(serializers.ModelSerializer):
     comments_count = serializers.SerializerMethodField(read_only=True)
@@ -77,6 +119,9 @@ class SchoolNoticeBoardSerializer(serializers.ModelSerializer):
     scraps_count = serializers.IntegerField(read_only=True)
     writer = CustomUserSerializer(read_only=True)
     school_name = serializers.CharField(read_only=True) 
+    is_liked = serializers.SerializerMethodField(read_only=True)
+    is_scraped = serializers.SerializerMethodField(read_only=True)
+
 
     class Meta:
         model = SchoolNoticeBoard
@@ -84,6 +129,14 @@ class SchoolNoticeBoardSerializer(serializers.ModelSerializer):
 
     def get_comments_count(self, obj):
         return obj.comments_count()
+    
+    def get_is_liked(self, obj):
+        user = self.context['request'].user
+        return obj.like.filter(id=user.id).exists()
+
+    def get_is_scraped(self, obj):
+        user = self.context['request'].user
+        return obj.scrap.filter(id=user.id).exists()
 
 
 # 댓글
