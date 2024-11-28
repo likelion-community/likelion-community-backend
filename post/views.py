@@ -229,9 +229,9 @@ class PopularPostViewSet(APIView):
         data = []
         for post in top_posts:
             if isinstance(post, MainBoard):
-                serializer = MainBoardSerializer(post)
+                serializer = MainBoardSerializer(post, context={'request': request}) 
             else:
-                serializer = MainNoticeBoardSerializer(post)
+                serializer = MainNoticeBoardSerializer(post, context={'request': request}) 
             data.append(serializer.data)
         
         return Response(data)
@@ -241,18 +241,18 @@ class PopularPostViewSet(APIView):
 def latest_main_notice(request):
     try:
         latest_notice = MainNoticeBoard.objects.latest('time')
-        serializer = MainNoticeBoardSerializer(latest_notice)
+        serializer = MainNoticeBoardSerializer(latest_notice, context={'request': request})  
         return Response(serializer.data)
     except MainNoticeBoard.DoesNotExist:
         return Response({'detail': 'No notices available.'}, status=404)
+
     
 @api_view(['GET'])
 def latest_school_notice(request):
     user = request.user
     try:
-        # 사용자의 school_name과 일치하는 가장 최신 공지사항 반환
         latest_notice = SchoolNoticeBoard.objects.filter(school_name=user.school_name).latest('time')
-        serializer = SchoolNoticeBoardSerializer(latest_notice)
+        serializer = SchoolNoticeBoardSerializer(latest_notice, context={'request': request})  
         return Response(serializer.data)
     except SchoolNoticeBoard.DoesNotExist:
         return Response({'detail': 'No notices available.'}, status=404)
@@ -278,7 +278,7 @@ def latest_main_board(request):
             latest_posts.append(latest_post)
 
     # 시리얼라이즈 모든 최신 게시물
-    serializer = MainBoardSerializer(latest_posts, many=True)
+    serializer = MainBoardSerializer(latest_posts, many=True, context={'request': request})
     return Response(serializer.data)
 
 # 학교 커뮤니티 최근 게시물 3개 반환
@@ -287,7 +287,7 @@ def latest_school_board(request):
     user = request.user
     latest_posts = SchoolBoard.objects.filter(school_name=user.school_name).order_by('-time')[:3]
     if latest_posts.exists():
-        serializer = SchoolBoardSerializer(latest_posts, many=True)
+        serializer = SchoolBoardSerializer(latest_posts, many=True, context={'request': request}) 
         return Response(serializer.data)
     else:
         return Response({'detail': 'No notices available.'}, status=404)
@@ -297,7 +297,7 @@ def latest_school_board(request):
 def latest_question_board(request):
     latest_posts = QuestionBoard.objects.order_by('-time')[:3]
     if latest_posts.exists():
-        serializer = QuestionBoardSerializer(latest_posts, many=True)
+        serializer = QuestionBoardSerializer(latest_posts, many=True, context={'request': request}) 
         return Response(serializer.data)
     else:
         return Response({'detail': 'No notices available.'}, status=404)
