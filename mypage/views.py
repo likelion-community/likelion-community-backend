@@ -153,28 +153,33 @@ class MyCommentView(APIView):
             .order_by("-latest_comment_time")
         )
 
-        # 게시글 정보를 가져오기 위해 Post 모델에서 데이터 추가
         maincomment_with_post = [
             {
-                "comment_time": comment["latest_comment_time"],
+                "latest_comment_time": comment["latest_comment_time"],
+                "post_id": comment["board"],  
                 "post_title": MainBoard.objects.get(id=comment["board"]).title,
                 "post_created_at": MainBoard.objects.get(id=comment["board"]).time,
+                "writer_id": user.id,  # 작성자 ID
             }
             for comment in maincomment
         ]
         schoolcomment_with_post = [
             {
-                "comment_time": comment["latest_comment_time"],
+                "latest_comment_time": comment["latest_comment_time"],
+                "post_id": comment["board"],  
                 "post_title": SchoolBoard.objects.get(id=comment["board"]).title,
                 "post_created_at": SchoolBoard.objects.get(id=comment["board"]).time,
+                "writer_id": user.id,
             }
             for comment in schoolcomment
         ]
         questioncomment_with_post = [
             {
-                "comment_time": comment["latest_comment_time"],
+                "latest_comment_time": comment["latest_comment_time"],
+                "post_id": comment["board"], 
                 "post_title": QuestionBoard.objects.get(id=comment["board"]).title,
                 "post_created_at": QuestionBoard.objects.get(id=comment["board"]).time,
+                "writer_id": user.id,
             }
             for comment in questioncomment
         ]
