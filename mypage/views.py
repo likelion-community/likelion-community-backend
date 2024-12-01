@@ -133,52 +133,52 @@ class MyCommentView(APIView):
     def get(self, request, *args, **kwargs):
         user = request.user
 
+        # MainComment, SchoolComment, QuestionComment에서 최신 댓글만 가져오기
         maincomment = (
             MainComment.objects.filter(writer=user)
-            .values("post")  # 같은 게시글별로 그룹화
-            .annotate(latest_comment_time=Max("created_at"))  # 최신 댓글 시간 가져오기
+            .values("board")  # board로 그룹화
+            .annotate(latest_comment_time=Max("time"))  # 최신 댓글 시간 가져오기
             .order_by("-latest_comment_time")  # 최신 댓글 순 정렬
         )
         schoolcomment = (
             SchoolComment.objects.filter(writer=user)
-            .values("post")
-            .annotate(latest_comment_time=Max("created_at"))
+            .values("board")
+            .annotate(latest_comment_time=Max("time"))
             .order_by("-latest_comment_time")
         )
         questioncomment = (
             QuestionComment.objects.filter(writer=user)
-            .values("post")
-            .annotate(latest_comment_time=Max("created_at"))
+            .values("board")
+            .annotate(latest_comment_time=Max("time"))
             .order_by("-latest_comment_time")
         )
 
-        # 게시글 정보를 가져오기 위해 Post 모델에서 데이터 추가
         maincomment_with_post = [
             {
-                "post_id": comment["post"],  # 게시글 ID
                 "latest_comment_time": comment["latest_comment_time"],
-                "post_title": MainBoard.objects.get(id=comment["post"]).title,
-                "post_created_at": MainBoard.objects.get(id=comment["post"]).created_at,
+                "post_id": comment["board"],  
+                "post_title": MainBoard.objects.get(id=comment["board"]).title,
+                "post_created_at": MainBoard.objects.get(id=comment["board"]).time,
                 "writer_id": user.id,  # 작성자 ID
             }
             for comment in maincomment
         ]
         schoolcomment_with_post = [
             {
-                "post_id": comment["post"],
                 "latest_comment_time": comment["latest_comment_time"],
-                "post_title": SchoolBoard.objects.get(id=comment["post"]).title,
-                "post_created_at": SchoolBoard.objects.get(id=comment["post"]).created_at,
+                "post_id": comment["board"],  
+                "post_title": SchoolBoard.objects.get(id=comment["board"]).title,
+                "post_created_at": SchoolBoard.objects.get(id=comment["board"]).time,
                 "writer_id": user.id,
             }
             for comment in schoolcomment
         ]
         questioncomment_with_post = [
             {
-                "post_id": comment["post"],
                 "latest_comment_time": comment["latest_comment_time"],
-                "post_title": QuestionBoard.objects.get(id=comment["post"]).title,
-                "post_created_at": QuestionBoard.objects.get(id=comment["post"]).created_at,
+                "post_id": comment["board"], 
+                "post_title": QuestionBoard.objects.get(id=comment["board"]).title,
+                "post_created_at": QuestionBoard.objects.get(id=comment["board"]).time,
                 "writer_id": user.id,
             }
             for comment in questioncomment
@@ -192,7 +192,6 @@ class MyCommentView(APIView):
             },
             status=status.HTTP_200_OK,
         )
-
 
 
 
