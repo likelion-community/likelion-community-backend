@@ -92,15 +92,16 @@ class MyScrapView(APIView):
         schoolscrap = SchoolBoard.objects.filter(scrap=user)
         questionscrap = QuestionBoard.objects.filter(scrap=user)
 
-        mainscrap_serializer = MainBoardSerializer(mainscrap, many=True)
-        schoolscrap_serializer = SchoolBoardSerializer(schoolscrap, many=True)
-        questionscrap_serializer = QuestionBoardSerializer(questionscrap, many=True)
+        mainscrap_serializer = MainBoardSerializer(mainscrap, many=True, context={'request': request})
+        schoolscrap_serializer = SchoolBoardSerializer(schoolscrap, many=True, context={'request': request})
+        questionscrap_serializer = QuestionBoardSerializer(questionscrap, many=True, context={'request': request})
 
         return Response({
             "mainscrap": mainscrap_serializer.data,
             "schoolscrap": schoolscrap_serializer.data,
             "questionscrap": questionscrap_serializer.data
         }, status=status.HTTP_200_OK)
+
     
 class MyPostView(APIView):
     permission_classes = [IsAuthenticated]
@@ -112,7 +113,6 @@ class MyPostView(APIView):
         schoolpost = SchoolBoard.objects.filter(writer=user)
         questionpost = QuestionBoard.objects.filter(writer=user)
 
-        # context에 request를 추가
         mainpost_serializer = MainBoardSerializer(mainpost, many=True, context={'request': request})
         schoolpost_serializer = SchoolBoardSerializer(schoolpost, many=True, context={'request': request})
         questionpost_serializer = QuestionBoardSerializer(questionpost, many=True, context={'request': request})
@@ -134,15 +134,16 @@ class MyCommentView(APIView):
         schoolcomment = SchoolComment.objects.filter(writer=user)
         questioncomment = QuestionComment.objects.filter(writer=user)
 
-        maincomment_serializer = MainCommentSerializer(maincomment, many=True)
-        schoolcomment_serializer = SchoolCommentSerializer(schoolcomment, many=True)
-        questioncomment_serializer = QuestionCommentSerializer(questioncomment, many=True)
+        maincomment_serializer = MainCommentSerializer(maincomment, many=True, context={'request': request})
+        schoolcomment_serializer = SchoolCommentSerializer(schoolcomment, many=True, context={'request': request})
+        questioncomment_serializer = QuestionCommentSerializer(questioncomment, many=True, context={'request': request})
 
         return Response({
             "maincomment": maincomment_serializer.data,
             "schoolcomment": schoolcomment_serializer.data,
             "questioncomment": questioncomment_serializer.data
         }, status=status.HTTP_200_OK)
+
 
 
 class UploadVerificationPhotosView(APIView):
