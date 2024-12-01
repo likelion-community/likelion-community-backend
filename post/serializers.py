@@ -15,7 +15,6 @@ class MainBoardSerializer(serializers.ModelSerializer):
     scraps_count = serializers.IntegerField(read_only=True)
     is_liked = serializers.SerializerMethodField(read_only=True)
     is_scraped = serializers.SerializerMethodField(read_only=True)
-    board_title = serializers.CharField(read_only=True) 
     writer = CustomUserSerializer(read_only=True)
     images = PostImageSerializer(many=True, read_only=True)
 

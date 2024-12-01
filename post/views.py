@@ -32,12 +32,23 @@ def send_notification(notification):
 
 class BaseBoardViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
-        post = serializer.save(writer=self.request.user)
+        # 요청 데이터에서 board_title을 가져오기
+        board_title = self.request.data.get('board_title')
+        
+        # board_title이 없으면 현재 ViewSet에서 기본값 설정
+        if not board_title:
+            if isinstance(self.queryset.model, MainBoard):
+                board_title = '자유게시판'  # MainBoard의 기본 게시판
+            elif isinstance(self.queryset.model, QuestionBoard):
+                raise serializers.ValidationError({"track": "질문 게시판의 트랙을 선택해야 합니다."})
+        
+        # 글 저장
+        post = serializer.save(writer=self.request.user, board_title=board_title)
 
         # 이미지 데이터 처리
         images = self.request.FILES.getlist('images')
         for image in images:
-            PostImage.objects.create(board=post, image=image) 
+            PostImage.objects.create(board=post, image=image)
 
     def handle_like(self, request, post):
         user = request.user
@@ -91,6 +102,7 @@ class BaseBoardViewSet(viewsets.ModelViewSet):
         context['request'] = self.request
         return context
     
+    
 class MainBoardViewSet(BaseBoardViewSet):
     permission_classes = [IsAuthenticated]
     queryset = MainBoard.objects.all().order_by('-time')
@@ -121,8 +133,11 @@ class QuestionBoardViewSet(BaseBoardViewSet):
 
     def perform_create(self, serializer):
         user = self.request.user
-        serializer.save(writer=user, school_name=user.school_name)
+        track = self.request.data.get('track')  
+        if not track:
+            raise serializers.ValidationError({"track": "트랙을 선택해야 합니다."})
 
+        serializer.save(writer=user, school_name=user.school_name, track=track)
 
 
 class MainNoticeBoardViewSet(BaseBoardViewSet):
