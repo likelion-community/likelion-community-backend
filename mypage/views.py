@@ -133,12 +133,12 @@ class MyCommentView(APIView):
     def get(self, request, *args, **kwargs):
         user = request.user
 
-        # MainComment, SchoolComment, QuestionComment에서 최신 댓글만 가져오기
+        # 중복 제거 및 최신 댓글 시간 기준으로 정렬
         maincomment = (
             MainComment.objects.filter(writer=user)
-            .values("board")  # board로 그룹화
-            .annotate(latest_comment_time=Max("time"))  # 최신 댓글 시간 가져오기
-            .order_by("-latest_comment_time")  # 최신 댓글 순 정렬
+            .values("board")
+            .annotate(latest_comment_time=Max("time"))
+            .order_by("-latest_comment_time")
         )
         schoolcomment = (
             SchoolComment.objects.filter(writer=user)
@@ -153,17 +153,24 @@ class MyCommentView(APIView):
             .order_by("-latest_comment_time")
         )
 
-        maincomment_serializer = MainCommentSerializer(maincomment, many=True, context={"request": request})
-        schoolcomment_serializer = SchoolCommentSerializer(schoolcomment, many=True, context={"request": request})
-        questioncomment_serializer = QuestionCommentSerializer(questioncomment, many=True, context={"request": request})
+        # MainBoard, SchoolBoard, QuestionBoard 모델 인스턴스 가져오기
+        main_boards = MainBoard.objects.filter(id__in=[item["board"] for item in maincomment])
+        school_boards = SchoolBoard.objects.filter(id__in=[item["board"] for item in schoolcomment])
+        question_boards = QuestionBoard.objects.filter(id__in=[item["board"] for item in questioncomment])
 
-        return Response({
-            "maincomment": maincomment_serializer.data,
-            "schoolcomment": schoolcomment_serializer.data,
-            "questioncomment": questioncomment_serializer.data
-            },status=status.HTTP_200_OK,
+        # 직렬화
+        maincomment_serializer = MainBoardSerializer(main_boards, many=True, context={"request": request})
+        schoolcomment_serializer = SchoolBoardSerializer(school_boards, many=True, context={"request": request})
+        questioncomment_serializer = QuestionBoardSerializer(question_boards, many=True, context={"request": request})
+
+        return Response(
+            {
+                "maincomment": maincomment_serializer.data,
+                "schoolcomment": schoolcomment_serializer.data,
+                "questioncomment": questioncomment_serializer.data,
+            },
+            status=status.HTTP_200_OK,
         )
-
 
 
 class UploadVerificationPhotosView(APIView):
