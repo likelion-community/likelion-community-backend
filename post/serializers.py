@@ -153,11 +153,12 @@ class BaseCommentSerializer(serializers.ModelSerializer):
     is_author = serializers.SerializerMethodField()  # 작성자인지 여부
     writer = CustomUserSerializer(read_only=True)
     board_title = serializers.SerializerMethodField()  
+    post_info = serializers.SerializerMethodField()
 
     class Meta:
-        model = None  # 서브클래스에서 설정 필요
+        model = None  
         fields = ['id', 'content', 'writer', 'anonymous', 'anonymous_number', 'is_author', 
-                  'time', 'board', 'board_title']  # board_title 추가
+                  'time', 'board', 'board_title', 'post_info']  # board_title 추가
 
     def get_is_author(self, obj):
         return obj.writer == obj.board.writer  # 댓글 작성자가 게시물 작성자인지 확인
@@ -165,6 +166,15 @@ class BaseCommentSerializer(serializers.ModelSerializer):
     def get_board_title(self, obj):
         return obj.board.board_title  # 댓글 작성자가 게시물 작성자인지 확인
 
+    def get_post_info(self, obj):
+        board = obj.board
+        post_data = {
+            "title": board.title,  # 게시글 제목
+            "body": board.body,  # 게시글 내용
+            "images": PostImageSerializer(board.images.all(), many=True).data,  # 게시글 이미지
+            "comments_count": board.comments_count()  # 게시글 댓글 수
+        }
+        return post_data
 
 
 class MainCommentSerializer(BaseCommentSerializer):
