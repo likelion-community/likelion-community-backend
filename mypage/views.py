@@ -153,44 +153,15 @@ class MyCommentView(APIView):
             .order_by("-latest_comment_time")
         )
 
-        maincomment_with_post = [
-            {
-                "latest_comment_time": comment["latest_comment_time"],
-                "post_id": comment["board"],  
-                "post_title": MainBoard.objects.get(id=comment["board"]).title,
-                "post_created_at": MainBoard.objects.get(id=comment["board"]).time,
-                "writer_id": user.id,  # 작성자 ID
-            }
-            for comment in maincomment
-        ]
-        schoolcomment_with_post = [
-            {
-                "latest_comment_time": comment["latest_comment_time"],
-                "post_id": comment["board"],  
-                "post_title": SchoolBoard.objects.get(id=comment["board"]).title,
-                "post_created_at": SchoolBoard.objects.get(id=comment["board"]).time,
-                "writer_id": user.id,
-            }
-            for comment in schoolcomment
-        ]
-        questioncomment_with_post = [
-            {
-                "latest_comment_time": comment["latest_comment_time"],
-                "post_id": comment["board"], 
-                "post_title": QuestionBoard.objects.get(id=comment["board"]).title,
-                "post_created_at": QuestionBoard.objects.get(id=comment["board"]).time,
-                "writer_id": user.id,
-            }
-            for comment in questioncomment
-        ]
+        maincomment_serializer = MainCommentSerializer(maincomment, many=True, context={"request": request})
+        schoolcomment_serializer = SchoolCommentSerializer(schoolcomment, many=True, context={"request": request})
+        questioncomment_serializer = QuestionCommentSerializer(questioncomment, many=True, context={"request": request})
 
-        return Response(
-            {
-                "main_comments": maincomment_with_post,
-                "school_comments": schoolcomment_with_post,
-                "question_comments": questioncomment_with_post,
-            },
-            status=status.HTTP_200_OK,
+        return Response({
+            "maincomment": maincomment_serializer.data,
+            "schoolcomment": schoolcomment_serializer.data,
+            "questioncomment": questioncomment_serializer.data
+            },status=status.HTTP_200_OK,
         )
 
 

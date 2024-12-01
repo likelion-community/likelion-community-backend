@@ -158,11 +158,16 @@ class BaseCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = None  
         fields = ['id', 'content', 'writer', 'anonymous', 'anonymous_number', 'is_author', 
-                  'time', 'board', 'board_title', 'post_info']  # board_title 추가
+                  'time', 'board', 'board_title', 'post_info'] 
 
     def get_is_author(self, obj):
         return obj.writer == obj.board.writer  # 댓글 작성자가 게시물 작성자인지 확인
 
+    def get_writer(self, obj):
+        if obj.anonymous:
+            return {"nickname": f"익명 {obj.anonymous_number}"}
+        return {"nickname": obj.writer.nickname}
+    
     def get_board_title(self, obj):
         return obj.board.board_title  # 댓글 작성자가 게시물 작성자인지 확인
 
