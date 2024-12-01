@@ -21,6 +21,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from .models import VerificationPhoto, Verification
 from rest_framework.parsers import MultiPartParser, FormParser
+from django.db.models import Max
+
 
 class MyPageOverviewView(APIView):
     permission_classes = [IsAuthenticated]
@@ -123,26 +125,74 @@ class MyPostView(APIView):
             "questionpost": questionpost_serializer.data
         }, status=status.HTTP_200_OK)
 
-    
+
+
 class MyCommentView(APIView):
     permission_classes = [IsAuthenticated]
-    
+
     def get(self, request, *args, **kwargs):
         user = request.user
 
-        maincomment = MainComment.objects.filter(writer=user)
-        schoolcomment = SchoolComment.objects.filter(writer=user)
-        questioncomment = QuestionComment.objects.filter(writer=user)
+        maincomment = (
+            MainComment.objects.filter(writer=user)
+            .values("post")  # 같은 게시글별로 그룹화
+            .annotate(latest_comment_time=Max("created_at"))  # 최신 댓글 시간 가져오기
+            .order_by("-latest_comment_time")  # 최신 댓글 순 정렬
+        )
+        schoolcomment = (
+            SchoolComment.objects.filter(writer=user)
+            .values("post")
+            .annotate(latest_comment_time=Max("created_at"))
+            .order_by("-latest_comment_time")
+        )
+        questioncomment = (
+            QuestionComment.objects.filter(writer=user)
+            .values("post")
+            .annotate(latest_comment_time=Max("created_at"))
+            .order_by("-latest_comment_time")
+        )
 
-        maincomment_serializer = MainCommentSerializer(maincomment, many=True, context={'request': request})
-        schoolcomment_serializer = SchoolCommentSerializer(schoolcomment, many=True, context={'request': request})
-        questioncomment_serializer = QuestionCommentSerializer(questioncomment, many=True, context={'request': request})
+        # 게시글 정보를 가져오기 위해 Post 모델에서 데이터 추가
+        maincomment_with_post = [
+            {
+                "post_id": comment["post"],  # 게시글 ID
+                "latest_comment_time": comment["latest_comment_time"],
+                "post_title": MainBoard.objects.get(id=comment["post"]).title,
+                "post_created_at": MainBoard.objects.get(id=comment["post"]).created_at,
+                "writer_id": user.id,  # 작성자 ID
+            }
+            for comment in maincomment
+        ]
+        schoolcomment_with_post = [
+            {
+                "post_id": comment["post"],
+                "latest_comment_time": comment["latest_comment_time"],
+                "post_title": SchoolBoard.objects.get(id=comment["post"]).title,
+                "post_created_at": SchoolBoard.objects.get(id=comment["post"]).created_at,
+                "writer_id": user.id,
+            }
+            for comment in schoolcomment
+        ]
+        questioncomment_with_post = [
+            {
+                "post_id": comment["post"],
+                "latest_comment_time": comment["latest_comment_time"],
+                "post_title": QuestionBoard.objects.get(id=comment["post"]).title,
+                "post_created_at": QuestionBoard.objects.get(id=comment["post"]).created_at,
+                "writer_id": user.id,
+            }
+            for comment in questioncomment
+        ]
 
-        return Response({
-            "maincomment": maincomment_serializer.data,
-            "schoolcomment": schoolcomment_serializer.data,
-            "questioncomment": questioncomment_serializer.data
-        }, status=status.HTTP_200_OK)
+        return Response(
+            {
+                "main_comments": maincomment_with_post,
+                "school_comments": schoolcomment_with_post,
+                "question_comments": questioncomment_with_post,
+            },
+            status=status.HTTP_200_OK,
+        )
+
 
 
 
