@@ -8,18 +8,21 @@ class PostImageSerializer(serializers.ModelSerializer):
         model = PostImage
         fields = ['id', 'image']
         
+
 class MainBoardSerializer(serializers.ModelSerializer):
     comments_count = serializers.SerializerMethodField(read_only=True)
     likes_count = serializers.IntegerField(read_only=True)
     scraps_count = serializers.IntegerField(read_only=True)
-    images = PostImageSerializer(many=True, read_only=True) 
-    writer = CustomUserSerializer(read_only=True)
     is_liked = serializers.SerializerMethodField(read_only=True)
     is_scraped = serializers.SerializerMethodField(read_only=True)
+    board_title = serializers.CharField(read_only=True) 
+    writer = CustomUserSerializer(read_only=True)
+    images = PostImageSerializer(many=True, read_only=True)
 
     class Meta:
         model = MainBoard
-        fields = '__all__'
+        fields = ['id', 'board_title', 'title', 'body', 'writer', 'anonymous', 'time', 
+                  'comments_count', 'likes_count', 'scraps_count', 'is_liked', 'is_scraped', 'images']
 
     def get_comments_count(self, obj):
         return obj.comments_count()
@@ -38,14 +41,16 @@ class SchoolBoardSerializer(serializers.ModelSerializer):
     comments_count = serializers.SerializerMethodField(read_only=True)
     likes_count = serializers.IntegerField(read_only=True)
     scraps_count = serializers.IntegerField(read_only=True)
-    writer = CustomUserSerializer(read_only=True)
-    school_name = serializers.CharField(read_only=True)
     is_liked = serializers.SerializerMethodField(read_only=True)
     is_scraped = serializers.SerializerMethodField(read_only=True)
+    board_title = serializers.CharField(read_only=True)  
+    writer = CustomUserSerializer(read_only=True)
 
     class Meta:
         model = SchoolBoard
-        fields = '__all__'
+        fields = ['id', 'board_title', 'title', 'body', 'writer', 'anonymous', 
+                  'school_name', 'time', 'comments_count', 'likes_count', 'scraps_count', 
+                  'is_liked', 'is_scraped']
 
     def get_comments_count(self, obj):
         return obj.comments_count()
@@ -63,22 +68,23 @@ class QuestionBoardSerializer(serializers.ModelSerializer):
     comments_count = serializers.SerializerMethodField(read_only=True)
     likes_count = serializers.IntegerField(read_only=True)
     scraps_count = serializers.IntegerField(read_only=True)
-    writer = CustomUserSerializer(read_only=True)
-    school_name = serializers.SerializerMethodField()  
     is_liked = serializers.SerializerMethodField(read_only=True)
     is_scraped = serializers.SerializerMethodField(read_only=True)
-
+    board_title = serializers.SerializerMethodField()  
+    writer = CustomUserSerializer(read_only=True)
 
     class Meta:
         model = QuestionBoard
-        fields = '__all__'
+        fields = ['id', 'board_title', 'track', 'title', 'body', 'writer', 'anonymous', 
+                  'school_name', 'time', 'comments_count', 'likes_count', 'scraps_count', 
+                  'is_liked', 'is_scraped']
 
     def get_comments_count(self, obj):
         return obj.comments_count()
 
-    def get_school_name(self, obj):
-        return obj.writer.school_name 
-    
+    def get_board_title(self, obj):
+        return dict(QuestionBoard.BOARD_CHOICES).get(obj.track)  # track 값을 이름으로 변환
+
     def get_is_liked(self, obj):
         user = self.context['request'].user
         return obj.like.filter(id=user.id).exists()
@@ -92,14 +98,15 @@ class MainNoticeBoardSerializer(serializers.ModelSerializer):
     comments_count = serializers.SerializerMethodField(read_only=True)
     likes_count = serializers.IntegerField(read_only=True)
     scraps_count = serializers.IntegerField(read_only=True)
-    writer = CustomUserSerializer(read_only=True)
     is_liked = serializers.SerializerMethodField(read_only=True)
     is_scraped = serializers.SerializerMethodField(read_only=True)
-
+    board_title = serializers.CharField(read_only=True)  
+    writer = CustomUserSerializer(read_only=True)
 
     class Meta:
         model = MainNoticeBoard
-        fields = '__all__'
+        fields = ['id', 'board_title', 'title', 'body', 'writer', 'anonymous', 
+                  'time', 'comments_count', 'likes_count', 'scraps_count', 'is_liked', 'is_scraped']
 
     def get_comments_count(self, obj):
         return obj.comments_count()
@@ -117,19 +124,20 @@ class SchoolNoticeBoardSerializer(serializers.ModelSerializer):
     comments_count = serializers.SerializerMethodField(read_only=True)
     likes_count = serializers.IntegerField(read_only=True)
     scraps_count = serializers.IntegerField(read_only=True)
-    writer = CustomUserSerializer(read_only=True)
-    school_name = serializers.CharField(read_only=True) 
     is_liked = serializers.SerializerMethodField(read_only=True)
     is_scraped = serializers.SerializerMethodField(read_only=True)
-
+    board_title = serializers.CharField(read_only=True)  
+    writer = CustomUserSerializer(read_only=True)
 
     class Meta:
         model = SchoolNoticeBoard
-        fields = '__all__'
+        fields = ['id', 'board_title', 'title', 'body', 'writer', 'anonymous', 
+                  'school_name', 'time', 'comments_count', 'likes_count', 'scraps_count', 
+                  'is_liked', 'is_scraped']
 
     def get_comments_count(self, obj):
         return obj.comments_count()
-    
+
     def get_is_liked(self, obj):
         user = self.context['request'].user
         return obj.like.filter(id=user.id).exists()
@@ -144,13 +152,20 @@ class BaseCommentSerializer(serializers.ModelSerializer):
     anonymous_number = serializers.IntegerField(read_only=True)  # 익명 번호
     is_author = serializers.SerializerMethodField()  # 작성자인지 여부
     writer = CustomUserSerializer(read_only=True)
+    board_title = serializers.SerializerMethodField()  
 
     class Meta:
         model = None  # 서브클래스에서 설정 필요
-        fields = ['id', 'content', 'writer', 'anonymous', 'anonymous_number', 'is_author', 'time', 'board']
+        fields = ['id', 'content', 'writer', 'anonymous', 'anonymous_number', 'is_author', 
+                  'time', 'board', 'board_title']  # board_title 추가
 
     def get_is_author(self, obj):
         return obj.writer == obj.board.writer  # 댓글 작성자가 게시물 작성자인지 확인
+
+    def get_board_title(self, obj):
+        return obj.board.board_title  # 댓글 작성자가 게시물 작성자인지 확인
+
+
 
 class MainCommentSerializer(BaseCommentSerializer):
     board = serializers.PrimaryKeyRelatedField(queryset=MainBoard.objects.all())  # MainBoard와 연결
@@ -162,14 +177,14 @@ class MainCommentSerializer(BaseCommentSerializer):
 
 class SchoolCommentSerializer(BaseCommentSerializer):
     board = serializers.PrimaryKeyRelatedField(queryset=SchoolBoard.objects.all())  # SchoolBoard와 연결
-    school_name = serializers.SerializerMethodField()  # school_name 추가
+    school_name = serializers.SerializerMethodField()  
 
     class Meta(BaseCommentSerializer.Meta):
         model = SchoolComment
         fields = BaseCommentSerializer.Meta.fields + ['school_name'] 
 
     def get_school_name(self, obj):
-        return obj.board.school_name  # board에서 school_name을 가져옴
+        return obj.board.school_name  
 
 
 
@@ -182,7 +197,7 @@ class QuestionCommentSerializer(BaseCommentSerializer):
         fields = BaseCommentSerializer.Meta.fields + ['school_name']
 
     def get_school_name(self, obj):
-        return obj.board.school_name  # board에서 school_name을 가져옴
+        return obj.board.school_name  
 
 
 class MainNoticeCommentSerializer(BaseCommentSerializer):
@@ -202,4 +217,4 @@ class SchoolNoticeCommentSerializer(BaseCommentSerializer):
         fields = BaseCommentSerializer.Meta.fields + ['school_name']
 
     def get_school_name(self, obj):
-        return obj.board.school_name  # board에서 school_name을 가져옴
+        return obj.board.school_name 
