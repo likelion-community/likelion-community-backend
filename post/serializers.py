@@ -70,12 +70,12 @@ class QuestionBoardSerializer(serializers.ModelSerializer):
     scraps_count = serializers.IntegerField(read_only=True)
     is_liked = serializers.SerializerMethodField(read_only=True)
     is_scraped = serializers.SerializerMethodField(read_only=True)
-    board_title = serializers.SerializerMethodField()  
+    board_title = serializers.SerializerMethodField() 
     writer = CustomUserSerializer(read_only=True)
 
     class Meta:
         model = QuestionBoard
-        fields = ['id', 'board_title', 'track', 'title', 'body', 'writer', 'anonymous', 
+        fields = ['id', 'track', 'board_title', 'title', 'body', 'writer', 'anonymous', 
                   'school_name', 'time', 'comments_count', 'likes_count', 'scraps_count', 
                   'is_liked', 'is_scraped']
 
@@ -83,7 +83,7 @@ class QuestionBoardSerializer(serializers.ModelSerializer):
         return obj.comments_count()
 
     def get_board_title(self, obj):
-        return dict(QuestionBoard.BOARD_CHOICES).get(obj.track)  # track 값을 이름으로 변환
+        return dict(QuestionBoard.BOARD_CHOICES).get(obj.track)  
 
     def get_is_liked(self, obj):
         user = self.context['request'].user
@@ -169,7 +169,9 @@ class BaseCommentSerializer(serializers.ModelSerializer):
         return {"nickname": obj.writer.nickname}
     
     def get_board_title(self, obj):
-        return obj.board.board_title  # 댓글 작성자가 게시물 작성자인지 확인
+        if isinstance(obj.board, QuestionBoard):
+            return dict(QuestionBoard.BOARD_CHOICES).get(obj.board.track)
+        return getattr(obj.board, 'board_title', None) 
 
     def get_post_info(self, obj):
         board = obj.board
