@@ -112,15 +112,17 @@ class MyPostView(APIView):
         schoolpost = SchoolBoard.objects.filter(writer=user)
         questionpost = QuestionBoard.objects.filter(writer=user)
 
-        mainpost_serializer = MainBoardSerializer(mainpost, many=True)
-        schoolpost_serializer = SchoolBoardSerializer(schoolpost, many=True)
-        questionpost_serializer = QuestionBoardSerializer(questionpost, many=True)
+        # context에 request를 추가
+        mainpost_serializer = MainBoardSerializer(mainpost, many=True, context={'request': request})
+        schoolpost_serializer = SchoolBoardSerializer(schoolpost, many=True, context={'request': request})
+        questionpost_serializer = QuestionBoardSerializer(questionpost, many=True, context={'request': request})
 
         return Response({
             "mainpost": mainpost_serializer.data,
             "schoolpost": schoolpost_serializer.data,
             "questionpost": questionpost_serializer.data
         }, status=status.HTTP_200_OK)
+
     
 class MyCommentView(APIView):
     permission_classes = [IsAuthenticated]
